@@ -1,25 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
+
+import { BrowserRouter as Router, Switch, Route, Link, useLocation } from "react-router-dom";
+
+import LandingPage from './components/LandingPage/LandingPage';
+import ProjectsPage from './components/ProjectsPage/ProjectsPage';
+import Technologies from './components/Technologies/Technologies';
+
+import { useTransition, animated } from 'react-spring';
+
 import './App.css';
+import RouteManager from './components/RouteManager/RouteManager';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <RouteManager />
+    </Router>
   );
 }
 
