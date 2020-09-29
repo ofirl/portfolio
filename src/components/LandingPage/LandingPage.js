@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Card, CardContent, makeStyles, Typography } from '@material-ui/core';
+import AnimatedBackground from '../AnimatedBackground/AnimatedBackground';
 
 const useStyles = makeStyles(theme => ({
     landingContainer: {
@@ -35,11 +36,13 @@ const LandingPage = () => {
     };
 
     return (
-        <div className={classes.landingContainer}>
-            <Card classes={cardClasses}>
-                <CardContent classes={cardContentClasses}>
-                    <Typography variant="body2">
-                        Hi,
+        <>
+            {/* <AnimatedBackground /> */}
+            <div className={classes.landingContainer}>
+                <Card classes={cardClasses}>
+                    <CardContent classes={cardContentClasses}>
+                        <Typography variant="body2">
+                            Hi,
                             <br />
                             I am Ofir Levi, A Software Developer with 4+ years of Software Development experience on various Platforms, Passionate to build Polished, Innovative and well-detailed Apps with Fluid Animations to complement the Design.
                             <br /><br />
@@ -49,9 +52,10 @@ const LandingPage = () => {
                             <Link to="/technologies"> Technologies </Link>
                             that I worked on.
                         </Typography>
-                </CardContent>
-            </Card>
-        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </>
     );
 }
 

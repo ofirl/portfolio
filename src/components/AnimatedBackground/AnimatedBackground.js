@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
         overflow: 'hidden',
         height: '100vh',
         transformOrigin: 'top',
-        zIndex: '1',
     },
     backgroundContainer: {
         overflow: 'hidden',
@@ -47,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const AnimatedBackground = () => {
+const AnimatedBackground = ({ animatedStyle }) => {
     let [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
     let classes = useStyles();
@@ -70,7 +69,7 @@ const AnimatedBackground = () => {
     const animationProps = useSpring({ xy: mousePositionFactor(mousePos.x, mousePos.y), config: { mass: 10, tension: 550, friction: 240 } });
 
     return (
-        <div className={classes.backgroundOuterContainer}>
+        <animated.div className={classes.backgroundOuterContainer} style={animatedStyle}>
             <div className={classes.backgroundContainer}>
                 <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayerFixed)} style={{ transform: animationProps.xy.interpolate(trans1) }}>
                 </animated.div>
@@ -79,7 +78,7 @@ const AnimatedBackground = () => {
                 <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayer2)} style={{ transform: animationProps.xy.interpolate(trans3) }}>
                 </animated.div>
             </div>
-        </div>
+        </animated.div>
     );
 }
 

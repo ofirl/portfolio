@@ -39,7 +39,6 @@ const RouteManager = () => {
     let prevLocation = useRef();
 
     let classes = useStyles();
-
     useEffect(() => {
         prevLocation.current = location.pathname
     }, [location]);
@@ -72,62 +71,90 @@ const RouteManager = () => {
         },
     });
 
-    // content transitions
-    const headerTransitions = useTransition(location, location => location.pathname, {
+    // background transitions
+    const backgroundTransitions = useTransition(location, location => location.pathname, {
         from: item => {
-            if (location.pathname === "/" || prevLocation.current === "/")
-                return { opacity: 0, bottom: '1em', position: 'relative' };
+            console.log(prevLocation.current)
+            if (prevLocation.current === "/")
+                return { wait: 0, opacity: 1 };
 
-            return { opacity: 1, bottom: '0em', position: 'relative' };
+            return { wait: 0, opacity: 0 };
         },
         enter: item => {
+            console.log(location.pathname)
             if (location.pathname === "/")
-                return { opacity: 0, bottom: '1em', display: 'none' };
+                return [{ wait: 1 }, { wait: 0, opacity: 1 }];
 
-            return { opacity: 1, bottom: '0em' };
+            return { wait: 0, opacity: 0 };
         },
         leave: item => {
-            if (location.pathname === "/" || prevLocation.current === "/")
-                return { opacity: 0, bottom: '1em' };
+            if (location.pathname === "/" || prevLocation.current !== "/")
+                return { wait: 0, opacity: 0 };
 
-            return { opacity: 1, bottom: '0em' };
+            return { wait: 0, opacity: 1 };
         },
     });
 
-    // avatar container transitions
+    // header transitions
+    const headerTransitions = useTransition(location, location => location.pathname, {
+        from: item => {
+            if (location.pathname === "/" || prevLocation.current === "/")
+                return { wait: 0, opacity: 0, bottom: '1em', position: 'relative' };
+
+            return { wait: 0, opacity: 1, bottom: '0em', position: 'relative' };
+        },
+        enter: item => {
+            if (location.pathname === "/")
+                return { wait: 0, opacity: 0, bottom: '1em', display: 'none' };
+
+            return [{ wait: 1 }, { wait: 0, opacity: 1, bottom: '0em' }];
+        },
+        leave: item => {
+            if (location.pathname === "/" || prevLocation.current === "/")
+                return { wait: 0, opacity: 0, bottom: '1em' };
+
+            return { wait: 0, opacity: 1, bottom: '0em' };
+        },
+    });
+
+    // avatar transitions
     const avatarTransitions = useTransition(location, location => location.pathname, {
         from: item => {
             if (!prevLocation.current) {
                 if (location.pathname === "/")
-                    return { top: '15em', right: '50%', width: '10em', height: '10em', padding: '0.5em 1.5em 0 0' };
+                    return { wait: 0, top: '15em', right: '50%', width: '10em', height: '10em', padding: '0.5em 1.5em 0 0' };
                 else
-                    return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0em 0em 0 0' };
+                    return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0em 0em 0 0' };
             }
 
             if (prevLocation.current === "/")
-                return { top: '15em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+                return { wait: 0, top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
 
-            return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+            return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
         },
         enter: item => {
             if (location.pathname === "/")
-                return { top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+                return { wait: 0, top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
 
-            return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+            return [{ wait: 1 }, { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' }];
         },
         leave: item => {
             if (!prevLocation.current || prevLocation.current === "/")
-                return { top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+                return { wait: 0, top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
 
-            return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+            return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
         },
     });
 
     return (
-        <Grid rows="2em 1fr" columns="1fr" className={classes.mainGrid}>
-            <Route strict path="/">
-                <AnimatedBackground />
-            </Route>
+        <Grid gap="0" rows='2em 1fr' columns="1fr" className={classes.mainGrid}>
+            {/* <Route exact path="/"> */}
+            {
+                backgroundTransitions.map(({ item, props, key }) => (
+                    <AnimatedBackground key={key} animatedStyle={props} />
+                ))
+            }
+            {/* </Route> */}
             {
                 avatarTransitions.map(({ item, props, key }) => {
                     let containerProps = {
@@ -182,7 +209,7 @@ const RouteManager = () => {
                                 <Route path="/technologies">
                                     <Technologies />
                                 </Route>
-                                <Route strict path="/">
+                                <Route exact path="/">
                                     <LandingPage />
                                 </Route>
                             </Switch>
