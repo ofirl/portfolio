@@ -6,6 +6,7 @@ import { Cell, Grid } from 'styled-css-grid';
 
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
     topBarGrid: {
@@ -21,6 +22,9 @@ const useStyles = makeStyles(theme => ({
         bottom: '1em',
         width: ({ indicatorWidth }) => indicatorWidth + "px",
         transform: ({ indicatorOffset }) => `translateX(${indicatorOffset}px)`,
+    },
+    topBarLink: {
+        color: 'white',
     },
 }));
 
@@ -54,15 +58,15 @@ const TopBar = () => {
             <div className={classes.pageIndicator}>
 
             </div>
-            <Cell ref={technologiesCellRef} area="technologies" className={'vertical-align'}>
+            <Cell ref={technologiesCellRef} area="technologies" className={clsx('vertical-align', classes.topBarLink)}>
                 <Link to="/technologies">
                     <Typography variant="body2">
                         Technologies
                     </Typography>
                 </Link>
             </Cell>
-            <Cell ref={projectsCellRef} area="projects" className={'vertical-align'}>
-                <Link to="/projects">
+            <Cell ref={projectsCellRef} area="projects" className={clsx('vertical-align', classes.topBarLink)}>
+                <Link to="/projects" className={classes.topBarLink}>
                     <Typography variant="body2">
                         Projects
                     </Typography>
