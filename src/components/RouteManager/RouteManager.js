@@ -1,7 +1,8 @@
-import { makeStyles } from '@material-ui/core';
+import { Avatar, makeStyles } from '@material-ui/core';
 import React, { useEffect, useRef } from 'react';
 
 import { Route, Switch, useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { useTransition, animated } from 'react-spring';
 import { Cell, Grid } from 'styled-css-grid';
@@ -16,6 +17,24 @@ const useStyles = makeStyles(theme => ({
         '&[class*="Grid"]': {
             height: '100%',
         },
+    },
+    avatarContainer: {
+        position: 'absolute',
+        top: 'calc(50% - 11em)',
+        zIndex: '10',
+        // right: '50%',
+        // width: '100%',
+        // display: 'grid',
+        // justifyItems: 'center',
+    },
+    avatarInnerContainer: {
+        position: 'relative',
+        // left: '50%',
+    },
+    avatarRoot: {
+        width: '100%',
+        height: '100%',
+        textDecoration: 'none',
     },
 }));
 
@@ -33,25 +52,27 @@ const RouteManager = () => {
     const contentTransitions = useTransition(location, location => location.pathname, {
         from: item => {
             if (location.pathname === "/" || prevLocation.current === "/")
-                return { opacity: 0, position: 'absolute', left: '0em', top: '0em', height: '100%', width: '100%' };
+                return { wait: 0, opacity: 0, position: 'absolute', left: '0em', top: '0em', height: '100%', width: '100%' };
 
             if (prevLocation.current === "/projects")
-                return { opacity: 1, position: 'absolute', left: '20em', top: '0em', height: '100%', width: '100%' };
+                return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em', height: '100%', width: '100%' };
             if (prevLocation.current === "/technologies")
-                return { opacity: 1, position: 'absolute', left: '-20em', top: '0em', height: '100%', width: '100%' };
+                return { wait: 0, opacity: 1, position: 'absolute', left: '-20em', top: '0em', height: '100%', width: '100%' };
         },
         enter: item => {
-            return { opacity: 1, position: 'absolute', left: '0em' };
+            if (location.pathname === "/" || prevLocation.current === "/")
+                return [{ wait: 1 }, { wait: 0, opacity: 1, position: 'absolute', left: '0em' }];
+
+            return { wait: 0, opacity: 1, position: 'absolute', left: '0em' };
         },
         leave: item => {
-            console.log(prevLocation.current)
             if (location.pathname === "/" || prevLocation.current === "/")
-                return { opacity: 0 };
+                return { wait: 0, opacity: 0 };
 
             if (prevLocation.current === "/projects")
-                return { opacity: 0, position: 'absolute', left: '-20em' };
+                return { wait: 0, opacity: 0, position: 'absolute', left: '-20em' };
             if (prevLocation.current === "/technologies")
-                return { opacity: 0, position: 'absolute', left: '20em' };
+                return { wait: 0, opacity: 0, position: 'absolute', left: '20em' };
         },
     });
 
@@ -65,7 +86,7 @@ const RouteManager = () => {
         },
         enter: item => {
             if (location.pathname === "/")
-                return { opacity: 0, bottom: '1em' };
+                return { opacity: 0, bottom: '1em', display: 'none' };
 
             return { opacity: 1, bottom: '0em' };
         },
@@ -77,8 +98,71 @@ const RouteManager = () => {
         },
     });
 
+    // avatar container transitions
+    const avatarTransitions = useTransition(location, location => location.pathname, {
+        from: item => {
+            if (!prevLocation.current) {
+                if (location.pathname === "/")
+                    return { top: '15em', right: '50%', width: '10em', height: '10em', padding: '0.5em 1.5em 0 0' };
+                else
+                    return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0em 0em 0 0' };
+            }
+
+            if (prevLocation.current === "/")
+                return { top: '15em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+
+            return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+        },
+        enter: item => {
+            if (location.pathname === "/")
+                return { top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+
+            return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+        },
+        leave: item => {
+            if (!prevLocation.current || prevLocation.current === "/")
+                return { top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+
+            return { top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+        },
+    });
+
     return (
         <Grid rows="2em 1fr" columns="1fr" className={classes.mainGrid}>
+            {
+                avatarTransitions.map(({ item, props, key }) => {
+                    let containerProps = {
+                        top: props.top,
+                        right: props.right,
+                    };
+
+                    let avatarProps = {
+                        width: props.width,
+                        height: props.height,
+                        left: props.right,
+                        padding: props.padding,
+                    };
+
+                    let avatar = (
+                        <Avatar classes={{ root: classes.avatarRoot }}>
+                            OL
+                        </Avatar>
+                    );
+                    let avatarElement = location.pathname === "/" ? avatar : (
+                        <Link to="/">
+                            {avatar}
+                        </Link>
+                    );
+
+                    return (
+                        <animated.div key={key} className={classes.avatarContainer} style={containerProps}>
+                            <animated.div className={classes.avatarInnerContainer} style={avatarProps}>
+                                {avatarElement}
+                            </animated.div>
+                        </animated.div>
+                    );
+                })
+            }
             <Cell>
                 {
                     headerTransitions.map(({ item, props, key }) => (
