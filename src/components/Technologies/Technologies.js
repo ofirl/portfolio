@@ -98,6 +98,10 @@ const useStyles = makeStyles(theme => ({
             opacity: '0.3',
             color: 'white',
             backgroundColor: '#ffffff4d',
+        },
+        '&:hover': {
+            color: 'white',
+            backgroundColor: '#ffffff4d',
         }
     },
 }));
