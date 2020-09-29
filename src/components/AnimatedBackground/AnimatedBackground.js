@@ -4,6 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
 const useStyles = makeStyles(theme => ({
+    backgroundOuterContainer: {
+        position: 'absolute',
+        left: '0',
+        right: '0',
+        top: '0',
+        overflow: 'hidden',
+        height: '100vh',
+        transformOrigin: 'top',
+        zIndex: '1',
+    },
     backgroundContainer: {
         overflow: 'hidden',
         transform: 'scale(1.1)',
@@ -60,13 +70,15 @@ const AnimatedBackground = () => {
     const animationProps = useSpring({ xy: mousePositionFactor(mousePos.x, mousePos.y), config: { mass: 10, tension: 550, friction: 240 } });
 
     return (
-        <div className={classes.backgroundContainer}>
-            <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayerFixed)} style={{ transform: animationProps.xy.interpolate(trans1) }}>
-            </animated.div>
-            <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayer1)} style={{ transform: animationProps.xy.interpolate(trans2) }}>
-            </animated.div>
-            <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayer2)} style={{ transform: animationProps.xy.interpolate(trans3) }}>
-            </animated.div>
+        <div className={classes.backgroundOuterContainer}>
+            <div className={classes.backgroundContainer}>
+                <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayerFixed)} style={{ transform: animationProps.xy.interpolate(trans1) }}>
+                </animated.div>
+                <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayer1)} style={{ transform: animationProps.xy.interpolate(trans2) }}>
+                </animated.div>
+                <animated.div className={clsx(classes.backgroundLayer, classes.backgroundLayer2)} style={{ transform: animationProps.xy.interpolate(trans3) }}>
+                </animated.div>
+            </div>
         </div>
     );
 }

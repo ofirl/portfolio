@@ -4,19 +4,17 @@ import { Link } from 'react-router-dom';
 
 import { Card, CardContent, makeStyles, Typography } from '@material-ui/core';
 
-import AnimatedBackground from './components/AnimatedBackground/AnimatedBackground';
-
 const useStyles = makeStyles(theme => ({
     landingContainer: {
         display: 'grid',
         position: 'relative',
         top: '15em',
-        paddingRight: '3em',
-        paddingLeft: '3em',
+        // paddingRight: '3em',
+        // paddingLeft: '3em',
         zIndex: '5',
     },
     cardRoot: {
-        borderRadius: '2em',
+        // borderRadius: '2em',
         background: '#ffffffde',
     },
     cardContentRoot: {
@@ -37,24 +35,23 @@ const LandingPage = () => {
     };
 
     return (
-        <>
-            <AnimatedBackground />
-            <div className={classes.landingContainer}>
-                <Card classes={cardClasses}>
-                    <CardContent classes={cardContentClasses}>
-                        <Typography variant="body2">
-                            Hi,
+        <div className={classes.landingContainer}>
+            <Card classes={cardClasses}>
+                <CardContent classes={cardContentClasses}>
+                    <Typography variant="body2">
+                        Hi,
                             <br />
-                            I am Ofir
+                            I am Ofir Levi, A Software Developer with 4+ years of Software Development experience on various Platforms, Passionate to build Polished, Innovative and well-detailed Apps with Fluid Animations to complement the Design.
                             <br /><br />
-                            Check it out :)
-                            <Link to="/projects"> projects </Link>
-                            <Link to="/technologies"> technologies </Link>
+                            Checkout my
+                            <Link to="/projects"> Projects </Link>
+                            and
+                            <Link to="/technologies"> Technologies </Link>
+                            that I worked on.
                         </Typography>
-                    </CardContent>
-                </Card>
-            </div>
-        </>
+                </CardContent>
+            </Card>
+        </div>
     );
 }
 

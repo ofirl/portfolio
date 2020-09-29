@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { useTransition, animated } from 'react-spring';
 import { Cell, Grid } from 'styled-css-grid';
+import AnimatedBackground from '../AnimatedBackground/AnimatedBackground';
 
 import LandingPage from '../LandingPage/LandingPage';
 import ProjectsPage from '../ProjectsPage/ProjectsPage';
@@ -22,14 +23,9 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         top: 'calc(50% - 11em)',
         zIndex: '10',
-        // right: '50%',
-        // width: '100%',
-        // display: 'grid',
-        // justifyItems: 'center',
     },
     avatarInnerContainer: {
         position: 'relative',
-        // left: '50%',
     },
     avatarRoot: {
         width: '100%',
@@ -129,6 +125,9 @@ const RouteManager = () => {
 
     return (
         <Grid rows="2em 1fr" columns="1fr" className={classes.mainGrid}>
+            <Route strict path="/">
+                <AnimatedBackground />
+            </Route>
             {
                 avatarTransitions.map(({ item, props, key }) => {
                     let containerProps = {
