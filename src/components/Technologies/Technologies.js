@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { animated, useTransition } from 'react-spring';
 import { Cell, Grid } from 'styled-css-grid';
-import { animationSlowSpringConfig } from '../../utils/animationUtils';
 
 const useStyles = makeStyles(theme => ({
     backgroundDiv: {
@@ -158,7 +157,7 @@ const Technologies = () => {
                     <Grid gap="0" columns="1fr" rows="auto 1fr" className={classes.nodeDescriptionGrid} areas={["title", "description"]}>
                         {
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
-                                <Cell className="posRelative" area="title">
+                                <Cell key={item} className="posRelative" area="title">
                                     <animated.div style={props} className="test">
                                         <Typography variant="h6">
                                             {nodes[item].title}
@@ -169,11 +168,11 @@ const Technologies = () => {
                         }
                         {
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
-                                <Cell className="posRelative" area="description">
+                                <Cell key={item} className="posRelative" area="description">
                                     <animated.div style={props} className="test">
                                         {
-                                            nodes[item].description.map(t =>
-                                                <Typography variant="body1">
+                                            nodes[item].description.map((t, idx2) =>
+                                                <Typography key={idx2} variant="body1">
                                                     {/* not a space!!! (altCode 0160) */}
                                                     {t ? t : ' '}
                                                 </Typography>
