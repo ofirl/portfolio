@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { useTransition, animated } from 'react-spring';
 import { Cell, Grid } from 'styled-css-grid';
+import { animationSpringConfig } from '../../utils/animationUtils';
 import AnimatedBackground from '../AnimatedBackground/AnimatedBackground';
 
 import LandingPage from '../LandingPage/LandingPage';
@@ -56,7 +57,7 @@ const RouteManager = () => {
         },
         enter: item => {
             if (location.pathname === "/" || prevLocation.current === "/")
-                return [{ wait: 1 }, { wait: 0, opacity: 1, position: 'absolute', left: '0em' }];
+                return [{ wait: 1, config: animationSpringConfig }, { wait: 0, opacity: 1, position: 'absolute', left: '0em' }];
 
             return { wait: 0, opacity: 1, position: 'absolute', left: '0em' };
         },
@@ -69,19 +70,18 @@ const RouteManager = () => {
             if (prevLocation.current === "/technologies")
                 return { wait: 0, opacity: 0, position: 'absolute', left: '20em' };
         },
+        config: animationSpringConfig,
     });
 
     // background transitions
     const backgroundTransitions = useTransition(location, location => location.pathname, {
         from: item => {
-            console.log(prevLocation.current)
             if (prevLocation.current === "/")
                 return { wait: 0, opacity: 1 };
 
             return { wait: 0, opacity: 0 };
         },
         enter: item => {
-            console.log(location.pathname)
             if (location.pathname === "/")
                 return [{ wait: 1 }, { wait: 0, opacity: 1 }];
 
@@ -93,6 +93,7 @@ const RouteManager = () => {
 
             return { wait: 0, opacity: 1 };
         },
+        config: animationSpringConfig,
     });
 
     // header transitions
@@ -115,6 +116,7 @@ const RouteManager = () => {
 
             return { wait: 0, opacity: 1, bottom: '0em' };
         },
+        config: animationSpringConfig,
     });
 
     // avatar transitions
@@ -122,9 +124,9 @@ const RouteManager = () => {
         from: item => {
             if (!prevLocation.current) {
                 if (location.pathname === "/")
-                    return { wait: 0, top: '15em', right: '50%', width: '10em', height: '10em', padding: '0.5em 1.5em 0 0' };
+                    return { wait: 0, top: '20em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
                 else
-                    return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0em 0em 0 0' };
+                    return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
             }
 
             if (prevLocation.current === "/")
@@ -136,6 +138,9 @@ const RouteManager = () => {
             if (location.pathname === "/")
                 return { wait: 0, top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
 
+            if (!prevLocation.current)
+                return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+
             return [{ wait: 1 }, { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' }];
         },
         leave: item => {
@@ -144,17 +149,16 @@ const RouteManager = () => {
 
             return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
         },
+        config: animationSpringConfig,
     });
 
     return (
         <Grid gap="0" rows='2em 1fr' columns="1fr" className={classes.mainGrid}>
-            {/* <Route exact path="/"> */}
             {
                 backgroundTransitions.map(({ item, props, key }) => (
                     <AnimatedBackground key={key} animatedStyle={props} />
                 ))
             }
-            {/* </Route> */}
             {
                 avatarTransitions.map(({ item, props, key }) => {
                     let containerProps = {
