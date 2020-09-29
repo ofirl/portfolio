@@ -1,8 +1,22 @@
-import { Button, makeStyles, Typography } from '@material-ui/core';
-import clsx from 'clsx';
-import React, { useState } from 'react';
-import { animated, useTransition } from 'react-spring';
+import React, { useRef, useState } from 'react';
+
+import { Button, IconButton, makeStyles, Typography } from '@material-ui/core';
+
 import { Cell, Grid } from 'styled-css-grid';
+import clsx from 'clsx';
+
+import { animated, useTransition } from 'react-spring';
+
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
+import Swiper from "react-id-swiper";
+import SwiperCore, { EffectCoverflow } from 'swiper';
+import 'swiper/swiper.less';
+import 'swiper/components/effect-coverflow/effect-coverflow.less';
+import { projects } from '../../utils/projects';
+import ProjectListItem from '../ProjectListItem/ProjectListItem';
+SwiperCore.use([EffectCoverflow]);
 
 const useStyles = makeStyles(theme => ({
     backgroundDiv: {
@@ -28,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     nodesGrid: {
         backgroundColor: '#0000004d',
         borderRadius: '0.5em',
-        padding: '1.5em',
+        padding: '1.2em',
         marginRight: '2em',
         marginLeft: '2em',
         marginTop: '1em',
@@ -62,13 +76,46 @@ const useStyles = makeStyles(theme => ({
         opacity: '1',
     },
     nodeDescriptionGrid: {
-        paddingTop: '1em',
+        // paddingTop: '1em',
         paddingRight: '2em',
         paddingLeft: '2em',
         textAlign: 'center',
         color: 'white',
     },
+    nodeDescriptionTitle: {
+        paddingBottom: '0.5em',
+    },
+    swiperContainer: {
+        height: '18em',
+    },
+    swiperControlsGrid: {
+        paddingTop: '2em',
+    },
+    swiperControlsRoot: {
+        color: 'white',
+        backgroundColor: '#ffffff4d',
+        '&:disabled': {
+            opacity: '0.3',
+            color: 'white',
+            backgroundColor: '#ffffff4d',
+        }
+    },
 }));
+
+const swiperParams = {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 2.3,
+    coverflowEffect: {
+        rotate: -30,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+    },
+    spaceBetween: 5,
+};
 
 const Node = ({ image, title, selected, onClick }) => {
     let classes = useStyles();
@@ -83,6 +130,8 @@ const Node = ({ image, title, selected, onClick }) => {
 
 const Technologies = () => {
     let [selectedNode, setSelectedNode] = useState(0);
+    let [currentSlide, setCurrentSlide] = useState(0);
+    const swiperRef = useRef(null);
 
     let classes = useStyles();
 
@@ -138,12 +187,27 @@ const Technologies = () => {
         setSelectedNode(idx);
     };
 
+    const handleSlideChange = (e) => {
+        setCurrentSlide(e.realIndex);
+    }
+
+    const goNext = () => {
+        if (swiperRef.current && swiperRef.current.swiper) {
+            swiperRef.current.swiper.slideNext();
+        }
+    };
+    const goPrev = () => {
+        if (swiperRef.current && swiperRef.current.swiper) {
+            swiperRef.current.swiper.slidePrev();
+        }
+    };
+
     return (
         <>
             <div className={classes.backgroundDiv} />
-            <Grid gap="0" columns="1fr" rows="auto auto 1fr" areas={["nodes", "description", "projects"]}>
+            <Grid gap="0" columns="1fr" rows="auto 16em 1fr" areas={["nodes", "description", "projects"]}>
                 <Cell area="nodes">
-                    <Grid className={classes.nodesGrid} gap="0" columns="1fr repeat(4, auto) 1fr" rows="1fr" areas={[". React NodeJS Express MongoDB"]}>
+                    <Grid className={classes.nodesGrid} gap="0" columns="repeat(4, auto-fit)" rows="1fr" areas={["React NodeJS Express MongoDB"]}>
                         {
                             nodes.map((n, idx) => (
                                 <Cell key={idx} area={n.title}>
@@ -158,8 +222,8 @@ const Technologies = () => {
                         {
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
                                 <Cell key={item} className="posRelative" area="title">
-                                    <animated.div style={props} className="test">
-                                        <Typography variant="h6">
+                                    <animated.div style={props}>
+                                        <Typography variant="h5" className={classes.nodeDescriptionTitle}>
                                             {nodes[item].title}
                                         </Typography>
                                     </animated.div>
@@ -169,10 +233,10 @@ const Technologies = () => {
                         {
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
                                 <Cell key={item} className="posRelative" area="description">
-                                    <animated.div style={props} className="test">
+                                    <animated.div style={props}>
                                         {
                                             nodes[item].description.map((t, idx2) =>
-                                                <Typography key={idx2} variant="body1">
+                                                <Typography key={idx2} variant="body2">
                                                     {/* not a space!!! (altCode 0160) */}
                                                     {t ? t : ' '}
                                                 </Typography>
@@ -182,6 +246,37 @@ const Technologies = () => {
                                 </Cell>
                             ))
                         }
+                    </Grid>
+                </Cell>
+                <Cell area="projects">
+                    <Swiper
+                        ref={swiperRef}
+                        initialSlide={0}
+                        containerClass={clsx('swiper-container', classes.swiperContainer)}
+                        {...swiperParams}
+                        on={{
+                            slideChange: handleSlideChange
+                        }}
+                    >
+                        {
+                            projects.map((p, idx) => (
+                                <div key={idx}>
+                                    <ProjectListItem {...p} />
+                                </div>
+                            ))
+                        }
+                    </Swiper>
+                    <Grid columnGap="1em" rows="1fr" columns="1fr auto auto 1fr" areas={['. left right .']} className={classes.swiperControlsGrid}>
+                        <Cell area="left">
+                            <IconButton disabled={currentSlide === 0} classes={{ root: classes.swiperControlsRoot }} onClick={goPrev}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </Cell>
+                        <Cell area="right">
+                            <IconButton disabled={currentSlide === projects.length - 1} classes={{ root: classes.swiperControlsRoot }} onClick={goNext}>
+                                <ChevronRightIcon />
+                            </IconButton>
+                        </Cell>
                     </Grid>
                 </Cell>
             </Grid>

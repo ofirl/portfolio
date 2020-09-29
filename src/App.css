@@ -41,8 +41,3 @@ a:visited {
 .posRelative {
   position: relative;
 }
-
-.test {
-  position: relative;
-  top: 0;
-}
