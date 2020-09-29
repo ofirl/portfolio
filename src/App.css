@@ -13,7 +13,17 @@ a:link {
 }
 
 a:visited {
-  /* color: inherit; */
+  color: inherit;
+}
+
+.vertical-align {
+  display: grid;
+  align-items: center;
+}
+
+.horizontal-align {
+  display: grid;
+  justify-items: center;
 }
 
 :root {

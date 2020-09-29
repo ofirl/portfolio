@@ -1,5 +1,5 @@
 import { Avatar, makeStyles } from '@material-ui/core';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Route, Switch, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 import { useTransition, animated } from 'react-spring';
 import { Cell, Grid } from 'styled-css-grid';
 import { animationSpringConfig } from '../../utils/animationUtils';
-import AnimatedBackground from '../AnimatedBackground/AnimatedBackground';
 
 import LandingPage from '../LandingPage/LandingPage';
 import ProjectsPage from '../ProjectsPage/ProjectsPage';
 import Technologies from '../Technologies/Technologies';
 import TopBar from '../TopBar/TopBar';
+import BackgroundManager from './components/BackgroundManager/BackgroundManager';
 
 const useStyles = makeStyles(theme => ({
     mainGrid: {
@@ -33,6 +33,10 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         textDecoration: 'none',
     },
+    contentContainer: {
+        height: '100%',
+        width: '100%',
+    },
 }));
 
 const RouteManager = () => {
@@ -40,20 +44,28 @@ const RouteManager = () => {
     let prevLocation = useRef();
 
     let classes = useStyles();
+
+    let [headerItems, setHeaderItems] = useState(location);
+
     useEffect(() => {
-        prevLocation.current = location.pathname
+        if (location.pathname === "/" || prevLocation.current === "/")
+            setHeaderItems(location);
+
+        setTimeout(() => {
+            prevLocation.current = location.pathname
+        }, 100);
     }, [location]);
 
     // content transitions
     const contentTransitions = useTransition(location, location => location.pathname, {
         from: item => {
             if (location.pathname === "/" || prevLocation.current === "/")
-                return { wait: 0, opacity: 0, position: 'absolute', left: '0em', top: '0em', height: '100%', width: '100%' };
+                return { wait: 0, opacity: 0, position: 'absolute', left: '0em', top: '0em' };
 
             if (prevLocation.current === "/projects")
-                return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em', height: '100%', width: '100%' };
+                return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em' };
             if (prevLocation.current === "/technologies")
-                return { wait: 0, opacity: 1, position: 'absolute', left: '-20em', top: '0em', height: '100%', width: '100%' };
+                return { wait: 0, opacity: 1, position: 'absolute', left: '-20em', top: '0em' };
         },
         enter: item => {
             if (location.pathname === "/" || prevLocation.current === "/")
@@ -73,31 +85,8 @@ const RouteManager = () => {
         config: animationSpringConfig,
     });
 
-    // background transitions
-    const backgroundTransitions = useTransition(location, location => location.pathname, {
-        from: item => {
-            if (prevLocation.current === "/")
-                return { wait: 0, opacity: 1 };
-
-            return { wait: 0, opacity: 0 };
-        },
-        enter: item => {
-            if (location.pathname === "/")
-                return [{ wait: 1 }, { wait: 0, opacity: 1 }];
-
-            return { wait: 0, opacity: 0 };
-        },
-        leave: item => {
-            if (location.pathname === "/" || prevLocation.current !== "/")
-                return { wait: 0, opacity: 0 };
-
-            return { wait: 0, opacity: 1 };
-        },
-        config: animationSpringConfig,
-    });
-
     // header transitions
-    const headerTransitions = useTransition(location, location => location.pathname, {
+    const headerTransitions = useTransition(headerItems, location => location.pathname, {
         from: item => {
             if (location.pathname === "/" || prevLocation.current === "/")
                 return { wait: 0, opacity: 0, bottom: '1em', position: 'relative' };
@@ -124,52 +113,48 @@ const RouteManager = () => {
         from: item => {
             if (!prevLocation.current) {
                 if (location.pathname === "/")
-                    return { wait: 0, top: '20em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+                    return { wait: 0, top: '20em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
                 else
-                    return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+                    return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
             }
 
             if (prevLocation.current === "/")
-                return { wait: 0, top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+                return { wait: 0, top: '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
-            return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+            return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
         },
         enter: item => {
             if (location.pathname === "/")
-                return { wait: 0, top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+                return { wait: 0, top: '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
             if (!prevLocation.current)
-                return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+                return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
 
-            return [{ wait: 1 }, { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' }];
+            return [{ wait: 1 }, { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' }];
         },
         leave: item => {
             if (!prevLocation.current || prevLocation.current === "/")
-                return { wait: 0, top: '12.5em', right: '50%', width: '10em', height: '10em', padding: '0em 0em 0 0' };
+                return { wait: 0, top: '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
-            return { wait: 0, top: '0em', right: '0%', width: '3em', height: '3em', padding: '0.5em 1.5em 0 0' };
+            return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
         },
         config: animationSpringConfig,
     });
 
     return (
-        <Grid gap="0" rows='2em 1fr' columns="1fr" className={classes.mainGrid}>
-            {
-                backgroundTransitions.map(({ item, props, key }) => (
-                    <AnimatedBackground key={key} animatedStyle={props} />
-                ))
-            }
+        <Grid gap="0" rows='4em 1fr' columns="1fr" className={classes.mainGrid}>
+            <BackgroundManager prevLocation={prevLocation} location={location} />
             {
                 avatarTransitions.map(({ item, props, key }) => {
                     let containerProps = {
                         top: props.top,
-                        right: props.right,
+                        left: props.left,
                     };
 
                     let avatarProps = {
                         width: props.width,
                         height: props.height,
-                        left: props.right,
+                        right: props.left,
                         padding: props.padding,
                     };
 
@@ -195,17 +180,19 @@ const RouteManager = () => {
             }
             <Cell>
                 {
-                    headerTransitions.map(({ item, props, key }) => (
-                        <animated.div key={key} style={props}>
-                            <TopBar />
-                        </animated.div>
-                    ))
+                    headerTransitions.map(({ item, props, key }) => {
+                        return (
+                            <animated.div key={key} style={props}>
+                                <TopBar />
+                            </animated.div>
+                        )
+                    })
                 }
             </Cell>
             <Cell style={{ position: 'relative' }}>
                 {
                     contentTransitions.map(({ item, props, key }) => (
-                        <animated.div key={key} style={props}>
+                        <animated.div key={key} className={classes.contentContainer} style={props}>
                             <Switch location={item}>
                                 <Route path="/projects">
                                     <ProjectsPage />
