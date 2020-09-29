@@ -33,9 +33,6 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         textDecoration: 'none',
     },
-    avatarImage: {
-        transform: 'scale(3.5) translate(-12px, 27px)',
-    },
     contentContainer: {
         height: '100%',
         width: '100%',
@@ -162,7 +159,7 @@ const RouteManager = () => {
                     };
 
                     let avatar = (
-                        <Avatar src="/assets/images/profile.jpg" classes={{ root: classes.avatarRoot, img: classes.avatarImage }}>
+                        <Avatar src="/assets/images/profile.png" classes={{ root: classes.avatarRoot }}>
                             OL
                         </Avatar>
                     );
