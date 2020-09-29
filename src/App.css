@@ -11,3 +11,11 @@ body {
 a:link {
   text-decoration: none;
 }
+
+a:visited {
+  /* color: inherit; */
+}
+
+:root {
+  --landing-links-color: #4caf50;
+}

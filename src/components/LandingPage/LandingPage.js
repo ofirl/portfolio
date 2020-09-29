@@ -12,9 +12,6 @@ const useStyles = makeStyles(theme => ({
     landingContainer: {
         display: 'grid',
         position: 'relative',
-        // top: '15em',
-        // paddingRight: '3em',
-        // paddingLeft: '3em',
         zIndex: '5',
     },
     cardRoot: {
@@ -24,7 +21,37 @@ const useStyles = makeStyles(theme => ({
     cardContentRoot: {
         textAlign: 'center',
         paddingTop: '7em',
-    }
+    },
+    landingTextLinksContainer: {
+        position: 'relative',
+        bottom: '0px',
+        transition: 'all 0.3s linear',
+        marginRight: '0.3em',
+        marginLeft: '0.3em',
+        '&:hover': {
+            bottom: '2px',
+            transform: 'translateY(5px)',
+            '& > span:after': {
+                width: '0',
+            },
+        },
+        '& > span': {
+            color: 'var(--landing-links-color)',
+            fontWeight: '700',
+            '&:after': {
+                transition: 'all 0.3s linear',
+                transform: 'translateX(-50%)',
+                width: '100%',
+                content: "''",
+                background: 'var(--landing-links-color)',
+                height: '2px',
+                display: 'inline-block',
+                position: 'absolute',
+                bottom: '0',
+                left: '50%',
+            },
+        },
+    },
 }));
 
 const LandingPage = () => {
@@ -67,38 +94,27 @@ const LandingPage = () => {
                 <CardContent classes={cardContentClasses}>
                     <Typography variant="body2">
                         Hi,
-                            <br />
-                            I am Ofir Levi, A Software Developer with 4+ years of Software Development experience on various Platforms, Passionate to build Polished, Innovative and well-detailed Apps with Fluid Animations to complement the Design.
-                            <br /><br />
-                            Checkout my
-                            <Link to="/projects"> Projects </Link>
-                            and
-                            <Link to="/technologies"> Technologies </Link>
-                            that I worked on.
+                        <br />
+                        I am Ofir Levi, A Software Developer with 4+ years of software development experience on various platforms, passionate to build polished, innovative and well-detailed apps with fluid animations to complement the design.
+                        <br /><br />
+                        Checkout my
+                        <Link to="/projects" className={classes.landingTextLinksContainer}>
+                            <span>
+                                {`Projects`}
+                            </span>
+                        </Link>
+                        and
+                        <Link to="/technologies" className={classes.landingTextLinksContainer}>
+                            <span>
+                                {`Technologies`}
+                            </span>
+                        </Link>
+                        that I worked on.
                         </Typography>
                 </CardContent>
             </Card>
         </animated.div>
     ))
-    return (
-        <div className={classes.landingContainer}>
-            <Card classes={cardClasses}>
-                <CardContent classes={cardContentClasses}>
-                    <Typography variant="body2">
-                        Hi,
-                            <br />
-                            I am Ofir Levi, A Software Developer with 4+ years of Software Development experience on various Platforms, Passionate to build Polished, Innovative and well-detailed Apps with Fluid Animations to complement the Design.
-                            <br /><br />
-                            Checkout my
-                            <Link to="/projects"> Projects </Link>
-                            and
-                            <Link to="/technologies"> Technologies </Link>
-                            that I worked on.
-                        </Typography>
-                </CardContent>
-            </Card>
-        </div>
-    );
 }
 
 export default LandingPage;
