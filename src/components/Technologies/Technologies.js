@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
     backgroundDiv: {
         position: 'absolute',
         zIndex: '-1',
-        scale: '1.5',
+        transform: 'scale(1.5)',
         top: '0',
         left: '0',
         right: '0',
