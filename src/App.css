@@ -37,3 +37,12 @@ a:visited {
   --main-bg-color: #333;
   --landing-links-color: #4caf50;
 }
+
+.posRelative {
+  position: relative;
+}
+
+.test {
+  position: relative;
+  top: 0;
+}
