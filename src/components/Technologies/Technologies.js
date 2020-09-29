@@ -209,7 +209,7 @@ const Technologies = () => {
     return (
         <>
             <div className={classes.backgroundDiv} />
-            <Grid gap="0" columns="1fr" rows="auto 16em 1fr" areas={["nodes", "description", "projects"]}>
+            <Grid gap="0" columns="1fr" rows="auto 10em 1fr" areas={["nodes", "description", "projects"]}>
                 <Cell area="nodes">
                     <Grid className={classes.nodesGrid} gap="0" columns="repeat(4, auto-fit)" rows="1fr" areas={["React NodeJS Express MongoDB"]}>
                         {
