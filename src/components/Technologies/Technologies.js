@@ -37,8 +37,10 @@ const useStyles = makeStyles(theme => ({
     nodeContainer: {
         backgroundColor: 'var(--main-bg-color)',
         borderRadius: '5em',
-        // padding: '0.2em',
         minWidth: 'unset',
+        '&:hover': {
+            backgroundColor: 'var(--main-bg-color)',
+        },
     },
     nodeImage: {
         height: '2em',
