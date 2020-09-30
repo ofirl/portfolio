@@ -37,14 +37,11 @@ a:visited {
 
 :root {
   --main-bg-color: #333;
+  --main-bg-color-darker: #222222;
+
   --landing-links-color: #4caf50;
 }
 
 .posRelative {
   position: relative;
-}
-
-.test {
-  /* display: grid;
-  justify-items: center; */
 }

@@ -12,6 +12,7 @@ import Swiper from "react-id-swiper";
 import SwiperCore, { EffectCoverflow } from 'swiper';
 import 'swiper/swiper.less';
 import 'swiper/components/effect-coverflow/effect-coverflow.less';
+import useBreakpoint from '../../../../customHooks/useBreakPoint';
 
 SwiperCore.use([EffectCoverflow]);
 
@@ -42,42 +43,108 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const smallSwiperParams = {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 2.3,
+    coverflowEffect: {
+        rotate: -30,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+    },
+    spaceBetween: 5,
+    slideShadows: false,
+};
+
+const mediumSwiperParams = {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 1.5,
+    coverflowEffect: {
+        rotate: -30,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+    },
+    spaceBetween: 5,
+    slideShadows: false,
+};
+
+const largeSwiperParams = {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 3,
+    coverflowEffect: {
+        rotate: -15,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+    },
+    spaceBetween: 5,
+    slideShadows: false,
+};
+
+const xlargeSwiperParams = {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 5,
+    coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+    },
+    spaceBetween: 5,
+    slideShadows: false,
+};
+
 const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children, goPrev, goNext }) => {
+    let breakpoint = useBreakpoint("index");
+
     let classes = useStyles();
 
-    const swiperParams = {
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
-        slidesPerView: 2.3,
-        coverflowEffect: {
-            rotate: -30,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-        },
-        spaceBetween: 5,
-        slideShadows: false,
+    let childrenNum = children == null ? 0 : (children.length ? children.length : 0);
+
+    const getSwiper = () => {
+        let swiperParams;
+        if (breakpoint <= 1)
+            swiperParams = smallSwiperParams;
+        else if (breakpoint < 3)
+            swiperParams = mediumSwiperParams;
+        else if (breakpoint < 4)
+            swiperParams = largeSwiperParams;
+        else
+            swiperParams = xlargeSwiperParams;
+
+        return <Swiper
+            key={breakpoint}
+            ref={swiperRef}
+            initialSlide={currentSlide}
+            containerClass={clsx(classes.swiperContainer)}
+            {...swiperParams}
+            on={{
+                slideChange: handleSlideChange
+            }}
+        >
+            {children}
+        </Swiper>;
     };
 
-    let childrenNum = children == null ? 0 : (children.length ? children.length : 0);
-    
     return (
         <Grid columns="1fr" rows="1fr auto" className={classes.swiperGridContainer}>
             <Cell>
-                <Swiper
-                    ref={swiperRef}
-                    initialSlide={0}
-                    containerClass={clsx(classes.swiperContainer)}
-                    // slideClass={clsx('test')}
-                    {...swiperParams}
-                    on={{
-                        slideChange: handleSlideChange
-                    }}
-                >
-                    {children}
-                </Swiper>
+                {
+                    getSwiper()
+                }
             </Cell>
             <Cell>
                 <Grid columnGap="1em" rows="1fr" columns="1fr auto auto 1fr" areas={['. left right .']} className={classes.swiperControlsGrid}>

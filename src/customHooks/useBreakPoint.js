@@ -19,10 +19,16 @@ const getDeviceConfig = (width, returnType) => {
             index: 2,
         };
     }
-    else {
+    else if (width <= 1400) {
         result = {
             name: 'xlg',
             index: 3,
+        };
+    }
+    else {
+        result = {
+            name: 'xxlg',
+            index: 4,
         };
     }
 
