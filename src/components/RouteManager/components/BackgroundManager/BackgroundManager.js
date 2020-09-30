@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core';
 
 import { animated, useTransition } from 'react-spring';
 
-import { animationSpringConfig, animationTestSpringConfig } from '../../../../utils/animationUtils';
+import { animationSpringConfig } from '../../../../utils/animationUtils';
 
 import AnimatedBackground from './components/AnimatedBackground/AnimatedBackground';
 
