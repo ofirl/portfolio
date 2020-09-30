@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
         fontWeight: ({ breakpoint }) => breakpoint > 1 ? '400' : null,
     },
     projectsCell: {
-        paddingTop: '5em',
+        // paddingTop: ({ breakpoint }) => breakpoint > 1 ? '5em',
     },
 }));
 

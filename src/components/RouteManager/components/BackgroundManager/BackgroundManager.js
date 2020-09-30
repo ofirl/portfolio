@@ -76,7 +76,7 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (location.pathname === "/" || prevLocation.current !== "/")
                 return { opacity: 0, display: 'none' };
 
-            return { opacity: 1};
+            return { opacity: 1, display: 'none'};
         },
         config: animationSpringConfig,
     });

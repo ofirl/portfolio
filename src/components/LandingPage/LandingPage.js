@@ -102,15 +102,15 @@ const LandingPage = () => {
                         I am Ofir Levi, A Software Developer with 4+ years of software development experience on various platforms, passionate to build polished, innovative and well-detailed apps with fluid animations to complement the design.
                         <br /><br />
                         Checkout my
-                        <Link to="/projects" className={classes.landingTextLinksContainer}>
-                            <span>
-                                {`Projects`}
-                            </span>
-                        </Link>
-                        and
                         <Link to="/technologies" className={classes.landingTextLinksContainer}>
                             <span>
                                 {`Technologies`}
+                            </span>
+                        </Link>
+                        and
+                        <Link to="/projects" className={classes.landingTextLinksContainer}>
+                            <span>
+                                {`Projects`}
                             </span>
                         </Link>
                         that I worked on.
