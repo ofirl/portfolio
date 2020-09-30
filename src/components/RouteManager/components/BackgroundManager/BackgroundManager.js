@@ -64,19 +64,19 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (prevLocation.current === "/")
                 return { wait: 0, opacity: 1 };
 
-            return { wait: 0, opacity: 0 };
+            return { wait: 0, opacity: 0, display: 'none' };
         },
         enter: item => {
             if (location.pathname === "/")
-                return [{ wait: 1 }, { wait: 0, opacity: 1 }];
+                return [{ wait: 1, display: 'block' }, { wait: 0, opacity: 1 }];
 
-            return { wait: 0, opacity: 0 };
+            return { wait: 0, opacity: 0, display: 'none' };
         },
         leave: item => {
             if (location.pathname === "/" || prevLocation.current !== "/")
-                return { opacity: 0 };
+                return { opacity: 0, display: 'none' };
 
-            return { opacity: 1 };
+            return { opacity: 1};
         },
         config: animationSpringConfig,
     });

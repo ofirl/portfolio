@@ -7,6 +7,8 @@ import { makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     containerGrid: {
+        minWidth: '8em',
+        width: 'calc(100% - 2em)',
         backgroundColor: 'white',
         borderRadius: '1em',
         '&[class*="Grid"]': {

@@ -7,16 +7,19 @@ import { Card, CardContent, makeStyles, Typography } from '@material-ui/core';
 import { animated, useTransition } from 'react-spring';
 
 import { animationSpringConfig } from '../../utils/animationUtils';
+import useBreakpoint from '../../customHooks/useBreakPoint';
 
 const useStyles = makeStyles(theme => ({
     landingContainer: {
         display: 'grid',
         position: 'relative',
         zIndex: '5',
+        justifyItems: ({ breakPoint }) => breakPoint > 0 ? 'center' : null,
     },
     cardRoot: {
-        // borderRadius: '2em',
+        borderRadius: ({ breakPoint }) => breakPoint > 0 ? '2em' : null,
         background: '#ffffffde',
+        maxWidth: ({ breakPoint }) => breakPoint > 0 ? '30em' : null,
     },
     cardContentRoot: {
         textAlign: 'center',
@@ -56,8 +59,9 @@ const useStyles = makeStyles(theme => ({
 
 const LandingPage = () => {
     let location = useLocation();
+    let breakPoint = useBreakpoint("index");
 
-    let classes = useStyles();
+    let classes = useStyles({ breakPoint });
 
     const cardTransition = useTransition(location, location => location.pathname, {
         from: {
