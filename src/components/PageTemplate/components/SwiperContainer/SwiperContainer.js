@@ -12,13 +12,10 @@ import Swiper from "react-id-swiper";
 import SwiperCore, { EffectCoverflow } from 'swiper';
 import 'swiper/swiper.less';
 import 'swiper/components/effect-coverflow/effect-coverflow.less';
-import useBreakpoint from '../../../../customHooks/useBreakPoint';
+
 SwiperCore.use([EffectCoverflow]);
 
 const useStyles = makeStyles(theme => ({
-    swiperGridContainer: {
-
-    },
     swiperContainer: {
         height: '18em',
         overflow: 'hidden',
@@ -46,8 +43,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children, goPrev, goNext }) => {
-    let breakPoint = useBreakpoint("index");
-
     let classes = useStyles();
 
     const swiperParams = {
