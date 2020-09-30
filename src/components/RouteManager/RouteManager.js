@@ -63,9 +63,9 @@ const RouteManager = () => {
                 return { wait: 0, opacity: 0, position: 'absolute', left: '0em', top: '0em' };
 
             if (prevLocation.current === "/projects")
-                return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em' };
-            if (prevLocation.current === "/technologies")
                 return { wait: 0, opacity: 1, position: 'absolute', left: '-20em', top: '0em' };
+            if (prevLocation.current === "/technologies")
+                return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em' };
         },
         enter: item => {
             if (location.pathname === "/" || prevLocation.current === "/")
@@ -78,9 +78,9 @@ const RouteManager = () => {
                 return { wait: 0, opacity: 0 };
 
             if (prevLocation.current === "/projects")
-                return { wait: 0, opacity: 0, position: 'absolute', left: '-20em' };
-            if (prevLocation.current === "/technologies")
                 return { wait: 0, opacity: 0, position: 'absolute', left: '20em' };
+            if (prevLocation.current === "/technologies")
+                return { wait: 0, opacity: 0, position: 'absolute', left: '-20em' };
         },
         config: animationSpringConfig,
     });

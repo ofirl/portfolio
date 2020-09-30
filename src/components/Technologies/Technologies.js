@@ -19,26 +19,6 @@ import ProjectListItem from '../ProjectListItem/ProjectListItem';
 SwiperCore.use([EffectCoverflow]);
 
 const useStyles = makeStyles(theme => ({
-    backgroundDiv: {
-        position: 'fixed',
-        zIndex: '-1',
-        transform: 'scale(1.5)',
-        top: '0',
-        left: '0',
-        right: '0',
-        bottom: '0',
-        backgroundImage: 'url("/assets/images/background-doodle-tech.png")',
-        backgroundSize: 'contain',
-        '&:after': {
-            content: "''",
-            background: '#333333e6',
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            right: '0',
-            bottom: '0',
-        },
-    },
     nodesGrid: {
         backgroundColor: '#0000004d',
         borderRadius: '0.5em',
@@ -208,7 +188,6 @@ const Technologies = () => {
 
     return (
         <>
-            <div className={classes.backgroundDiv} />
             <Grid gap="0" columns="1fr" rows="auto 10em 1fr" areas={["nodes", "description", "projects"]}>
                 <Cell area="nodes">
                     <Grid className={classes.nodesGrid} gap="0" columns="repeat(4, auto-fit)" rows="1fr" areas={["React NodeJS Express MongoDB"]}>
