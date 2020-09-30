@@ -54,7 +54,7 @@ const TopBar = () => {
     }, [location.pathname, tabs]);
 
     return (
-        <Grid rows="1fr" columns="5em auto auto 1fr auto auto auto auto" areas={[". technologies projects . github linkedin mail resume"]} className={classes.topBarGrid}>
+        <Grid gap="1em" rows="1fr" columns="5em auto auto 1fr auto auto auto auto" areas={[". technologies projects . github linkedin mail resume"]} className={classes.topBarGrid}>
             <div className={classes.pageIndicator}>
 
             </div>

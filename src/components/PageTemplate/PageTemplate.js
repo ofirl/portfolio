@@ -47,20 +47,13 @@ const layouts = {
         rows: "minmax(2em, auto) auto auto 1fr",
         areas: ["nodes . .", "nodes icon projects", ". description projects", ". description ."],
     },
-    big: {
-        columns: "7em minmax(15em, 20em) minmax(15em, auto)",
-        rows: "minmax(2em, auto) auto auto 1fr",
-        areas: ["nodes . .", "nodes icon projects", ". description projects", ". description ."],
-    }
 };
 
 const getPageLayout = (breakpoint) => {
     if (breakpoint <= 1)
         return layouts.small;
-    else if (breakpoint < 3)
+    else
         return layouts.medium;
-
-    return layouts.big;
 };
 
 const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemComponent }) => {
