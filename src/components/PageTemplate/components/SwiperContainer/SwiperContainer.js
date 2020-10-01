@@ -18,7 +18,7 @@ SwiperCore.use([EffectCoverflow]);
 
 const useStyles = makeStyles(theme => ({
     swiperContainer: {
-        height: ({ breakpoint }) => breakpoint > 1 ? '25em' : '18em',
+        height: ({ breakpointWidth, breakpointHeight }) => breakpointHeight === 0 ? '12em' : (breakpointWidth > 1 ? '25em' : '18em'),
         overflow: 'hidden',
         '& .swiper-slide': {
             display: 'grid',
@@ -110,23 +110,23 @@ const xlargeSwiperParams = {
 const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children, goPrev, goNext }) => {
     let breakpoint = useBreakpoint("index");
 
-    let classes = useStyles({ breakpoint });
+    let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
 
     let childrenNum = children == null ? 0 : (children.length ? children.length : 0);
 
     const getSwiper = () => {
         let swiperParams;
-        if (breakpoint <= 1)
+        if (breakpoint.width <= 1)
             swiperParams = smallSwiperParams;
-        else if (breakpoint < 3)
+        else if (breakpoint.width < 3)
             swiperParams = mediumSwiperParams;
-        else if (breakpoint < 4)
+        else if (breakpoint.width < 4)
             swiperParams = largeSwiperParams;
         else
             swiperParams = xlargeSwiperParams;
 
         return <Swiper
-            key={breakpoint}
+            key={breakpoint.width}
             ref={swiperRef}
             initialSlide={currentSlide}
             containerClass={clsx(classes.swiperContainer)}

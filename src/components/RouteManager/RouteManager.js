@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { useTransition, animated } from 'react-spring';
 import { Cell, Grid } from 'styled-css-grid';
+import useBreakpoint from '../../customHooks/useBreakPoint';
 import { animationSpringConfig } from '../../utils/animationUtils';
 
 import LandingPage from '../LandingPage/LandingPage';
@@ -40,6 +41,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const RouteManager = () => {
+    let breakpoint = useBreakpoint("index");
+
     let location = useLocation();
     let prevLocation = useRef();
 
@@ -113,19 +116,19 @@ const RouteManager = () => {
         from: item => {
             if (!prevLocation.current) {
                 if (location.pathname === "/")
-                    return { wait: 0, top: '20em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                    return { wait: 0, top: breakpoint.height  === 0 ? '7em' : '20em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
                 else
                     return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
             }
 
             if (prevLocation.current === "/")
-                return { wait: 0, top: '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                return { wait: 0, top: breakpoint.height  === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
             return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
         },
         enter: item => {
             if (location.pathname === "/")
-                return { wait: 0, top: '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                return { wait: 0, top: breakpoint.height  === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
             if (!prevLocation.current)
                 return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
@@ -134,7 +137,7 @@ const RouteManager = () => {
         },
         leave: item => {
             if (!prevLocation.current || prevLocation.current === "/")
-                return { wait: 0, top: '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                return { wait: 0, top: breakpoint.height  === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
             return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
         },

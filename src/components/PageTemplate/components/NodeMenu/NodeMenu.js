@@ -82,7 +82,7 @@ const getPageLayout = (breakpoint) => {
 };
 
 const Node = ({ image, title, selected, onClick }) => {
-    let breakpoint = useBreakpoint("index");
+    let {width: breakpoint} = useBreakpoint("index");
 
     let classes = useStyles({ breakpoint });
 
@@ -95,7 +95,7 @@ const Node = ({ image, title, selected, onClick }) => {
 };
 
 const NodeMenu = ({ nodes, selectedNode, handleNodeClick }) => {
-    let breakpoint = useBreakpoint("index");
+    let {width: breakpoint} = useBreakpoint("index");
 
     let classes = useStyles({ breakpoint });
 

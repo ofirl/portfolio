@@ -14,12 +14,12 @@ const useStyles = makeStyles(theme => ({
         display: 'grid',
         position: 'relative',
         zIndex: '5',
-        justifyItems: ({ breakPoint }) => breakPoint > 0 ? 'center' : null,
+        justifyItems: ({ breakpointWidth }) => breakpointWidth > 0 ? 'center' : null,
     },
     cardRoot: {
-        borderRadius: ({ breakPoint }) => breakPoint > 0 ? '2em' : null,
+        borderRadius: ({ breakpointWidth }) => breakpointWidth > 0 ? '2em' : null,
         background: '#ffffffde',
-        maxWidth: ({ breakPoint }) => breakPoint > 0 ? '30em' : null,
+        maxWidth: ({ breakpointWidth }) => breakpointWidth > 0 ? '30em' : null,
     },
     cardContentRoot: {
         textAlign: 'center',
@@ -59,14 +59,14 @@ const useStyles = makeStyles(theme => ({
 
 const LandingPage = () => {
     let location = useLocation();
-    let breakPoint = useBreakpoint("index");
+    let breakpoint = useBreakpoint("index");
 
-    let classes = useStyles({ breakPoint });
+    let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
 
     const cardTransition = useTransition(location, location => location.pathname, {
         from: {
             wait: 0,
-            top: '20em',
+            top: breakpoint.height  === 0 ? '1em' : '6em',
         },
         enter: [
             {
@@ -74,12 +74,12 @@ const LandingPage = () => {
             },
             {
                 wait: 0,
-                top: '15em',
+                top: breakpoint.height  === 0 ? '1em' : '15em',
             }
         ],
         leave: {
             wait: 0,
-            top: '15em',
+            top: breakpoint.height  === 0 ? '6em' : '15em',
         },
         config: animationSpringConfig,
     })

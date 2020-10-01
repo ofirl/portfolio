@@ -37,6 +37,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const layouts = {
+    landscape: {
+        columns: "7em minmax(15em, 20em) minmax(15em, auto)",
+        rows: "1fr",
+        areas: ["nodes description projects"]
+    },
     small: {
         columns: "1fr",
         rows: "auto 10em 1fr",
@@ -50,7 +55,10 @@ const layouts = {
 };
 
 const getPageLayout = (breakpoint) => {
-    if (breakpoint <= 1)
+    if (breakpoint.height === 0)
+        return layouts.landscape;
+
+    if (breakpoint.width <= 1)
         return layouts.small;
     else
         return layouts.medium;
@@ -63,7 +71,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
     let [currentSlide, setCurrentSlide] = useState(0);
     const swiperRef = useRef(null);
 
-    let classes = useStyles({ breakpoint });
+    let classes = useStyles({ breakpoint: breakpoint.width });
 
     let gridLayout = useMemo(() =>
         getPageLayout(breakpoint),
@@ -109,7 +117,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
                     <NodeMenu nodes={nodes} handleNodeClick={handleNodeClick} selectedNode={selectedNode} />
                 </Cell>
                 {
-                    breakpoint > 1 && nodeDescriptionTransitions.map(({ item, key, props }) => (
+                    breakpoint.height > 0 && breakpoint.width > 1 && nodeDescriptionTransitions.map(({ item, key, props }) => (
                         <Cell key={key} area="icon" className='horizontal-align vertical-align'>
                             <animated.div style={props}>
                                 <img className={classes.nodeBigImage} src={nodes[item].image} alt={nodes[item].title} />
@@ -123,7 +131,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
                                 <Cell key={key} className="posRelative" area="title">
                                     <animated.div style={props}>
-                                        <Typography variant={breakpoint > 1 ? "h2" : "h5"} className={classes.nodeDescriptionTitle}>
+                                        <Typography variant={breakpoint.width > 1 ? "h2" : "h5"} className={classes.nodeDescriptionTitle}>
                                             {nodes[item].title}
                                         </Typography>
                                     </animated.div>
@@ -136,7 +144,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
                                     <animated.div style={props}>
                                         {
                                             nodes[item].description.map((t, idx2) =>
-                                                <Typography key={idx2} variant={breakpoint > 1 ? "body1" : "body2"}>
+                                                <Typography key={idx2} variant={breakpoint.width > 1 ? "body1" : "body2"}>
                                                     {/* not a space!!! (altCode 0160) */}
                                                     {t ? t : ' '}
                                                 </Typography>
