@@ -43,6 +43,7 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'initial',
         fontWeight: 'normal',
         opacity: '0',
+        whiteSpace: 'nowrap',
     },
     nodeTitleSelected: {
         paddingRight: '0.5em',

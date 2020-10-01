@@ -89,7 +89,6 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
         leave: {
             opacity: 0
         },
-        config: { tension: 80 }
     });
 
     const handleNodeClick = (idx) => {
