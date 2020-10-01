@@ -51,11 +51,11 @@ const timelineImages = [
     {
         title: 'Navy',
         image: baseImagesUrl + 'navy-background-Small.jpg',
+        selected: true,
     },
     {
         title: 'Personal',
         image: baseImagesUrl + 'personalProjects-background-Small.jpg',
-        selected: true,
     },
 ];
 
