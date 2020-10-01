@@ -66,7 +66,7 @@ const LandingPage = () => {
     const cardTransition = useTransition(location, location => location.pathname, {
         from: {
             wait: 0,
-            top: breakpoint.height  === 0 ? '1em' : '6em',
+            top: breakpoint.height  === 0 ? '6em' : '20em',
         },
         enter: [
             {

@@ -49,18 +49,33 @@ const RouteManager = () => {
     let classes = useStyles();
 
     let [headerItems, setHeaderItems] = useState(location);
+    let [avatarItems, setAvatarItems] = useState(location);
+    let [contentItems, setContentItems] = useState(location);
 
     useEffect(() => {
         if (location.pathname === "/" || prevLocation.current === "/")
             setHeaderItems(location);
 
+        setAvatarItems(location);
+        setContentItems(location);
+        
+        const orientationChangeHandler = () => {
+            setTimeout(() => {
+                setAvatarItems({ ...location, key: Math.random() });
+                setContentItems({ ...location, key: Math.random() });
+            }, 100);
+        };
+        window.addEventListener("orientationchange", orientationChangeHandler);
+
         setTimeout(() => {
             prevLocation.current = location.pathname
         }, 100);
+
+        return () => { window.removeEventListener("orientationchange", orientationChangeHandler); }
     }, [location]);
 
     // content transitions
-    const contentTransitions = useTransition(location, location => location.pathname, {
+    const contentTransitions = useTransition(contentItems, location => location.key || location.pathname, {
         from: item => {
             if (location.pathname === "/" || prevLocation.current === "/")
                 return { wait: 0, opacity: 0, position: 'absolute', left: '0em', top: '0em' };
@@ -112,23 +127,23 @@ const RouteManager = () => {
     });
 
     // avatar transitions
-    const avatarTransitions = useTransition(location, location => location.pathname, {
+    const avatarTransitions = useTransition(avatarItems, location => location.key || location.pathname, {
         from: item => {
             if (!prevLocation.current) {
                 if (location.pathname === "/")
-                    return { wait: 0, top: breakpoint.height  === 0 ? '7em' : '20em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                    return { wait: 0, top: breakpoint.height === 0 ? '7em' : '20em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
                 else
                     return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
             }
 
             if (prevLocation.current === "/")
-                return { wait: 0, top: breakpoint.height  === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                return { wait: 0, top: breakpoint.height === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
             return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
         },
         enter: item => {
             if (location.pathname === "/")
-                return { wait: 0, top: breakpoint.height  === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                return { wait: 0, top: breakpoint.height === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
             if (!prevLocation.current)
                 return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
@@ -137,7 +152,7 @@ const RouteManager = () => {
         },
         leave: item => {
             if (!prevLocation.current || prevLocation.current === "/")
-                return { wait: 0, top: breakpoint.height  === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
+                return { wait: 0, top: breakpoint.height === 0 ? '0.5em' : '13.5em', left: '50%', width: '10em', height: '10em', padding: '0em 0em 0em 0em' };
 
             return { wait: 0, top: '0em', left: '0%', width: '3em', height: '3em', padding: '0.5em 0em 0em 1.5em' };
         },

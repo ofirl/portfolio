@@ -103,7 +103,7 @@ const xlargeSwiperParams = {
         modifier: 1,
         slideShadows: true,
     },
-    spaceBetween: 5,
+    spaceBetween: 20,
     slideShadows: false,
 };
 

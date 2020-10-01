@@ -8,26 +8,28 @@ import useBreakpoint from '../../customHooks/useBreakPoint';
 
 const useStyles = makeStyles(theme => ({
     containerGrid: {
-        minWidth: '10em',
+        minWidth: '8em',
         width: 'calc(100% - 2em)',
         backgroundColor: 'white',
         borderRadius: '1em',
         '&[class*="Grid"]': {
             height: '100%',
         },
-        paddingTop: '1em',
         paddingRight: '1em',
         paddingLeft: '1em',
-        boxSizing: 'border-box',
     },
     projectLogo: {
+        paddingTop: '1em',
         height: ({breakpointHeight}) => breakpointHeight === 0 ? '4em' : '6em',
         width: ({breakpointHeight}) => breakpointHeight === 0 ? '4em' : '6em',
     },
-    projectText: {
+    projectTextCell: {
         display: 'grid',
         alignItems: 'end',
         textAlign: 'center',
+    },
+    projectTextGrid: {
+        paddingBottom: '1em',
     },
 }));
 
@@ -38,11 +40,11 @@ const ProjectListItem = ({ title, description, technologies }) => {
 
     return (
         <Grid rows="auto 1fr" columns="1fr" className={classes.containerGrid}>
-            <Cell className="horizontal-align vertical-align">
+            <Cell className={clsx("horizontal-align","vertical-align")}>
                 <img src={`/assets/images/projects/${title}.png`} alt={`${title}-logo`} className={classes.projectLogo} />
             </Cell>
-            <Cell className={clsx("horizontal-align", classes.projectText)}>
-                <Grid columns="1fr" rows="auto 1fr">
+            <Cell className={clsx("horizontal-align", classes.projectTextCell)}>
+                <Grid columns="1fr" rows="auto 1fr" className={classes.projectTextGrid}>
                     <Typography variant="h6">
                         {title}
                     </Typography>
