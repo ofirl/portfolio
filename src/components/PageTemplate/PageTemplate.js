@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
@@ -70,13 +70,19 @@ const getPageLayout = (breakpoint) => {
 const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent: SwiperItemComponent }) => {
     let breakpoint = useBreakpoint("index");
 
-    let { setData } = useContext(backgroundDataContext);
+    let { data, setData } = useContext(backgroundDataContext);
 
     let [selectedNode, setSelectedNode] = useState(0);
     let [currentSlide, setCurrentSlide] = useState(0);
     const swiperRef = useRef(null);
 
     let classes = useStyles({ breakpoint: breakpoint.width });
+
+    useEffect(() => {
+        if (data.currentNodeIdx !== 0)
+            setData({ currentNode: nodes[0], currentNodeIdx: 0 });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     let gridLayout = useMemo(() =>
         getPageLayout(breakpoint),

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
@@ -10,7 +10,6 @@ import { animationSpringConfig, routePaths } from '../../../../utils/animationUt
 import AnimatedBackground from './components/AnimatedBackground/AnimatedBackground';
 
 import { backgroundDataContext } from '../../../../context/backgroundDataContext';
-import { Cell, Grid } from 'styled-css-grid';
 
 const useStyles = makeStyles(theme => ({
     fullScreenBackground: {
@@ -66,16 +65,13 @@ const BackgroundManager = ({ prevLocation, location }) => {
     let [landingPageBackground, setLandingPageBackground] = useState(currPath === "/" ? location : null);
     let [technologiesBackground, setTechnologiesBackground] = useState(currPath === routePaths.technologies ? location : null);
     let [timelineBackground, setTimelineBackground] = useState(currPath === routePaths.timeline ? location : null);
-    let [currentTimelineImages, setCurrentTimelineImages] = useState(timelineImages);
+    let [currentTimelineImage, setCurrentTimelineImage] = useState(() => ({ ...timelineImages[0], idx: 0 }));
+
+    let prevTimelineImage = useRef();
 
     let { data: backgroundData } = useContext(backgroundDataContext);
 
     let classes = useStyles();
-
-    let timelineImageCells = useMemo(() =>
-        currentTimelineImages.map((i, idx) =>
-            <Cell key={idx} className={clsx(classes.timelineBackgroundImage)} style={{ backgroundImage: `url(${i.image})` }} />
-        ), [currentTimelineImages, classes.timelineBackgroundImage]);
 
     useEffect(() => {
         // landing page
@@ -101,21 +97,18 @@ const BackgroundManager = ({ prevLocation, location }) => {
         if (!backgroundData || backgroundData.currentNodeIdx == null)
             return;
 
-        let updatedImages = timelineImages.map(i => ({
+        if (prevTimelineImage.current && prevTimelineImage.current.idx === backgroundData.currentNodeIdx)
+            return;
+
+        let updatedImages = timelineImages.map((i, idx) => ({
             ...i,
-            selected: false,
+            idx,
             key: Math.random(),
         }))
 
-        updatedImages[backgroundData.currentNodeIdx] = { ...updatedImages[backgroundData.currentNodeIdx], selected: true };
-
-        setCurrentTimelineImages(updatedImages);
-    }, [backgroundData])
-
-    let timelineImagesGridLayout = useMemo(() => {
-        let baseValue = 50 / currentTimelineImages.length;
-        return currentTimelineImages.map(i => i.selected ? baseValue + 50 : baseValue).map(p => p + "%").join(' ');
-    }, [currentTimelineImages]);
+        prevTimelineImage.current = currentTimelineImage;
+        setCurrentTimelineImage(updatedImages[backgroundData.currentNodeIdx]);
+    }, [backgroundData, currentTimelineImage])
 
     // landing page
     const landingPageBackgroundTransitions = useTransition(landingPageBackground, null, {
@@ -210,6 +203,28 @@ const BackgroundManager = ({ prevLocation, location }) => {
         config: animationSpringConfig,
     });
 
+    const timelineImageTransition = useTransition(currentTimelineImage ? [currentTimelineImage] : [], image => image.title, {
+        from: item => {
+            if (prevTimelineImage.current) {
+                if (item.idx > prevTimelineImage.current.idx)
+                    return { top: '100%' };
+                if (item.idx < prevTimelineImage.current.idx)
+                    return { top: '-100%' };
+            }
+
+            return { top: '0%' };
+        },
+        enter: item => {
+            return { top: '0%' };
+        },
+        leave: item => {
+            if (item.idx > backgroundData.currentNodeIdx)
+                return { top: '100%' };
+            if (item.idx < backgroundData.currentNodeIdx)
+                return { top: '-100%' };
+        },
+    });
+
     return (
         <>
             {
@@ -225,11 +240,11 @@ const BackgroundManager = ({ prevLocation, location }) => {
             {
                 timelineBackgroundTransitions.map(({ item, props, key }) => (
                     <animated.div key={key} className={clsx(classes.fullScreenBackground)} style={props}>
-                        <Grid gap="0" columns="1fr" rows={timelineImagesGridLayout} className={classes.timelineBackgroundImagesGrid}>
-                            {
-                                timelineImageCells
-                            }
-                        </Grid>
+                        {
+                            timelineImageTransition.map(({ item, props, key }) => (
+                                <animated.div key={key} style={{ ...props, backgroundImage: `url(${item.image})` }} className={clsx(classes.timelineBackgroundImage, classes.fullScreenBackground)} />
+                            ))
+                        }
                     </animated.div>
                 ))
             }
