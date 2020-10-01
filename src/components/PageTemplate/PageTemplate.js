@@ -10,6 +10,7 @@ import NodeMenu from './components/NodeMenu/NodeMenu';
 import SwiperContainer from './components/SwiperContainer/SwiperContainer';
 
 import useBreakpoint from '../../customHooks/useBreakPoint';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
     pageGrid: {
@@ -144,7 +145,8 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
                                     <animated.div style={props}>
                                         {
                                             nodes[item].description.map((t, idx2) =>
-                                                <Typography key={idx2} variant={breakpoint.width > 1 ? "body1" : "body2"}>
+                                                <Typography key={idx2} variant={breakpoint.width > 1 ? "body1" : "body2"}
+                                                    className={clsx({ 'typographyBody3': breakpoint.width <= 1 })}>
                                                     {/* not a space!!! (altCode 0160) */}
                                                     {t ? t : ' '}
                                                 </Typography>
