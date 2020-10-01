@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core';
 
 import { animated, useTransition } from 'react-spring';
 
-import { animationSpringConfig } from '../../../../utils/animationUtils';
+import { animationSpringConfig, routePaths } from '../../../../utils/animationUtils';
 
 import AnimatedBackground from './components/AnimatedBackground/AnimatedBackground';
 
@@ -29,30 +29,24 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const paths = {
-    landingPage: '/',
-    technologies: '/technologies',
-    projects: '/projects',
-};
-
 const BackgroundManager = ({ prevLocation, location }) => {
     let prevPath = prevLocation.current;
     let currPath = location.pathname;
 
-    let [landingPageBackground, setLandingPageBackground] = useState(location.pathname === "/" ? location : null);
-    let [technologiesBackground, setTechnologiesBackground] = useState(location.pathname === paths.technologies ? location : null);
+    let [landingPageBackground, setLandingPageBackground] = useState(currPath === "/" ? location : null);
+    let [technologiesBackground, setTechnologiesBackground] = useState(currPath === routePaths.technologies ? location : null);
 
     let classes = useStyles();
 
     useEffect(() => {
         // landing page
-        if (location.pathname === "/")
+        if (location.pathname === routePaths.landingPage)
             setLandingPageBackground(location);
         else
             setLandingPageBackground(null);
 
         // technologies
-        if (location.pathname === paths.technologies)
+        if (location.pathname === routePaths.technologies)
             setTechnologiesBackground(location);
         else
             setTechnologiesBackground(null);
@@ -61,19 +55,19 @@ const BackgroundManager = ({ prevLocation, location }) => {
     // landing page
     const landingPageBackgroundTransitions = useTransition(landingPageBackground, null, {
         from: item => {
-            if (prevLocation.current === "/")
+            if (prevLocation.current === routePaths.landingPage)
                 return { wait: 0, opacity: 1 };
 
             return { wait: 0, opacity: 0, display: 'none' };
         },
         enter: item => {
-            if (location.pathname === "/")
+            if (currPath === routePaths.landingPage)
                 return [{ wait: 1, display: 'block' }, { wait: 0, opacity: 1 }];
 
             return { wait: 0, opacity: 0, display: 'none' };
         },
         leave: item => {
-            if (location.pathname === "/" || prevLocation.current !== "/")
+            if (currPath === routePaths.landingPage || prevLocation.current !== routePaths.landingPage)
                 return { opacity: 0, display: 'none' };
 
             return { opacity: 1, display: 'none'};
@@ -87,16 +81,16 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (!prevPath)
                 return { wait: 0, opacity: 0, left: '0em' };
 
-            if (currPath === paths.technologies) {
-                if (prevPath === paths.projects)
+            if (currPath === routePaths.technologies) {
+                if (prevPath === routePaths.projects)
                     return { wait: 0, opacity: 0, left: '-20em' };
             }
 
             return { wait: 0, opacity: 0, left: '0em' };
         },
         enter: item => {
-            if (currPath === paths.technologies) {
-                if (prevPath === paths.landingPage)
+            if (currPath === routePaths.technologies) {
+                if (prevPath === routePaths.landingPage)
                     return [{ wait: 1 }, { wait: 0, opacity: 1, left: '0em' }];
 
                 return { wait: 0, opacity: 1, left: '0em' };
@@ -105,10 +99,10 @@ const BackgroundManager = ({ prevLocation, location }) => {
             return { wait: 0, opacity: 0, left: '0em' };
         },
         leave: item => {
-            if (currPath === paths.landingPage)
+            if (currPath === routePaths.landingPage)
                 return { wait: 0, opacity: 0, left: '0em' };
 
-            if (currPath === paths.projects)
+            if (currPath === routePaths.projects)
                 return { wait: 0, opacity: 0, left: '-20em' };
 
             return { wait: 0, opacity: 0 };

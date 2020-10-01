@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Cell, Grid } from 'styled-css-grid';
 
 import { makeStyles, Typography } from '@material-ui/core';
+
 import useBreakpoint from '../../customHooks/useBreakPoint';
 
 const useStyles = makeStyles(theme => ({

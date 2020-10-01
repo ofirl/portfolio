@@ -7,6 +7,7 @@ import { Cell, Grid } from 'styled-css-grid';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { routePaths } from '../../utils/animationUtils';
 
 const useStyles = makeStyles(theme => ({
     topBarGrid: {
@@ -38,8 +39,8 @@ const TopBar = () => {
     let classes = useStyles({ ...indicatorProps });
 
     const tabs = useMemo(() => ({
-        '/technologies': technologiesCellRef,
-        '/projects': projectsCellRef,
+        [routePaths.technologies]: technologiesCellRef,
+        [routePaths.projects]: projectsCellRef,
     }), []);
 
     useEffect(() => {
@@ -59,14 +60,14 @@ const TopBar = () => {
 
             </div>
             <Cell ref={technologiesCellRef} area="technologies" className={clsx('vertical-align', classes.topBarLink)}>
-                <Link to="/technologies">
+                <Link to={routePaths.technologies}>
                     <Typography variant="body2">
                         Technologies
                     </Typography>
                 </Link>
             </Cell>
             <Cell ref={projectsCellRef} area="projects" className={clsx('vertical-align', classes.topBarLink)}>
-                <Link to="/projects" className={classes.topBarLink}>
+                <Link to={routePaths.projects} className={classes.topBarLink}>
                     <Typography variant="body2">
                         Projects
                     </Typography>

@@ -1,3 +1,9 @@
+export const routePaths = {
+    landingPage: '/',
+    technologies: '/technologies',
+    projects: '/projects',
+};
+
 export const animationSpringConfig = {
     tension: 210
 };
