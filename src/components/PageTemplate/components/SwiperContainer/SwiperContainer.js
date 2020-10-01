@@ -23,6 +23,9 @@ const useStyles = makeStyles(theme => ({
         '& .swiper-slide': {
             display: 'grid',
             justifyItems: 'center',
+            '& [class*="swiper-slide-shadow"]': {
+                borderRadius: '1em',
+            },
         },
     },
     swiperControlsGrid: {
