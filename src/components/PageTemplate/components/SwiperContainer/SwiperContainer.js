@@ -13,6 +13,7 @@ import SwiperCore, { EffectCoverflow } from 'swiper';
 import 'swiper/swiper.less';
 import 'swiper/components/effect-coverflow/effect-coverflow.less';
 import useBreakpoint from '../../../../customHooks/useBreakPoint';
+import { animated, useTransition } from 'react-spring';
 
 SwiperCore.use([EffectCoverflow]);
 
@@ -110,7 +111,7 @@ const xlargeSwiperParams = {
     slideShadows: false,
 };
 
-const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children, goPrev, goNext }) => {
+const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children, goPrev, goNext, swiperKey }) => {
     let breakpoint = useBreakpoint("index");
 
     let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
@@ -128,27 +129,40 @@ const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children,
         else
             swiperParams = xlargeSwiperParams;
 
-        return <Swiper
-            key={breakpoint.width}
-            ref={swiperRef}
-            initialSlide={currentSlide}
-            containerClass={clsx(classes.swiperContainer)}
-            {...swiperParams}
-            on={{
-                slideChange: handleSlideChange
-            }}
-        >
-            {children}
-        </Swiper>;
+        return [{
+            key: `${breakpoint.width}-${swiperKey}`,
+            item: <Swiper
+                key={`${breakpoint.width}-${swiperKey}`}
+                ref={swiperRef}
+                initialSlide={currentSlide}
+                containerClass={clsx(classes.swiperContainer)}
+                {...swiperParams}
+                on={{
+                    slideChange: handleSlideChange
+                }}
+            >
+                {children}
+            </Swiper>
+        }];
     };
 
+    let swiperTransitions = useTransition(getSwiper(), item => item.key, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+    });
+
     return (
-        <Grid columns="1fr" rows="1fr auto" className={classes.swiperGridContainer}>
-            <Cell>
-                {
-                    getSwiper()
-                }
-            </Cell>
+        <Grid columns="1fr" rows="1fr auto" className={classes.swiperGridContainer} areas={["swiper", "controls"]}>
+            {
+                swiperTransitions.map(({ item, props, key }) => (
+                    <Cell area="swiper">
+                        <animated.div key={key} style={props}>
+                            {item.item}
+                        </animated.div>
+                    </Cell>
+                ))
+            }
             <Cell>
                 <Grid columnGap="1em" rows="1fr" columns="1fr auto auto 1fr" areas={['. left right .']} className={classes.swiperControlsGrid}>
                     <Cell area="left">

@@ -1,7 +1,7 @@
 export const routePaths = {
     landingPage: '/',
     technologies: '/technologies',
-    projects: '/projects',
+    timeline: '/timeline',
 };
 
 export const animationSpringConfig = {

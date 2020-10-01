@@ -1,19 +1,25 @@
-import { Avatar, makeStyles } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
+
+import { Avatar, makeStyles } from '@material-ui/core';
 
 import { Route, Switch, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { useTransition, animated } from 'react-spring';
 import { Cell, Grid } from 'styled-css-grid';
-import useBreakpoint from '../../customHooks/useBreakPoint';
+
 import { animationSpringConfig, routePaths } from '../../utils/animationUtils';
 
 import LandingPage from '../LandingPage/LandingPage';
 import ProjectsPage from '../ProjectsPage/ProjectsPage';
 import Technologies from '../Technologies/Technologies';
+
 import TopBar from '../TopBar/TopBar';
 import BackgroundManager from './components/BackgroundManager/BackgroundManager';
+
+import useBreakpoint from '../../customHooks/useBreakPoint';
+
+import { backgroundDataContext } from '../../context/backgroundDataContext';
 
 const useStyles = makeStyles(theme => ({
     mainGrid: {
@@ -42,6 +48,8 @@ const useStyles = makeStyles(theme => ({
 
 const RouteManager = () => {
     let breakpoint = useBreakpoint("index");
+
+    let [backgroundData, setBackgoundData] = useState({});
 
     let location = useLocation();
     let prevLocation = useRef();
@@ -80,7 +88,7 @@ const RouteManager = () => {
             if (location.pathname === routePaths.landingPage || prevLocation.current === routePaths.landingPage)
                 return { wait: 0, opacity: 0, position: 'absolute', left: '0em', top: '0em' };
 
-            if (prevLocation.current === routePaths.projects)
+            if (prevLocation.current === routePaths.timeline)
                 return { wait: 0, opacity: 1, position: 'absolute', left: '-20em', top: '0em' };
             if (prevLocation.current === routePaths.technologies)
                 return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em' };
@@ -95,7 +103,7 @@ const RouteManager = () => {
             if (location.pathname === routePaths.landingPage || prevLocation.current === routePaths.landingPage)
                 return { wait: 0, opacity: 0 };
 
-            if (prevLocation.current === routePaths.projects)
+            if (prevLocation.current === routePaths.timeline)
                 return { wait: 0, opacity: 0, position: 'absolute', left: '20em' };
             if (prevLocation.current === routePaths.technologies)
                 return { wait: 0, opacity: 0, position: 'absolute', left: '-20em' };
@@ -160,73 +168,75 @@ const RouteManager = () => {
     });
 
     return (
-        <Grid gap="0" rows='4em 1fr' columns="1fr" className={classes.mainGrid}>
-            <BackgroundManager prevLocation={prevLocation} location={location} />
-            {
-                avatarTransitions.map(({ item, props, key }) => {
-                    let containerProps = {
-                        top: props.top,
-                        left: props.left,
-                    };
-
-                    let avatarProps = {
-                        width: props.width,
-                        height: props.height,
-                        right: props.left,
-                        padding: props.padding,
-                    };
-
-                    let avatar = (
-                        <Avatar src="/assets/images/profile.png" classes={{ root: classes.avatarRoot }}>
-                            OL
-                        </Avatar>
-                    );
-                    let avatarElement = location.pathname === routePaths.landingPage ? avatar : (
-                        <Link to={routePaths.landingPage}>
-                            {avatar}
-                        </Link>
-                    );
-
-                    return (
-                        <animated.div key={key} className={classes.avatarContainer} style={containerProps}>
-                            <animated.div className={classes.avatarInnerContainer} style={avatarProps}>
-                                {avatarElement}
-                            </animated.div>
-                        </animated.div>
-                    );
-                })
-            }
-            <Cell>
+        <backgroundDataContext.Provider value={{ data: backgroundData, setData: setBackgoundData }}>
+            <Grid gap="0" rows='4em 1fr' columns="1fr" className={classes.mainGrid}>
+                <BackgroundManager prevLocation={prevLocation} location={location} />
                 {
-                    headerTransitions.map(({ item, props, key }) => {
+                    avatarTransitions.map(({ item, props, key }) => {
+                        let containerProps = {
+                            top: props.top,
+                            left: props.left,
+                        };
+
+                        let avatarProps = {
+                            width: props.width,
+                            height: props.height,
+                            right: props.left,
+                            padding: props.padding,
+                        };
+
+                        let avatar = (
+                            <Avatar src="/assets/images/profile.png" classes={{ root: classes.avatarRoot }}>
+                                OL
+                            </Avatar>
+                        );
+                        let avatarElement = location.pathname === routePaths.landingPage ? avatar : (
+                            <Link to={routePaths.landingPage}>
+                                {avatar}
+                            </Link>
+                        );
+
                         return (
-                            <animated.div key={key} style={props}>
-                                <TopBar />
+                            <animated.div key={key} className={classes.avatarContainer} style={containerProps}>
+                                <animated.div className={classes.avatarInnerContainer} style={avatarProps}>
+                                    {avatarElement}
+                                </animated.div>
                             </animated.div>
-                        )
+                        );
                     })
                 }
-            </Cell>
-            <Cell style={{ position: 'relative' }}>
-                {
-                    contentTransitions.map(({ item, props, key }) => (
-                        <animated.div key={key} className={classes.contentContainer} style={props}>
-                            <Switch location={item}>
-                                <Route path={routePaths.projects}>
-                                    <ProjectsPage />
-                                </Route>
-                                <Route path={routePaths.technologies}>
-                                    <Technologies />
-                                </Route>
-                                <Route exact path={routePaths.landingPage}>
-                                    <LandingPage />
-                                </Route>
-                            </Switch>
-                        </animated.div>
-                    ))
-                }
-            </Cell>
-        </Grid>
+                <Cell>
+                    {
+                        headerTransitions.map(({ item, props, key }) => {
+                            return (
+                                <animated.div key={key} style={props}>
+                                    <TopBar />
+                                </animated.div>
+                            )
+                        })
+                    }
+                </Cell>
+                <Cell style={{ position: 'relative' }}>
+                    {
+                        contentTransitions.map(({ item, props, key }) => (
+                            <animated.div key={key} className={classes.contentContainer} style={props}>
+                                <Switch location={item}>
+                                    <Route path={routePaths.timeline}>
+                                        <ProjectsPage />
+                                    </Route>
+                                    <Route path={routePaths.technologies}>
+                                        <Technologies />
+                                    </Route>
+                                    <Route exact path={routePaths.landingPage}>
+                                        <LandingPage />
+                                    </Route>
+                                </Switch>
+                            </animated.div>
+                        ))
+                    }
+                </Cell>
+            </Grid>
+        </backgroundDataContext.Provider>
     );
 }
 

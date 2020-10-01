@@ -62,28 +62,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const layouts = {
-    small: {
-        columns: "repeat(4, auto)",
-        rows: "1fr",
-        gap: "0",
-    },
-    big: {
-        rows: "repeat(4, auto)",
-        columns: "1fr",
-        gap: "2em",
-    }
-}
-
-const getPageLayout = (breakpoint) => {
-    if (breakpoint > 1)
-        return layouts.big;
-
-    return layouts.small;
-};
-
 const Node = ({ image, title, selected, onClick }) => {
-    let {width: breakpoint} = useBreakpoint("index");
+    let { width: breakpoint } = useBreakpoint("index");
 
     let classes = useStyles({ breakpoint });
 
@@ -96,14 +76,29 @@ const Node = ({ image, title, selected, onClick }) => {
 };
 
 const NodeMenu = ({ nodes, selectedNode, handleNodeClick }) => {
-    let {width: breakpoint} = useBreakpoint("index");
+    let { width: breakpoint } = useBreakpoint("index");
 
     let classes = useStyles({ breakpoint });
 
-    let gridLayout = useMemo(() =>
-        getPageLayout(breakpoint),
-        [breakpoint]
-    );
+    const layouts = useMemo(() => ({
+        small: {
+            columns: `repeat(${nodes.length}, auto)`,
+            rows: "1fr",
+            gap: "0",
+        },
+        big: {
+            rows: `repeat(${nodes.length}, auto)`,
+            columns: "1fr",
+            gap: "2em",
+        }
+    }), [nodes])
+
+    let gridLayout = useMemo(() => {
+        if (breakpoint > 1)
+            return layouts.big;
+
+        return layouts.small;
+    }, [breakpoint, layouts]);
 
     return (
         <Grid className={classes.nodesGrid} gap="0" {...gridLayout}>

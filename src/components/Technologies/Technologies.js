@@ -43,7 +43,7 @@ const Technologies = () => {
     ];
 
     return (
-        <PageTemplate nodes={nodes} swiperItems={projects} swiperItemComponent={ProjectListItem} />
+        <PageTemplate nodes={nodes} swiperItems={projects} swiperFilterKey={"technologies"} swiperItemComponent={ProjectListItem} />
     );
 }
 

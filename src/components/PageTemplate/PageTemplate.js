@@ -1,8 +1,9 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
 import { Cell, Grid } from 'styled-css-grid';
+import clsx from 'clsx';
 
 import { animated, useTransition } from 'react-spring';
 
@@ -10,7 +11,8 @@ import NodeMenu from './components/NodeMenu/NodeMenu';
 import SwiperContainer from './components/SwiperContainer/SwiperContainer';
 
 import useBreakpoint from '../../customHooks/useBreakPoint';
-import clsx from 'clsx';
+
+import { backgroundDataContext } from '../../context/backgroundDataContext';
 
 const useStyles = makeStyles(theme => ({
     pageGrid: {
@@ -65,8 +67,10 @@ const getPageLayout = (breakpoint) => {
         return layouts.medium;
 };
 
-const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemComponent }) => {
+const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent: SwiperItemComponent }) => {
     let breakpoint = useBreakpoint("index");
+
+    let { setData } = useContext(backgroundDataContext);
 
     let [selectedNode, setSelectedNode] = useState(0);
     let [currentSlide, setCurrentSlide] = useState(0);
@@ -93,6 +97,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
 
     const handleNodeClick = (idx) => {
         setSelectedNode(idx);
+        setData({ currentNode: nodes[idx], currentNodeIdx: idx });
     };
 
     const handleSlideChange = (e) => {
@@ -158,9 +163,9 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
                     </Grid>
                 </Cell>
                 <Cell area="projects" className={classes.projectsCell}>
-                    <SwiperContainer swiperRef={swiperRef} currentSlide={currentSlide} handleSlideChange={handleSlideChange} goNext={goNext} goPrev={goPrev}>
+                    <SwiperContainer swiperRef={swiperRef} swiperKey={selectedNode} currentSlide={currentSlide} handleSlideChange={handleSlideChange} goNext={goNext} goPrev={goPrev}>
                         {
-                            swiperItems.map((p, idx) => (
+                            swiperItems.filter(s => s[swiperFilterKey].includes(nodes[selectedNode].title)).map((p, idx) => (
                                 <div key={idx}>
                                     <SwiperItemComponent {...p} />
                                 </div>

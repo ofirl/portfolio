@@ -6,7 +6,7 @@ import { Card, CardContent, makeStyles, Typography } from '@material-ui/core';
 
 import { animated, useTransition } from 'react-spring';
 
-import { animationSpringConfig } from '../../utils/animationUtils';
+import { animationSpringConfig, routePaths } from '../../utils/animationUtils';
 import useBreakpoint from '../../customHooks/useBreakPoint';
 
 const useStyles = makeStyles(theme => ({
@@ -66,7 +66,7 @@ const LandingPage = () => {
     const cardTransition = useTransition(location, location => location.pathname, {
         from: {
             wait: 0,
-            top: breakpoint.height  === 0 ? '6em' : '20em',
+            top: breakpoint.height === 0 ? '6em' : '20em',
         },
         enter: [
             {
@@ -74,12 +74,12 @@ const LandingPage = () => {
             },
             {
                 wait: 0,
-                top: breakpoint.height  === 0 ? '1em' : '15em',
+                top: breakpoint.height === 0 ? '1em' : '15em',
             }
         ],
         leave: {
             wait: 0,
-            top: breakpoint.height  === 0 ? '6em' : '15em',
+            top: breakpoint.height === 0 ? '6em' : '15em',
         },
         config: animationSpringConfig,
     })
@@ -102,15 +102,15 @@ const LandingPage = () => {
                         I am Ofir Levi, A Software Developer with 4+ years of software development experience on various platforms, passionate to build polished, innovative and well-detailed apps with fluid animations to complement the design.
                         <br /><br />
                         Checkout my
-                        <Link to="/technologies" className={classes.landingTextLinksContainer}>
+                        <Link to={routePaths.technologies} className={classes.landingTextLinksContainer}>
                             <span>
                                 {`Technologies`}
                             </span>
                         </Link>
                         and
-                        <Link to="/projects" className={classes.landingTextLinksContainer}>
+                        <Link to={routePaths.timeline} className={classes.landingTextLinksContainer}>
                             <span>
-                                {`Projects`}
+                                {`Timeline`}
                             </span>
                         </Link>
                         that I worked on.

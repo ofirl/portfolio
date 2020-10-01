@@ -29,7 +29,7 @@ const ProjectPage = () => {
     ];
 
     return (
-        <PageTemplate nodes={nodes} swiperItems={projects} swiperItemComponent={ProjectListItem} />
+        <PageTemplate nodes={nodes} swiperItems={projects} swiperFilterKey={'timeline'} swiperItemComponent={ProjectListItem} />
     );
 }
 

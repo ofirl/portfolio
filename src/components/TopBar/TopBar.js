@@ -40,7 +40,7 @@ const TopBar = () => {
 
     const tabs = useMemo(() => ({
         [routePaths.technologies]: technologiesCellRef,
-        [routePaths.projects]: projectsCellRef,
+        [routePaths.timeline]: projectsCellRef,
     }), []);
 
     useEffect(() => {
@@ -67,9 +67,9 @@ const TopBar = () => {
                 </Link>
             </Cell>
             <Cell ref={projectsCellRef} area="projects" className={clsx('vertical-align', classes.topBarLink)}>
-                <Link to={routePaths.projects} className={classes.topBarLink}>
+                <Link to={routePaths.timeline} className={classes.topBarLink}>
                     <Typography variant="body2">
-                        Projects
+                        Timeline
                     </Typography>
                 </Link>
             </Cell>

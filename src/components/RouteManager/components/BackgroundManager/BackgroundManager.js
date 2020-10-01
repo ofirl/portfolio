@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
 
 import { animated, useTransition } from 'react-spring';
 
@@ -8,13 +9,18 @@ import { animationSpringConfig, routePaths } from '../../../../utils/animationUt
 
 import AnimatedBackground from './components/AnimatedBackground/AnimatedBackground';
 
+import { backgroundDataContext } from '../../../../context/backgroundDataContext';
+import { Cell, Grid } from 'styled-css-grid';
+
 const useStyles = makeStyles(theme => ({
-    backgroundDiv: {
+    fullScreenBackground: {
         position: 'absolute',
         zIndex: '-1',
         top: '0em',
         height: '100%',
         width: '100%',
+    },
+    backgroundDiv: {
         backgroundImage: 'url("/assets/images/background-doodle-tech.png")',
         backgroundSize: 'contain',
         '&:after': {
@@ -27,7 +33,31 @@ const useStyles = makeStyles(theme => ({
             bottom: '0',
         },
     },
+    timelineBackgroundImagesGrid: {
+        transition: 'all 0.5s ease-in-out',
+        '&[class*="Grid"]': {
+            height: '100%',
+        },
+    },
+    timelineBackgroundImage: {
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        filter: 'opacity(0.3)',
+    },
 }));
+
+const baseImagesUrl = '/assets/images/'
+const timelineImages = [
+    {
+        title: 'Personal Time',
+        image: baseImagesUrl + 'personalProjects-background.jpg',
+        selected: true,
+    },
+    {
+        title: 'Navy',
+        image: baseImagesUrl + 'navy-background.jpg',
+    },
+];
 
 const BackgroundManager = ({ prevLocation, location }) => {
     let prevPath = prevLocation.current;
@@ -35,6 +65,10 @@ const BackgroundManager = ({ prevLocation, location }) => {
 
     let [landingPageBackground, setLandingPageBackground] = useState(currPath === "/" ? location : null);
     let [technologiesBackground, setTechnologiesBackground] = useState(currPath === routePaths.technologies ? location : null);
+    let [timelineBackground, setTimelineBackground] = useState(currPath === routePaths.timeline ? location : null);
+    let [currentTimelineImages, setCurrentTimelineImages] = useState(timelineImages);
+
+    let { data: backgroundData } = useContext(backgroundDataContext);
 
     let classes = useStyles();
 
@@ -50,7 +84,33 @@ const BackgroundManager = ({ prevLocation, location }) => {
             setTechnologiesBackground(location);
         else
             setTechnologiesBackground(null);
+
+        // timeline
+        if (location.pathname === routePaths.timeline)
+            setTimelineBackground(location);
+        else
+            setTimelineBackground(null);
     }, [location]);
+
+    useEffect(() => {
+        if (!backgroundData || backgroundData.currentNodeIdx == null)
+            return;
+
+        let updatedImages = timelineImages.map(i => ({
+            ...i,
+            selected: false,
+            key: Math.random(),
+        }))
+
+        updatedImages[backgroundData.currentNodeIdx] = { ...updatedImages[backgroundData.currentNodeIdx], selected: true };
+
+        setCurrentTimelineImages(updatedImages);
+    }, [backgroundData])
+
+    let timelineImagesGridLayout = useMemo(() => {
+        let baseValue = 50 / currentTimelineImages.length;
+        return currentTimelineImages.map(i => i.selected ? baseValue + 50 : baseValue).map(p => p + "%").join(' ');
+    }, [currentTimelineImages]);
 
     // landing page
     const landingPageBackgroundTransitions = useTransition(landingPageBackground, null, {
@@ -70,7 +130,7 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (currPath === routePaths.landingPage || prevLocation.current !== routePaths.landingPage)
                 return { opacity: 0, display: 'none' };
 
-            return { opacity: 1, display: 'none'};
+            return { opacity: 1, display: 'none' };
         },
         config: animationSpringConfig,
     });
@@ -82,7 +142,7 @@ const BackgroundManager = ({ prevLocation, location }) => {
                 return { wait: 0, opacity: 0, left: '0em' };
 
             if (currPath === routePaths.technologies) {
-                if (prevPath === routePaths.projects)
+                if (prevPath === routePaths.timeline)
                     return { wait: 0, opacity: 0, left: '-20em' };
             }
 
@@ -102,8 +162,43 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (currPath === routePaths.landingPage)
                 return { wait: 0, opacity: 0, left: '0em' };
 
-            if (currPath === routePaths.projects)
+            if (currPath === routePaths.timeline)
                 return { wait: 0, opacity: 0, left: '-20em' };
+
+            return { wait: 0, opacity: 0 };
+        },
+        config: animationSpringConfig,
+    });
+
+    // timeline
+    const timelineBackgroundTransitions = useTransition(timelineBackground, null, {
+        from: item => {
+            if (!prevPath)
+                return { wait: 0, opacity: 0, left: '0em' };
+
+            if (currPath === routePaths.timeline) {
+                if (prevPath === routePaths.technologies)
+                    return { wait: 0, opacity: 0, left: '20em' };
+            }
+
+            return { wait: 0, opacity: 0, left: '0em' };
+        },
+        enter: item => {
+            if (currPath === routePaths.timeline) {
+                if (prevPath === routePaths.landingPage)
+                    return [{ wait: 1 }, { wait: 0, opacity: 1, left: '0em' }];
+
+                return { wait: 0, opacity: 1, left: '0em' };
+            }
+
+            return { wait: 0, opacity: 0, left: '0em' };
+        },
+        leave: item => {
+            if (currPath === routePaths.landingPage)
+                return { wait: 0, opacity: 0, left: '0em' };
+
+            if (currPath === routePaths.technologies)
+                return { wait: 0, opacity: 0, left: '20em' };
 
             return { wait: 0, opacity: 0 };
         },
@@ -119,7 +214,21 @@ const BackgroundManager = ({ prevLocation, location }) => {
             }
             {
                 technologiesBackgroundTransitions.map(({ item, props, key }) => (
-                    <animated.div key={key} className={classes.backgroundDiv} style={props} />
+                    <animated.div key={key} className={clsx(classes.backgroundDiv, classes.fullScreenBackground)} style={props} />
+                ))
+            }
+            {
+                timelineBackgroundTransitions.map(({ item, props, key }) => (
+                    <animated.div key={key} className={clsx(classes.fullScreenBackground)} style={props}>
+                        <Grid gap="0" columns="1fr" rows={timelineImagesGridLayout} className={classes.timelineBackgroundImagesGrid}>
+                            {
+                                currentTimelineImages.map((i, idx) => <Cell key={idx} className={clsx(classes.timelineBackgroundImage)} style={{ backgroundImage: `url(${i.image})` }}>
+
+                                </Cell>
+                                )
+                            }
+                        </Grid>
+                    </animated.div>
                 ))
             }
         </>

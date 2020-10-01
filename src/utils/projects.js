@@ -2,31 +2,25 @@ export const projects = [
     {
         title: 'ShopNDine',
         description: 'desc',
-        timeline: 'navy',
+        timeline: 'Personal Time',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS']
     },
     {
         title: 'Timefy',
         description: 'desc',
-        timeline: 'navy',
+        timeline: 'Personal Time',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS']
     },
     {
-        title: 'ShopNDine2',
+        title: 'Management Portal',
         description: 'desc',
-        timeline: 'navy',
-        technologies: ['MongoDB', 'Express', 'React', 'NodeJS']
+        timeline: 'Navy',
+        technologies: ['IIS', 'React']
     },
     {
-        title: 'ShopNDine3',
+        title: 'Gantt',
         description: 'desc',
-        timeline: 'navy',
-        technologies: ['MongoDB', 'Express', 'React', 'NodeJS']
-    },
-    {
-        title: 'ShopNDine4',
-        description: 'desc',
-        timeline: 'navy',
-        technologies: ['MongoDB', 'Express', 'React', 'NodeJS']
+        timeline: 'Navy',
+        technologies: ['React']
     },
 ];
