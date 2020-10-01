@@ -51,15 +51,15 @@ const smallSwiperParams = {
     effect: 'coverflow',
     grabCursor: true,
     centeredSlides: true,
-    slidesPerView: 2.3,
+    slidesPerView: 2,
     coverflowEffect: {
-        rotate: -30,
+        rotate: 0,
         stretch: 0,
         depth: 100,
         modifier: 1,
         slideShadows: true,
     },
-    spaceBetween: 5,
+    spaceBetween: 20,
     slideShadows: false,
 };
 
@@ -69,13 +69,13 @@ const mediumSwiperParams = {
     centeredSlides: true,
     slidesPerView: 1.5,
     coverflowEffect: {
-        rotate: -30,
+        rotate: 0,
         stretch: 0,
         depth: 100,
         modifier: 1,
         slideShadows: true,
     },
-    spaceBetween: 5,
+    spaceBetween: 20,
     slideShadows: false,
 };
 
@@ -85,13 +85,13 @@ const largeSwiperParams = {
     centeredSlides: true,
     slidesPerView: 3,
     coverflowEffect: {
-        rotate: -15,
+        rotate: 0,
         stretch: 0,
         depth: 100,
         modifier: 1,
         slideShadows: true,
     },
-    spaceBetween: 5,
+    spaceBetween: 20,
     slideShadows: false,
 };
 
