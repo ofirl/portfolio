@@ -129,7 +129,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
                     <Grid gap="0" columns="1fr" rows="auto 1fr" className={classes.nodeDescriptionGrid} areas={["title", "description"]}>
                         {
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
-                                <Cell key={key} className="posRelative" area="title">
+                                <Cell key={key} area="title">
                                     <animated.div style={props}>
                                         <Typography variant={breakpoint.width > 1 ? "h2" : "h5"} className={classes.nodeDescriptionTitle}>
                                             {nodes[item].title}
@@ -140,7 +140,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperItemComponent: SwiperItemCompo
                         }
                         {
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
-                                <Cell key={item} className="posRelative" area="description">
+                                <Cell key={item} area="description">
                                     <animated.div style={props}>
                                         {
                                             nodes[item].description.map((t, idx2) =>
