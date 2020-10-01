@@ -120,38 +120,72 @@ const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children,
 
     let childrenNum = children == null ? 0 : (children.length ? children.length : 0);
 
-    useEffect(() => {
-        const getSwiper = () => {
-            let swiperParams;
-            if (breakpoint.width <= 1)
-                swiperParams = smallSwiperParams;
-            else if (breakpoint.width < 3)
-                swiperParams = mediumSwiperParams;
-            else if (breakpoint.width < 4)
-                swiperParams = largeSwiperParams;
-            else
-                swiperParams = xlargeSwiperParams;
+    const getSwiper = () => {
+        let swiperParams;
+        if (breakpoint.width <= 1)
+            swiperParams = smallSwiperParams;
+        else if (breakpoint.width < 3)
+            swiperParams = mediumSwiperParams;
+        else if (breakpoint.width < 4)
+            swiperParams = largeSwiperParams;
+        else
+            swiperParams = xlargeSwiperParams;
 
-            return [{
-                key: `${breakpoint.width}-${swiperKey}`,
-                item: <Swiper
-                    key={`${breakpoint.width}-${swiperKey}`}
-                    ref={swiperRef}
-                    initialSlide={currentSlide}
-                    containerClass={clsx(classes.swiperContainer)}
-                    {...swiperParams}
-                    on={{
-                        slideChange: handleSlideChange
-                    }}
-                >
-                    {children}
-                </Swiper>
-            }];
-        };
+        return [{
+            key: `${breakpoint.width}-${swiperKey}`,
+            item: <Swiper
+                key={`${breakpoint.width}-${swiperKey}`}
+                ref={swiperRef}
+                initialSlide={currentSlide}
+                containerClass={clsx(classes.swiperContainer)}
+                {...swiperParams}
+                on={{
+                    slideChange: handleSlideChange
+                }}
+            >
+                {children}
+            </Swiper>
+        }];
+    };
 
-        setCurrentSwipers(getSwiper());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [children, breakpoint, swiperKey])
+    // useEffect(() => {
+    //     const updateRef = (el, itemSwiperKey) => {
+    //         if (currentSwipers[0] && currentSwipers[0].key === swiperKey)
+    //             swiperRef.current = el;
+    //     }
+
+    //     const getSwiper = () => {
+    //         let swiperParams;
+    //         if (breakpoint.width <= 1)
+    //             swiperParams = smallSwiperParams;
+    //         else if (breakpoint.width < 3)
+    //             swiperParams = mediumSwiperParams;
+    //         else if (breakpoint.width < 4)
+    //             swiperParams = largeSwiperParams;
+    //         else
+    //             swiperParams = xlargeSwiperParams;
+
+    //         return [{
+    //             key: `${breakpoint.width}-${swiperKey}`,
+    //             item: <Swiper
+    //                 key={`${breakpoint.width}-${swiperKey}`}
+    //                 ref={(el) => updateRef(el, swiperKey)}
+    //                 // ref={swiperRef}
+    //                 initialSlide={currentSlide}
+    //                 containerClass={clsx(classes.swiperContainer)}
+    //                 {...swiperParams}
+    //                 on={{
+    //                     slideChange: handleSlideChange
+    //                 }}
+    //             >
+    //                 {children}
+    //             </Swiper>
+    //         }];
+    //     };
+
+    //     setCurrentSwipers(getSwiper());
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [children, breakpoint, swiperKey])
 
     let swiperTransitions = useTransition(currentSwipers, item => item.key, {
         from: { opacity: 0 },
@@ -161,7 +195,12 @@ const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children,
 
     return (
         <Grid columns="1fr" rows="1fr auto" className={classes.swiperGridContainer} areas={["swiper", "controls"]}>
-            {
+            <Cell>
+                {
+                    getSwiper()[0].item
+                }
+            </Cell>
+            {/* {
                 swiperTransitions.map(({ item, props, key }) => (
                     <Cell key={key} area="swiper">
                         <animated.div key={key} style={props}>
@@ -169,7 +208,7 @@ const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children,
                         </animated.div>
                     </Cell>
                 ))
-            }
+            } */}
             <Cell>
                 <Grid columnGap="1em" rows="1fr" columns="1fr auto auto 1fr" areas={['. left right .']} className={classes.swiperControlsGrid}>
                     <Cell area="left">
