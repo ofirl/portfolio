@@ -156,7 +156,7 @@ const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children,
         <Grid columns="1fr" rows="1fr auto" className={classes.swiperGridContainer} areas={["swiper", "controls"]}>
             {
                 swiperTransitions.map(({ item, props, key }) => (
-                    <Cell area="swiper">
+                    <Cell key={key} area="swiper">
                         <animated.div key={key} style={props}>
                             {item.item}
                         </animated.div>
