@@ -22,8 +22,8 @@ const ProjectPage = () => {
             title: 'Personal',
             image: "/assets/images/logos/personalProjects.png",
             description: [
-                'Always :)',
-                'Jack Of All Trades'
+                'Kinda Always',
+                'Whatever It Takes'
             ]
         },
     ];
