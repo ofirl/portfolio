@@ -11,7 +11,7 @@ import { Cell, Grid } from 'styled-css-grid';
 import { animationSpringConfig, routePaths } from '../../utils/animationUtils';
 
 import LandingPage from '../LandingPage/LandingPage';
-import ProjectsPage from '../ProjectsPage/ProjectsPage';
+import ProjectsPage from '../TimelinePage/TimelinePage';
 import Technologies from '../Technologies/Technologies';
 
 import TopBar from '../TopBar/TopBar';
