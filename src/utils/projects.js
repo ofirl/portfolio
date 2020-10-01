@@ -2,13 +2,13 @@ export const projects = [
     {
         title: 'ShopNDine',
         description: 'desc',
-        timeline: 'Personal Time',
+        timeline: 'Personal',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS']
     },
     {
         title: 'Timefy',
         description: 'desc',
-        timeline: 'Personal Time',
+        timeline: 'Personal',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS']
     },
     {

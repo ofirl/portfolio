@@ -8,14 +8,6 @@ import { projects } from '../../utils/projects';
 const ProjectPage = () => {
     const nodes = [
         {
-            title: 'Personal Time',
-            image: "/assets/images/logos/personalProjects.png",
-            description: [
-                'Always :)',
-                'Jack Of All Trades'
-            ]
-        },
-        {
             title: 'Navy',
             image: "/assets/images/logos/navy.png",
             description: [
@@ -24,6 +16,14 @@ const ProjectPage = () => {
                 null,
                 'Apr 2019 - Now',
                 'Full-Stack Developers Team Leader',
+            ]
+        },
+        {
+            title: 'Personal',
+            image: "/assets/images/logos/personalProjects.png",
+            description: [
+                'Always :)',
+                'Jack Of All Trades'
             ]
         },
     ];

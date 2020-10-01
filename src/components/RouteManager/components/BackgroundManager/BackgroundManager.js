@@ -49,13 +49,13 @@ const useStyles = makeStyles(theme => ({
 const baseImagesUrl = '/assets/images/'
 const timelineImages = [
     {
-        title: 'Personal Time',
-        image: baseImagesUrl + 'personalProjects-background.jpg',
-        selected: true,
+        title: 'Navy',
+        image: baseImagesUrl + 'navy-background-Small.jpg',
     },
     {
-        title: 'Navy',
-        image: baseImagesUrl + 'navy-background.jpg',
+        title: 'Personal',
+        image: baseImagesUrl + 'personalProjects-background-Small.jpg',
+        selected: true,
     },
 ];
 
@@ -71,6 +71,11 @@ const BackgroundManager = ({ prevLocation, location }) => {
     let { data: backgroundData } = useContext(backgroundDataContext);
 
     let classes = useStyles();
+
+    let timelineImageCells = useMemo(() =>
+        currentTimelineImages.map((i, idx) =>
+            <Cell key={idx} className={clsx(classes.timelineBackgroundImage)} style={{ backgroundImage: `url(${i.image})` }} />
+        ), [currentTimelineImages, classes.timelineBackgroundImage]);
 
     useEffect(() => {
         // landing page
@@ -222,10 +227,7 @@ const BackgroundManager = ({ prevLocation, location }) => {
                     <animated.div key={key} className={clsx(classes.fullScreenBackground)} style={props}>
                         <Grid gap="0" columns="1fr" rows={timelineImagesGridLayout} className={classes.timelineBackgroundImagesGrid}>
                             {
-                                currentTimelineImages.map((i, idx) => <Cell key={idx} className={clsx(classes.timelineBackgroundImage)} style={{ backgroundImage: `url(${i.image})` }}>
-
-                                </Cell>
-                                )
+                                timelineImageCells
                             }
                         </Grid>
                     </animated.div>
