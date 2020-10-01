@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { IconButton, makeStyles } from '@material-ui/core';
 
@@ -114,39 +114,46 @@ const xlargeSwiperParams = {
 const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, children, goPrev, goNext, swiperKey }) => {
     let breakpoint = useBreakpoint("index");
 
+    let [currentSwipers, setCurrentSwipers] = useState([]);
+
     let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
 
     let childrenNum = children == null ? 0 : (children.length ? children.length : 0);
 
-    const getSwiper = () => {
-        let swiperParams;
-        if (breakpoint.width <= 1)
-            swiperParams = smallSwiperParams;
-        else if (breakpoint.width < 3)
-            swiperParams = mediumSwiperParams;
-        else if (breakpoint.width < 4)
-            swiperParams = largeSwiperParams;
-        else
-            swiperParams = xlargeSwiperParams;
+    useEffect(() => {
+        const getSwiper = () => {
+            let swiperParams;
+            if (breakpoint.width <= 1)
+                swiperParams = smallSwiperParams;
+            else if (breakpoint.width < 3)
+                swiperParams = mediumSwiperParams;
+            else if (breakpoint.width < 4)
+                swiperParams = largeSwiperParams;
+            else
+                swiperParams = xlargeSwiperParams;
 
-        return [{
-            key: `${breakpoint.width}-${swiperKey}`,
-            item: <Swiper
-                key={`${breakpoint.width}-${swiperKey}`}
-                ref={swiperRef}
-                initialSlide={currentSlide}
-                containerClass={clsx(classes.swiperContainer)}
-                {...swiperParams}
-                on={{
-                    slideChange: handleSlideChange
-                }}
-            >
-                {children}
-            </Swiper>
-        }];
-    };
+            return [{
+                key: `${breakpoint.width}-${swiperKey}`,
+                item: <Swiper
+                    key={`${breakpoint.width}-${swiperKey}`}
+                    ref={swiperRef}
+                    initialSlide={currentSlide}
+                    containerClass={clsx(classes.swiperContainer)}
+                    {...swiperParams}
+                    on={{
+                        slideChange: handleSlideChange
+                    }}
+                >
+                    {children}
+                </Swiper>
+            }];
+        };
 
-    let swiperTransitions = useTransition(getSwiper(), item => item.key, {
+        setCurrentSwipers(getSwiper());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [children, breakpoint, swiperKey])
+
+    let swiperTransitions = useTransition(currentSwipers, item => item.key, {
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { opacity: 0 },
