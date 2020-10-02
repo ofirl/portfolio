@@ -27,15 +27,15 @@ const useStyles = makeStyles(theme => ({
     nodeDescriptionGrid: {
         paddingRight: '2em',
         paddingLeft: '2em',
-        textAlign: ({ breakpoint }) => breakpoint > 1 ? null : 'center',
+        textAlign: ({ breakpointWidth }) => breakpointWidth > 1 ? null : 'center',
         color: 'white',
     },
     nodeDescriptionTitle: {
         paddingBottom: '0.5em',
-        fontWeight: ({ breakpoint }) => breakpoint > 1 ? '400' : null,
+        fontWeight: ({ breakpointWidth }) => breakpointWidth > 1 ? '400' : null,
     },
-    projectsCell: {
-        // paddingTop: ({ breakpoint }) => breakpoint > 1 ? '5em',
+    nodeDescriptionTextCell: {
+        paddingLeft: ({ breakpointWidth }) => breakpointWidth > 1 ? '2em' : null,
     },
 }));
 
@@ -76,7 +76,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
     let [currentSlide, setCurrentSlide] = useState(0);
     const swiperRef = useRef(null);
 
-    let classes = useStyles({ breakpoint: breakpoint.width });
+    let classes = useStyles({ breakpointWidth: breakpoint.width });
 
     useEffect(() => {
         if (data.currentNodeIdx !== 0)
@@ -152,7 +152,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
                         }
                         {
                             nodeDescriptionTransitions.map(({ item, key, props }) => (
-                                <Cell key={item} area="description">
+                                <Cell key={item} area="description" className={classes.nodeDescriptionTextCell}>
                                     <animated.div style={props}>
                                         {
                                             nodes[item].description.map((t, idx2) =>
