@@ -111,6 +111,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
     }
 
     const goNext = () => {
+        console.log(swiperRef.current)
         if (swiperRef.current && swiperRef.current.swiper) {
             swiperRef.current.swiper.slideNext();
         }
@@ -169,7 +170,8 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
                     </Grid>
                 </Cell>
                 <Cell area="projects" className={classes.projectsCell}>
-                    <SwiperContainer swiperRef={swiperRef} swiperKey={selectedNode} currentSlide={currentSlide} handleSlideChange={handleSlideChange} goNext={goNext} goPrev={goPrev}>
+                    <SwiperContainer swiperRef={swiperRef} swiperKey={selectedNode} currentSlide={currentSlide} handleSlideChange={handleSlideChange}
+                        goNext={goNext} goPrev={goPrev}>
                         {
                             swiperItems.filter(s => s[swiperFilterKey].includes(nodes[selectedNode].title)).map((p, idx) => (
                                 <div key={idx}>
