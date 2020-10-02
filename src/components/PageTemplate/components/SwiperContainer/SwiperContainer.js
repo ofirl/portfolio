@@ -19,11 +19,12 @@ SwiperCore.use([EffectCoverflow]);
 
 const useStyles = makeStyles(theme => ({
     swiperContainer: {
-        height: ({ breakpointWidth, breakpointHeight }) => breakpointHeight === 0 ? '12em' : (breakpointWidth > 1 ? '25em' : '18em'),
+        height: ({ breakpointWidth, breakpointHeight }) => breakpointHeight === 0 ? '12em' : (breakpointWidth > 1 ? '22em' : '18em'),
         overflow: 'hidden',
         '& .swiper-slide': {
             display: 'grid',
             justifyItems: 'center',
+            // width: 'max-content !important',
             '& [class*="swiper-slide-shadow"]': {
                 borderRadius: '1em',
             },
@@ -57,7 +58,7 @@ const smallSwiperParams = {
         stretch: 0,
         depth: 100,
         modifier: 1,
-        slideShadows: true,
+        slideShadows: false,
     },
     spaceBetween: 20,
     slideShadows: false,
@@ -73,9 +74,9 @@ const mediumSwiperParams = {
         stretch: 0,
         depth: 100,
         modifier: 1,
-        slideShadows: true,
+        slideShadows: false,
     },
-    spaceBetween: 20,
+    spaceBetween: 40,
     slideShadows: false,
 };
 
@@ -87,11 +88,11 @@ const largeSwiperParams = {
     coverflowEffect: {
         rotate: 0,
         stretch: 0,
-        depth: 100,
+        depth: 50,
         modifier: 1,
-        slideShadows: true,
+        slideShadows: false,
     },
-    spaceBetween: 20,
+    spaceBetween: 40,
     slideShadows: false,
 };
 
@@ -103,11 +104,11 @@ const xlargeSwiperParams = {
     coverflowEffect: {
         rotate: 0,
         stretch: 0,
-        depth: 100,
+        depth: 30,
         modifier: 1,
-        slideShadows: true,
+        slideShadows: false,
     },
-    spaceBetween: 20,
+    spaceBetween: 80,
     slideShadows: false,
 };
 

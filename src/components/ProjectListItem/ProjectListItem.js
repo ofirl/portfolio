@@ -9,8 +9,9 @@ import useBreakpoint from '../../customHooks/useBreakPoint';
 
 const useStyles = makeStyles(theme => ({
     containerGrid: {
-        minWidth: '8em',
-        width: 'calc(100% - 2em)',
+        width: ({ breakpointWidth }) => breakpointWidth > 1 ? '10em' : '8em',
+        // minWidth: '8em',
+        // width: 'calc(100% - 2em)',
         backgroundColor: 'white',
         borderRadius: '1em',
         '&[class*="Grid"]': {
