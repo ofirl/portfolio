@@ -19,7 +19,7 @@ SwiperCore.use([EffectCoverflow]);
 
 const useStyles = makeStyles(theme => ({
     swiperContainer: {
-        height: ({ breakpointWidth, breakpointHeight }) => breakpointHeight === 0 ? '12em' : (breakpointWidth > 1 ? '22em' : '18em'),
+        height: ({ breakpointWidth, breakpointHeight }) => breakpointHeight === 0 ? '13em' : (breakpointWidth > 1 ? '22em' : '18em'),
         overflow: 'hidden',
         '& .swiper-slide': {
             display: 'grid',

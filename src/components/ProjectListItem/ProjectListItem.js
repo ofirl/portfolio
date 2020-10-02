@@ -20,6 +20,10 @@ const useStyles = makeStyles(theme => ({
         paddingRight: '1em',
         paddingLeft: '1em',
     },
+    projectImageCell: {
+        display: 'grid',
+        alignItems: 'end',
+    },
     projectLogo: {
         paddingTop: '1em',
         height: ({ breakpointHeight }) => breakpointHeight === 0 ? '4em' : '6em',
@@ -27,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     },
     projectTextCell: {
         display: 'grid',
-        alignItems: 'end',
+        alignItems: 'center',
         textAlign: 'center',
     },
     projectTextGrid: {
@@ -41,8 +45,8 @@ const ProjectListItem = ({ title, description, technologies }) => {
     let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
 
     return (
-        <Grid rows="auto 1fr" columns="1fr" className={classes.containerGrid}>
-            <Cell className={clsx("horizontal-align", "vertical-align")}>
+        <Grid rows="1fr 1fr" columns="1fr" className={classes.containerGrid}>
+            <Cell className={clsx("horizontal-align", classes.projectImageCell)}>
                 <img src={`/assets/images/projects/${title}.png`} alt={`${title}-logo`} className={classes.projectLogo} />
             </Cell>
             <Cell className={clsx("horizontal-align", classes.projectTextCell)}>

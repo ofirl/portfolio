@@ -51,7 +51,7 @@ const layouts = {
         areas: ["nodes", "description", "projects"],
     },
     medium: {
-        columns: "7em minmax(15em, 20em) minmax(15em, auto)",
+        columns: "7em minmax(15em, 40%) minmax(15em, 60%)",
         rows: "minmax(2em, auto) auto auto 1fr",
         areas: ["nodes . .", "nodes icon projects", ". description projects", ". description ."],
     },
