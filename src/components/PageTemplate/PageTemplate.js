@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
     nodeDescriptionTextCell: {
         paddingLeft: ({ breakpointWidth }) => breakpointWidth > 1 ? '2em' : null,
     },
+    projectsCell: {
+        display: 'grid',
+        alignItems: 'end',
+    },
 }));
 
 const layouts = {
@@ -52,7 +56,7 @@ const layouts = {
     },
     medium: {
         columns: "7em minmax(15em, 40%) minmax(15em, 60%)",
-        rows: "minmax(2em, auto) auto auto 1fr",
+        rows: "minmax(2em, auto) minmax(23em, auto) auto 1fr",
         areas: ["nodes . .", "nodes icon projects", ". description projects", ". description ."],
     },
 };
@@ -106,20 +110,15 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
         setData({ currentNode: nodes[idx], currentNodeIdx: idx });
     };
 
-    const handleSlideChange = (e) => {
-        setCurrentSlide(e.realIndex);
+    const handleSlideChange = (newSlide) => {
+        setCurrentSlide(newSlide);
     }
 
     const goNext = () => {
-        console.log(swiperRef.current)
-        if (swiperRef.current && swiperRef.current.swiper) {
-            swiperRef.current.swiper.slideNext();
-        }
+        handleSlideChange(currentSlide + 1);
     };
     const goPrev = () => {
-        if (swiperRef.current && swiperRef.current.swiper) {
-            swiperRef.current.swiper.slidePrev();
-        }
+        handleSlideChange(currentSlide - 1);
     };
 
     return (
@@ -170,13 +169,11 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
                     </Grid>
                 </Cell>
                 <Cell area="projects" className={classes.projectsCell}>
-                    <SwiperContainer swiperRef={swiperRef} swiperKey={selectedNode} currentSlide={currentSlide} handleSlideChange={handleSlideChange}
+                    <SwiperContainer swiperKey={selectedNode} currentSlide={currentSlide} handleSlideChange={handleSlideChange}
                         goNext={goNext} goPrev={goPrev}>
                         {
                             swiperItems.filter(s => s[swiperFilterKey].includes(nodes[selectedNode].title)).map((p, idx) => (
-                                <div key={idx}>
-                                    <SwiperItemComponent {...p} />
-                                </div>
+                                <SwiperItemComponent key={idx} {...p} />
                             ))
                         }
                     </SwiperContainer>

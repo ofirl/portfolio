@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import clsx from 'clsx';
 import { Cell, Grid } from 'styled-css-grid';
@@ -9,7 +9,7 @@ import useBreakpoint from '../../customHooks/useBreakPoint';
 
 const useStyles = makeStyles(theme => ({
     containerGrid: {
-        width: ({ breakpointWidth }) => breakpointWidth > 1 ? '10em' : '8em',
+        // width: ({ breakpointWidth }) => breakpointWidth > 1 ? '10em' : '8em',
         // minWidth: '8em',
         // width: 'calc(100% - 2em)',
         backgroundColor: 'white',
@@ -42,10 +42,16 @@ const useStyles = makeStyles(theme => ({
 const ProjectListItem = ({ title, description, technologies }) => {
     let breakpoint = useBreakpoint("index");
 
+    let [openDetails, setOpenDetails] = useState(false);
+
     let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
 
+    const toggleOpenDetails = () => {
+        setOpenDetails(!openDetails);
+    };
+
     return (
-        <Grid rows="1fr 1fr" columns="1fr" className={classes.containerGrid}>
+        <Grid rows="1fr 1fr" columns="1fr" className={classes.containerGrid} onClick={toggleOpenDetails}>
             <Cell className={clsx("horizontal-align", classes.projectImageCell)}>
                 <img src={`/assets/images/projects/${title}.png`} alt={`${title}-logo`} className={classes.projectLogo} />
             </Cell>

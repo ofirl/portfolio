@@ -2,32 +2,34 @@ import React, { useEffect, useState } from 'react';
 
 import { IconButton, makeStyles } from '@material-ui/core';
 
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import { Cell, Grid } from 'styled-css-grid';
 
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-import Swiper from "react-id-swiper";
-import SwiperCore, { EffectCoverflow } from 'swiper';
-import 'swiper/swiper.less';
-import 'swiper/components/effect-coverflow/effect-coverflow.less';
 import useBreakpoint from '../../../../customHooks/useBreakPoint';
+
 import { animated, useTransition } from 'react-spring';
 
-SwiperCore.use([EffectCoverflow]);
+// import Swiper from "react-id-swiper";
+// import SwiperCore, { EffectCoverflow } from 'swiper';
+// import 'swiper/swiper.less';
+// import 'swiper/components/effect-coverflow/effect-coverflow.less';
+
+// import { Swiper, SwiperSlide } from 'swiper/react';
+
+import Gallery from '../../../Gallery';
+
+// SwiperCore.use([EffectCoverflow]);
 
 const useStyles = makeStyles(theme => ({
-    swiperContainer: {
-        height: ({ breakpointWidth, breakpointHeight }) => breakpointHeight === 0 ? '13em' : (breakpointWidth > 1 ? '22em' : '18em'),
-        overflow: 'hidden',
-        '& .swiper-slide': {
-            display: 'grid',
-            justifyItems: 'center',
-            // width: 'max-content !important',
-            '& [class*="swiper-slide-shadow"]': {
-                borderRadius: '1em',
-            },
+    swiperGridContainer: {
+        width: '100%',
+        paddingBottom: '2em',
+        '&[class*="Grid"]': {
+            // height: '100%',
+            height: ({ breakpointWidth, breakpointHeight }) => breakpointHeight === 0 ? '17em' : (breakpointWidth > 1 ? '25em' : '22em'),
         },
     },
     swiperControlsGrid: {
@@ -48,71 +50,22 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const smallSwiperParams = {
-    effect: 'coverflow',
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-        rotate: 0,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: false,
-    },
-    spaceBetween: 20,
-    slideShadows: false,
+const smallGalleryConfig = {
+
 };
 
-const mediumSwiperParams = {
-    effect: 'coverflow',
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 1.5,
-    coverflowEffect: {
-        rotate: 0,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: false,
+const mediumGalleryConfig = {
+    effect: {
+        rotation: 10,
     },
-    spaceBetween: 40,
-    slideShadows: false,
 };
 
-const largeSwiperParams = {
-    effect: 'coverflow',
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 3,
-    coverflowEffect: {
-        rotate: 0,
-        stretch: 0,
-        depth: 50,
-        modifier: 1,
-        slideShadows: false,
-    },
-    spaceBetween: 40,
-    slideShadows: false,
+const largeGalleryConfig = {
+    rotation: 0,
+    scaleFactor: 0.08
 };
 
-const xlargeSwiperParams = {
-    effect: 'coverflow',
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 5,
-    coverflowEffect: {
-        rotate: 0,
-        stretch: 0,
-        depth: 30,
-        modifier: 1,
-        slideShadows: false,
-    },
-    spaceBetween: 80,
-    slideShadows: false,
-};
-
-const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, initialSlide = 0, children, goPrev, goNext, swiperKey }) => {
+const SwiperContainer = ({ handleSlideChange, currentSlide, initialSlide = 0, children, goPrev, goNext, swiperKey }) => {
     let breakpoint = useBreakpoint("index");
 
     let [currentSwipers, setCurrentSwipers] = useState([]);
@@ -122,42 +75,28 @@ const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, initialSl
     let childrenNum = children == null ? 0 : (children.length ? children.length : 0);
 
     useEffect(() => {
-        const updateRef = (el) => {
-            if (el)
-                swiperRef.current = el;
-        }
+        let galleryConfig;
+        if (breakpoint.width <= 1)
+            galleryConfig = smallGalleryConfig;
+        else if (breakpoint.width < 3)
+            galleryConfig = mediumGalleryConfig;
+        else
+            galleryConfig = largeGalleryConfig;
 
         const getSwiper = () => {
-            let swiperParams;
-            if (breakpoint.width <= 1)
-                swiperParams = smallSwiperParams;
-            else if (breakpoint.width < 3)
-                swiperParams = mediumSwiperParams;
-            else if (breakpoint.width < 4)
-                swiperParams = largeSwiperParams;
-            else
-                swiperParams = xlargeSwiperParams;
-
             return [{
                 key: `${breakpoint.width}-${swiperKey}`,
-                item: <Swiper
-                    key={`${breakpoint.width}-${swiperKey}`}
-                    ref={updateRef}
-                    initialSlide={currentSlide}
-                    containerClass={clsx(classes.swiperContainer)}
-                    {...swiperParams}
-                    on={{
-                        slideChange: handleSlideChange
-                    }}
-                >
+                item: <Gallery initialSlide={initialSlide} activeSlide={currentSlide} onSlideChange={handleSlideChange} effectConfig={galleryConfig} config={{
+                    slideWidth: breakpoint.width > 1 ? '12em' : '10em',
+                }}>
                     {children}
-                </Swiper>
+                </Gallery>
             }];
         };
 
         setCurrentSwipers(getSwiper());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [children, breakpoint, swiperKey])
+
+    }, [children, breakpoint, swiperKey, currentSlide, handleSlideChange, initialSlide])
 
     let swiperTransitions = useTransition(currentSwipers, item => item.key, {
         from: { opacity: 0 },
@@ -171,7 +110,7 @@ const SwiperContainer = ({ swiperRef, handleSlideChange, currentSlide, initialSl
             {
                 swiperTransitions.map(({ item, props, key }) => (
                     <Cell key={key} area="swiper">
-                        <animated.div key={key} style={props}>
+                        <animated.div key={key} style={{ ...props, height: '100%' }}>
                             {item.item}
                         </animated.div>
                     </Cell>

@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "clsx": "^1.1.1",
+    "gallery-coverflow-react": "0.0.3",
     "react": "^16.13.1",
     "react-coverflow": "^0.2.20",
     "react-dom": "^16.13.1",
