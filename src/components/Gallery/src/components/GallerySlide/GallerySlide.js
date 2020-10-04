@@ -1,7 +1,9 @@
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
-const GallerySlide = ({ children, config, slideOffset, onSlideClick }) => {
+const GallerySlide = ({ children, idx, config, slidesRef, slideOffset, onSlideClick }) => {
+    const divRef = useRef();
+
     const slideCssVariables = useMemo(() => ({
         '--slide-offset': slideOffset,
         '--slide-offset-abs': Math.abs(slideOffset),
@@ -11,8 +13,15 @@ const GallerySlide = ({ children, config, slideOffset, onSlideClick }) => {
         [slideOffset]
     );
 
+    useEffect(() => {
+        slidesRef.current.push({ref: divRef, idx});
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        return () => slidesRef.current.splice(slidesRef.current.findIndex(s => s.ref === divRef), 1);
+    }, [slidesRef, divRef, idx])
+
     return (
-        <div className={clsx("gallery-slide", { 'gallery-slide-active': activeSlide })}
+        <div ref={divRef} className={clsx("gallery-slide", { 'gallery-slide-active': activeSlide })}
             style={{ ...slideCssVariables, width: config.slideWidth, height: '100%' }}
         >
             {

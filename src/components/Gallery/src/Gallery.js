@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Spring } from 'react-spring/renderprops';
 import { useDrag } from 'react-use-gesture';
 
@@ -71,6 +71,8 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
         ...configOverride
     }), [configOverride, effect, slidePixelSize, slideGapPixelSize, effectConfig]);
 
+    const slidesRef = useRef([]);
+
     const dragBind = useDrag(({ event, movement: [movementX, movementY], initial, first, last, swipe: [swipeX, swipeY], tap, ...others }) => {
         event.preventDefault();
 
@@ -78,6 +80,7 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
             event.stopPropagation();
 
         if (last) {
+            setDragOffset(movementX);
             let newCurrentSlide = currentSlide - Math.round((movementX * config.slideChangeDragFactor) / (slidePixelSize + slideGapPixelSize));
 
             // clamp value
@@ -86,15 +89,38 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
             if (newCurrentSlide >= children.length)
                 newCurrentSlide = children.length - 1;
 
+            // slidesRef.current.forEach(({ ref, idx }) => {
+            //     let slideOffset = idx - (activeSlideClamped ? activeSlideClamped : currentSlide) + movementX / config.slidePixelSize;
+            //     ref.current.style.setProperty('--slide-offset', 0);
+            //     ref.current.style.setProperty('--slide-offset-abs', 0);
+            // });
+
             handelSlideChange(newCurrentSlide);
             setIsDragged(false);
             return;
         }
 
-        if (first)
-            setIsDragged(true);
+        if (!first) {
+            slidesRef.current.forEach(({ ref, idx }) => {
+                let slideOffset = idx - (activeSlideClamped ? activeSlideClamped : currentSlide) + movementX / config.slidePixelSize;
+                ref.current.style.setProperty('--slide-offset', slideOffset);
+                ref.current.style.setProperty('--slide-offset-abs', Math.abs(slideOffset));
+            });
+        }
 
-        setDragOffset(movementX);
+        if (Math.abs(dragOffset - movementX) > 10)
+            setDragOffset(movementX);
+
+        if (first)
+            setIsDragged(() => {
+                slidesRef.current.forEach(({ ref, idx }) => {
+                    let slideOffset = idx - (activeSlideClamped ? activeSlideClamped : currentSlide) + movementX / config.slidePixelSize;
+                    ref.current.style.setProperty('--slide-offset', slideOffset);
+                    ref.current.style.setProperty('--slide-offset-abs', Math.abs(slideOffset));
+                });
+
+                return true;
+            });
     }, {
         axis: 'x',
         filterTaps: true,
@@ -128,14 +154,15 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
     const springProps = useMemo(() => isDragged ?
         {
             to: { dragOffset: dragOffset },
-            config: { tension: 10000, clamp: true },
+            // config: { tension: 1000000, clamp: true },
+            config: { duration: 1 },
         } : {
             to: {
                 dragOffset: 0,
                 currentSlide: activeSlideClamped != null ? activeSlideClamped : currentSlide,
-            }
+            },
         }, [isDragged, activeSlideClamped, dragOffset, currentSlide]);
-    
+
     return (
         <>
             <MeasurePixelSize width={config.slideWidth} onChange={slideSizeChangeHandler} />
@@ -152,8 +179,10 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
                             <MouseBlocker />
                         }
                         {children.map((c, idx) =>
-                            <GallerySlide key={idx} config={config} onSlideClick={config.clickToMoveToSlide ? () => moveToSlide(idx) : null}
-                                slideOffset={idx - currentSlideAnimated + dragOffsetAnimated / config.slidePixelSize}>
+                            <GallerySlide key={idx} idx={idx} config={config} onSlideClick={config.clickToMoveToSlide ? () => moveToSlide(idx) : null}
+                                slidesRef={slidesRef}
+                                slideOffset={isDragged ? idx - currentSlideAnimated + 0 / config.slidePixelSize : idx - currentSlideAnimated + dragOffsetAnimated / config.slidePixelSize}
+                            >
                                 {c}
                             </GallerySlide>
                         )}
