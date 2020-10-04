@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Spring } from 'react-spring/renderprops';
 import { useDrag } from 'react-use-gesture';
 
@@ -18,19 +18,23 @@ const effectBaseConfigs = {
 };
 
 const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverride, effectConfig, effect = 'coverflow', onSlideChange }) => {
-    const activeSlideClamped = useMemo(() => {
-        if (activeSlide == null)
-            return null;
-
-        if (activeSlide < 0)
+    const clampSlide = useCallback((slide) => {
+        if (slide < 0)
             return 0;
-        if (activeSlide >= children.length)
+        if (slide >= children.length)
             return children.length - 1;
 
-        return activeSlide;
-    }, [activeSlide, children.length])
+        return slide;
+    }, [children]);
 
-    const [currentSlide, setCurrentSlide] = useState(activeSlideClamped != null ? activeSlideClamped : initialSlide);
+    const [currentSlide, setCurrentSlide] = useState(activeSlide != null ? clampSlide(activeSlide) : initialSlide);
+
+    const activeSlideClamped = useMemo(() => {
+        if (activeSlide == null)
+            return currentSlide;
+
+        return clampSlide(activeSlide);
+    }, [activeSlide, clampSlide, currentSlide])
 
     const handelSlideChange = (newSlide) => {
         setCurrentSlide(newSlide);
@@ -81,7 +85,7 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
 
         if (last) {
             setDragOffset(movementX);
-            let newCurrentSlide = currentSlide - Math.round((movementX * config.slideChangeDragFactor) / (slidePixelSize + slideGapPixelSize));
+            let newCurrentSlide = activeSlideClamped - Math.round((movementX * config.slideChangeDragFactor) / (slidePixelSize + slideGapPixelSize));
 
             // clamp value
             if (newCurrentSlide < 0)
@@ -89,38 +93,22 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
             if (newCurrentSlide >= children.length)
                 newCurrentSlide = children.length - 1;
 
-            // slidesRef.current.forEach(({ ref, idx }) => {
-            //     let slideOffset = idx - (activeSlideClamped ? activeSlideClamped : currentSlide) + movementX / config.slidePixelSize;
-            //     ref.current.style.setProperty('--slide-offset', 0);
-            //     ref.current.style.setProperty('--slide-offset-abs', 0);
-            // });
-
             handelSlideChange(newCurrentSlide);
             setIsDragged(false);
             return;
         }
 
-        if (!first) {
-            slidesRef.current.forEach(({ ref, idx }) => {
-                let slideOffset = idx - (activeSlideClamped ? activeSlideClamped : currentSlide) + movementX / config.slidePixelSize;
-                ref.current.style.setProperty('--slide-offset', slideOffset);
-                ref.current.style.setProperty('--slide-offset-abs', Math.abs(slideOffset));
-            });
-        }
+        slidesRef.current.forEach(({ ref, idx }) => {
+            let slideOffset = idx - activeSlideClamped + movementX / config.slidePixelSize;
+            ref.current.style.setProperty('--slide-offset', slideOffset);
+            ref.current.style.setProperty('--slide-offset-abs', Math.abs(slideOffset));
+        });
 
         if (Math.abs(dragOffset - movementX) > 10)
             setDragOffset(movementX);
 
         if (first)
-            setIsDragged(() => {
-                slidesRef.current.forEach(({ ref, idx }) => {
-                    let slideOffset = idx - (activeSlideClamped ? activeSlideClamped : currentSlide) + movementX / config.slidePixelSize;
-                    ref.current.style.setProperty('--slide-offset', slideOffset);
-                    ref.current.style.setProperty('--slide-offset-abs', Math.abs(slideOffset));
-                });
-
-                return true;
-            });
+            setIsDragged(true);
     }, {
         axis: 'x',
         filterTaps: true,
@@ -159,9 +147,9 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
         } : {
             to: {
                 dragOffset: 0,
-                currentSlide: activeSlideClamped != null ? activeSlideClamped : currentSlide,
+                currentSlide: activeSlideClamped,
             },
-        }, [isDragged, activeSlideClamped, dragOffset, currentSlide]);
+        }, [isDragged, activeSlideClamped, dragOffset]);
 
     return (
         <>
@@ -178,14 +166,17 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
                             ((config.disableInteractionWhileDragging && isDragged) || !config.enableSlideInteraction) &&
                             <MouseBlocker />
                         }
-                        {children.map((c, idx) =>
-                            <GallerySlide key={idx} idx={idx} config={config} onSlideClick={config.clickToMoveToSlide ? () => moveToSlide(idx) : null}
-                                slidesRef={slidesRef}
-                                slideOffset={isDragged ? idx - currentSlideAnimated + 0 / config.slidePixelSize : idx - currentSlideAnimated + dragOffsetAnimated / config.slidePixelSize}
-                            >
-                                {c}
-                            </GallerySlide>
-                        )}
+                        {children.map((c, idx) => {
+                            let currentSlideOffset = isDragged ? 0 : dragOffsetAnimated;
+
+                            return (
+                                <GallerySlide key={idx} idx={idx} config={config} onSlideClick={config.clickToMoveToSlide ? () => moveToSlide(idx) : null}
+                                    slidesRef={slidesRef} slideOffset={idx - currentSlideAnimated + currentSlideOffset / config.slidePixelSize}
+                                >
+                                    {c}
+                                </GallerySlide>
+                            );
+                        })}
                     </div>
                 )}
             </Spring>
