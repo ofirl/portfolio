@@ -5,16 +5,17 @@ const GallerySlide = ({ children, idx, config, slidesRef, slideOffset, onSlideCl
     const divRef = useRef();
 
     const slideCssVariables = useMemo(() => ({
+        '--slide-index': idx,
         '--slide-offset': slideOffset,
         '--slide-offset-abs': Math.abs(slideOffset),
-    }), [slideOffset]);
+    }), [slideOffset, idx]);
 
     const activeSlide = useMemo(() => slideOffset === 0,
         [slideOffset]
     );
 
     useEffect(() => {
-        slidesRef.current.push({ref: divRef, idx});
+        slidesRef.current.push({ ref: divRef, idx });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
         return () => slidesRef.current.splice(slidesRef.current.findIndex(s => s.ref === divRef), 1);
@@ -24,10 +25,8 @@ const GallerySlide = ({ children, idx, config, slidesRef, slideOffset, onSlideCl
         <div ref={divRef} className={clsx("gallery-slide", { 'gallery-slide-active': activeSlide })}
             style={{ ...slideCssVariables, width: config.slideWidth, height: '100%' }}
         >
-            {
-                config.slideShadows && !activeSlide &&
-                <div className={clsx("gallery-slide-shadow", { 'gallery-slide-shadow-right': slideOffset > 0, 'gallery-slide-shadow-left': slideOffset < 0 })} />
-            }
+            <div className={clsx("gallery-slide-shadow", 'gallery-slide-shadow-right')} />
+            <div className={clsx("gallery-slide-shadow", 'gallery-slide-shadow-left')} />
             {
                 onSlideClick && slideOffset !== 0 &&
                 <div className="fill-parent above-all" onClick={onSlideClick} />

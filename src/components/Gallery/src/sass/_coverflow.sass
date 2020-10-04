@@ -9,15 +9,23 @@ $gallerySlideTransform: rotateY(calc(var(--slide-offset) * var(--coverflow-rotat
     rgba(0, 0, 0, calc(var(--slide-offset-abs) * var(--coverflow-rotation) * var(--slide-offset-abs) * var(--coverflow-rotation) * -0.000029 + var(--slide-offset-abs) * var(--coverflow-rotation) * 0.01)), 
     calc(1% + var(--slide-offset-abs) * 50%), #00000000)
 
-.gallery-coverflow 
+.gallery-coverflow
     .gallery-slide
         @extend %base-gallery-slide
         transform-origin: 50% 50%
-        top: 0px
-        +transform(translateX(calc(((var(--slide-offset)) * ((var(--slide-width) * 1px) + var(--slide-gap))) + var(--base-slide-offset))) translateX(-50%) $gallerySlideTransform)
+        // top: 0px
+        //translateX(calc(var(--slide-index) * (var(--slide-width) + var(--slide-gap)) * 1px))
+        // top: calc((var(--slide-gap)))
+        +transform(translateX(calc(var(--slide-index) * (var(--slide-width) + var(--slide-gap)) * 1px)) translateX(-50%) $gallerySlideTransform)
+
+    .gallery-wrapper
+        +transform(translateX(calc(var(--active-slide) * (var(--slide-width) + var(--slide-gap)) * -1px + var(--base-slide-offset))))
 
     .gallery-slide-shadow
         @extend %fill-parent
+        border-radius: var(--coverflow-shadow-border-radius)
+        // need to change the 90deg based on the (--active-slide - --slide-index) sign
+        // +gallery-slide-shadow(90deg * <sign>)
 
     .gallery-slide-shadow-right
         +gallery-slide-shadow(90deg)

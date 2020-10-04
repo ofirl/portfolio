@@ -51,18 +51,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const smallGalleryConfig = {
-
+    shadowBorderRadius: '1em',
 };
 
 const mediumGalleryConfig = {
-    effect: {
-        rotation: 10,
-    },
+    rotation: 10,
+    shadowBorderRadius: '1em',
 };
 
 const largeGalleryConfig = {
     rotation: 0,
-    scaleFactor: 0.08
+    scaleFactor: 0.08,
+    shadowBorderRadius: '1em',
 };
 
 const SwiperContainer = ({ handleSlideChange, currentSlide, initialSlide = 0, children, goPrev, goNext, swiperKey }) => {

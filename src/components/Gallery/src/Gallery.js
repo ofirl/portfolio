@@ -28,13 +28,17 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
     }, [children]);
 
     const [currentSlide, setCurrentSlide] = useState(activeSlide != null ? clampSlide(activeSlide) : initialSlide);
+    const [overrideCurrentSlide, setOverrideCurrentSlide] = useState(null);
 
     const activeSlideClamped = useMemo(() => {
+        if (overrideCurrentSlide != null)
+            return overrideCurrentSlide;
+
         if (activeSlide == null)
             return currentSlide;
 
         return clampSlide(activeSlide);
-    }, [activeSlide, clampSlide, currentSlide])
+    }, [activeSlide, clampSlide, currentSlide, overrideCurrentSlide])
 
     const handelSlideChange = (newSlide) => {
         setCurrentSlide(newSlide);
@@ -49,9 +53,9 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
     const [slideGapPixelSize, setSlideGapPixelSize] = useState(0);
 
     const [isDragged, setIsDragged] = useState(false);
-    const [dragOffset, setDragOffset] = useState(initialSlide);
 
     const [galleryContainerRef, galleryDimensions] = useDimensions();
+    const galleryWrapperRef = useRef();
 
     const slideSizeChangeHandler = ({ width, height }) => {
         setSlidePixelSize(width);
@@ -76,6 +80,7 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
     }), [configOverride, effect, slidePixelSize, slideGapPixelSize, effectConfig]);
 
     const slidesRef = useRef([]);
+    const onSpringEnd = useRef(null);
 
     const dragBind = useDrag(({ event, movement: [movementX, movementY], initial, first, last, swipe: [swipeX, swipeY], tap, ...others }) => {
         event.preventDefault();
@@ -84,7 +89,6 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
             event.stopPropagation();
 
         if (last) {
-            setDragOffset(movementX);
             let newCurrentSlide = activeSlideClamped - Math.round((movementX * config.slideChangeDragFactor) / (slidePixelSize + slideGapPixelSize));
 
             // clamp value
@@ -93,8 +97,16 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
             if (newCurrentSlide >= children.length)
                 newCurrentSlide = children.length - 1;
 
-            handelSlideChange(newCurrentSlide);
-            setIsDragged(false);
+            // set spring end function
+            onSpringEnd.current = () => {
+                handelSlideChange(newCurrentSlide);
+                setIsDragged(false);
+                setOverrideCurrentSlide(null);
+                onSpringEnd.current = null;
+            };
+
+            setOverrideCurrentSlide(activeSlideClamped - movementX / config.slidePixelSize);
+
             return;
         }
 
@@ -104,8 +116,7 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
             ref.current.style.setProperty('--slide-offset-abs', Math.abs(slideOffset));
         });
 
-        if (Math.abs(dragOffset - movementX) > 10)
-            setDragOffset(movementX);
+        galleryWrapperRef.current.style.setProperty('--active-slide', activeSlideClamped - movementX / config.slidePixelSize);
 
         if (first)
             setIsDragged(true);
@@ -123,60 +134,62 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
         let general = {
             '--gallery-width': galleryDimensions.width,
             '--slide-width': config.slidePixelSize,
-            '--slide-gap': config.slideGap,
-            '--base-slide-offset': config.centeredItems ? `${galleryDimensions.width / 2}px` : '0px'
+            '--slide-gap': config.slideGapPixelSize,
         };
 
         // effects
         let effects = {
+            '--base-slide-offset': config.centeredItems ? `${galleryDimensions.width / 2}px` : '0px',
+            '--active-slide': activeSlideClamped,
             '--coverflow-rotation': config.coverflow.rotation,
-            '--coverflow-scaleFactor': config.coverflow.scaleFactor
+            '--coverflow-scaleFactor': config.coverflow.scaleFactor,
+            '--coverflow-shadow-border-radius': config.coverflow.shadowBorderRadius,
         };
 
         return {
             ...general,
             ...effects,
         };
-    }, [config, galleryDimensions.width])
+    }, [config, galleryDimensions.width, activeSlideClamped])
 
     const springProps = useMemo(() => isDragged ?
         {
-            to: { dragOffset: dragOffset },
+            to: {
+                currentSlide: activeSlideClamped,
+            },
             // config: { tension: 1000000, clamp: true },
             config: { duration: 1 },
         } : {
             to: {
-                dragOffset: 0,
                 currentSlide: activeSlideClamped,
             },
-        }, [isDragged, activeSlideClamped, dragOffset]);
+        }, [isDragged, activeSlideClamped]);
 
     return (
         <>
             <MeasurePixelSize width={config.slideWidth} onChange={slideSizeChangeHandler} />
             <MeasurePixelSize width={config.slideGap} onChange={slideGapSizeChangeHandler} />
             <Spring
+                onRest={() => onSpringEnd.current && onSpringEnd.current()}
                 {...springProps}
             >
-                {({ dragOffset: dragOffsetAnimated, currentSlide: currentSlideAnimated }) => (
+                {({ currentSlide: currentSlideAnimated }) => (
                     <div ref={galleryContainerRef} {...dragBindProps} style={{ ...styleCssVariables }}
                         className={clsx("gallery-container", `gallery-${effect}`, { 'grab-cursor': config.grabCursor })}
                     >
-                        {
-                            ((config.disableInteractionWhileDragging && isDragged) || !config.enableSlideInteraction) &&
-                            <MouseBlocker />
-                        }
-                        {children.map((c, idx) => {
-                            let currentSlideOffset = isDragged ? 0 : dragOffsetAnimated;
-
-                            return (
+                        <div ref={galleryWrapperRef} style={{ '--active-slide': currentSlideAnimated }} className={clsx("gallery-wrapper", `gallery-wrapper`)}>
+                            {
+                                ((config.disableInteractionWhileDragging && isDragged) || !config.enableSlideInteraction) &&
+                                <MouseBlocker />
+                            }
+                            {children.map((c, idx) =>
                                 <GallerySlide key={idx} idx={idx} config={config} onSlideClick={config.clickToMoveToSlide ? () => moveToSlide(idx) : null}
-                                    slidesRef={slidesRef} slideOffset={idx - currentSlideAnimated + currentSlideOffset / config.slidePixelSize}
+                                    slidesRef={slidesRef} slideOffset={idx - currentSlideAnimated}
                                 >
                                     {c}
                                 </GallerySlide>
-                            );
-                        })}
+                            )}
+                        </div>
                     </div>
                 )}
             </Spring>
