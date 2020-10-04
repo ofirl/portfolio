@@ -1,18 +1,14 @@
-import { Dialog } from '@material-ui/core';
+import { Dialog, Typography } from '@material-ui/core';
 import React from 'react';
 
-const ProjectDetails = ({ project }) => {
+const ProjectDetails = ({ open, project, onClose }) => {
     return (
-        <Dialog fullscreen>
-
+        <Dialog fullScreen open={open} onClose={onClose}>
+            <Typography variant="h3">
+                {project.title}
+            </Typography>
         </Dialog>
     );
-
-    // return (
-    //     <div>
-    //         ProjectDetails
-    //     </div>
-    // );
 }
 
 export default ProjectDetails;

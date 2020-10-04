@@ -24,6 +24,7 @@ $gallerySlideTransform: rotateY(calc(var(--slide-offset) * var(--coverflow-rotat
     .gallery-slide-shadow
         @extend %fill-parent
         border-radius: var(--coverflow-shadow-border-radius)
+        pointer-events: none
         // need to change the 90deg based on the (--active-slide - --slide-index) sign
         // +gallery-slide-shadow(90deg * <sign>)
 

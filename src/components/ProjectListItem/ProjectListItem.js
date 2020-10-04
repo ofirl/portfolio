@@ -6,6 +6,7 @@ import { Cell, Grid } from 'styled-css-grid';
 import { makeStyles, Typography } from '@material-ui/core';
 
 import useBreakpoint from '../../customHooks/useBreakPoint';
+import ProjectDetails from '../ProjectDetails/ProjectDetails';
 
 const useStyles = makeStyles(theme => ({
     containerGrid: {
@@ -39,7 +40,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ProjectListItem = ({ title, description, technologies }) => {
+const ProjectListItem = ({ project }) => {
+    let { title, description, technologies } = project;
     let breakpoint = useBreakpoint("index");
 
     let [openDetails, setOpenDetails] = useState(false);
@@ -47,25 +49,29 @@ const ProjectListItem = ({ title, description, technologies }) => {
     let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
 
     const toggleOpenDetails = () => {
+        console.log('test')
         setOpenDetails(!openDetails);
     };
 
     return (
-        <Grid rows="1fr 1fr" columns="1fr" className={classes.containerGrid} onClick={toggleOpenDetails}>
-            <Cell className={clsx("horizontal-align", classes.projectImageCell)}>
-                <img src={`/assets/images/projects/${title}.png`} alt={`${title}-logo`} className={classes.projectLogo} />
-            </Cell>
-            <Cell className={clsx("horizontal-align", classes.projectTextCell)}>
-                <Grid columns="1fr" rows="auto 1fr" className={classes.projectTextGrid}>
-                    <Typography variant="h6">
-                        {title}
-                    </Typography>
-                    <Typography variant="caption">
-                        {technologies.join(' | ')}
-                    </Typography>
-                </Grid>
-            </Cell>
-        </Grid>
+        <>
+            <Grid rows="1fr 1fr" columns="1fr" className={classes.containerGrid} onClick={toggleOpenDetails}>
+                <Cell className={clsx("horizontal-align", classes.projectImageCell)}>
+                    <img src={`/assets/images/projects/${title}.png`} alt={`${title}-logo`} className={classes.projectLogo} />
+                </Cell>
+                <Cell className={clsx("horizontal-align", classes.projectTextCell)}>
+                    <Grid columns="1fr" rows="auto 1fr" className={classes.projectTextGrid}>
+                        <Typography variant="h6">
+                            {title}
+                        </Typography>
+                        <Typography variant="caption">
+                            {technologies.join(' | ')}
+                        </Typography>
+                    </Grid>
+                </Cell>
+            </Grid>
+            <ProjectDetails open={openDetails} project={project} />
+        </>
     );
 }
 

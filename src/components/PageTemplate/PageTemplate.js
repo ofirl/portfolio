@@ -173,7 +173,7 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
                         goNext={goNext} goPrev={goPrev}>
                         {
                             swiperItems.filter(s => s[swiperFilterKey].includes(nodes[selectedNode].title)).map((p, idx) => (
-                                <SwiperItemComponent key={idx} {...p} />
+                                <SwiperItemComponent key={idx} project={p} />
                             ))
                         }
                     </SwiperContainer>

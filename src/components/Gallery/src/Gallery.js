@@ -83,8 +83,7 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
     const onSpringEnd = useRef(null);
 
     const dragBind = useDrag(({ event, movement: [movementX, movementY], initial, first, last, swipe: [swipeX, swipeY], tap, ...others }) => {
-        event.preventDefault();
-
+        console.log(tap)
         if (!tap)
             event.stopPropagation();
 
@@ -118,7 +117,7 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
 
         galleryWrapperRef.current.style.setProperty('--active-slide', activeSlideClamped - movementX / config.slidePixelSize);
 
-        if (first)
+        if (!tap && isDragged === false)
             setIsDragged(true);
     }, {
         axis: 'x',
