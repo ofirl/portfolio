@@ -83,7 +83,6 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
     const onSpringEnd = useRef(null);
 
     const dragBind = useDrag(({ event, movement: [movementX, movementY], initial, first, last, swipe: [swipeX, swipeY], tap, ...others }) => {
-        console.log(tap)
         if (!tap)
             event.stopPropagation();
 
@@ -113,6 +112,8 @@ const Gallery = ({ children, initialSlide = 0, activeSlide, config: configOverri
             let slideOffset = idx - activeSlideClamped + movementX / config.slidePixelSize;
             ref.current.style.setProperty('--slide-offset', slideOffset);
             ref.current.style.setProperty('--slide-offset-abs', Math.abs(slideOffset));
+            if (effect === "coverflow")
+                ref.current.style.setProperty('--rotation-relative', 90 - Math.abs(((Math.abs(slideOffset) * config.coverflow.rotation) % 180) - 90));
         });
 
         galleryWrapperRef.current.style.setProperty('--active-slide', activeSlideClamped - movementX / config.slidePixelSize);

@@ -25,8 +25,8 @@ const GallerySlide = ({ children, idx, config, slidesRef, slideOffset, onSlideCl
         <div ref={divRef} className={clsx("gallery-slide", { 'gallery-slide-active': activeSlide })}
             style={{ ...slideCssVariables, width: config.slideWidth, height: '100%' }}
         >
-            <div className={clsx("gallery-slide-shadow", 'gallery-slide-shadow-right')} />
-            <div className={clsx("gallery-slide-shadow", 'gallery-slide-shadow-left')} />
+            <div className="gallery-slide-shadow" />
+            {/* <div className={clsx("gallery-slide-shadow", 'gallery-slide-shadow-left')} /> */}
             {
                 onSlideClick && slideOffset !== 0 &&
                 <div className="fill-parent above-all" onClick={onSlideClick} />
