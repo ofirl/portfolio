@@ -7,6 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Cell, Grid } from 'styled-css-grid';
 import { Spring } from 'react-spring/renderprops';
 import useBreakpoint from '../../customHooks/useBreakPoint';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
     dialogRoot: {
@@ -24,7 +25,10 @@ const useStyles = makeStyles(theme => ({
         boxShadow: '0px 2px 1px -1px rgba(255, 255, 255, 0.8),0px 1px 1px 0px rgba(0,0,0,0.56),0px 1px 3px 0px rgba(255, 255, 255, 0.48)',
     },
     dialogAppBarRoot: {
-        backgroundColor: '#777',
+        backgroundColor: '#333',
+    },
+    disableBoxShadow: {
+        boxShadow: 'none',
     },
     toolbarRoot: {
         minHeight: '4em',
@@ -98,6 +102,7 @@ const ProjectDetails = ({ open, project, onClose }) => {
     let { width: breakpointWidth } = useBreakpoint("index");
 
     let [headerStyle, setHeaderStyle] = useState({
+        scrollPosition: 0,
         logo: {
             top: '4em',
             left: '50%',
@@ -124,6 +129,8 @@ const ProjectDetails = ({ open, project, onClose }) => {
         let newCalculatedStyle = {};
 
         const calcStyle = (min, max, units) => `${min + (max - min) * (1 - effectiveScrollPositionY / 200)}${units}`
+
+        newCalculatedStyle.scrollPosition = scrollPos;
 
         newCalculatedStyle.logo = {
             top: calcStyle(0.5, 4, "em"),
@@ -152,7 +159,7 @@ const ProjectDetails = ({ open, project, onClose }) => {
     return (
         <Dialog onScroll={(e) => updateStyle(e.target.scrollTop)} fullScreen open={open} onClose={onClose} classes={{ paper: classes.dialogRoot }}>
             <Paper classes={{ root: classes.mainPaper }}>
-                <AppBar position="sticky" classes={{ root: classes.dialogAppBarRoot }}>
+                <AppBar position="sticky" classes={{ root: clsx(classes.dialogAppBarRoot, {[classes.disableBoxShadow] : headerStyle.scrollPosition < 200}) }}>
                     <Toolbar classes={{ root: classes.toolbarRoot }}>
                         <IconButton edge="start" color="inherit" onClick={onClose}>
                             <CloseIcon />

@@ -121,7 +121,54 @@ export const projects = [
                     'bullet5',
                     'bullet6',
                 ]
-            }
+            },
+            {
+                type: 'List',
+                highlight: '#4caf501a',
+                value: [
+                    'bullet1',
+                    'bullet2',
+                    'bullet3',
+                    'bullet4',
+                    'bullet5',
+                    'bullet6',
+                ]
+            },
+            {
+                type: 'List',
+                highlight: '#4caf501a',
+                value: [
+                    'bullet1',
+                    'bullet2',
+                    'bullet3',
+                    'bullet4',
+                    'bullet5',
+                    'bullet6',
+                ]
+            },
+            {
+                type: 'List',
+                highlight: '#4caf501a',
+                value: [
+                    'bullet1',
+                    'bullet2',
+                    'bullet3',
+                    'bullet4',
+                    'bullet5',
+                    'bullet6',
+                ]
+            },
+            {
+                type: 'List',
+                value: [
+                    'bullet1',
+                    'bullet2',
+                    'bullet3',
+                    'bullet4',
+                    'bullet5',
+                    'bullet6',
+                ]
+            },
         ],
     },
     {
