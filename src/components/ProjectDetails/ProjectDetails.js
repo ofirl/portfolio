@@ -22,6 +22,8 @@ const useStyles = makeStyles(theme => ({
         maxWidth: '50em',
         backgroundColor: '#333',
         paddingBottom: '2em',
+        paddingLeft: '0.5em',
+        paddingRight: '0.5em',
         boxShadow: '0px 2px 1px -1px rgba(255, 255, 255, 0.8),0px 1px 1px 0px rgba(0,0,0,0.56),0px 1px 3px 0px rgba(255, 255, 255, 0.48)',
     },
     dialogAppBarRoot: {
