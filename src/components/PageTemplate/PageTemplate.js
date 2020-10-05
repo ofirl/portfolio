@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
@@ -78,7 +78,6 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
 
     let [selectedNode, setSelectedNode] = useState(0);
     let [currentSlide, setCurrentSlide] = useState(0);
-    const swiperRef = useRef(null);
 
     let classes = useStyles({ breakpointWidth: breakpoint.width });
 

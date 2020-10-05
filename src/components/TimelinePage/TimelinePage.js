@@ -3,7 +3,7 @@ import React from 'react';
 import ProjectListItem from '../ProjectListItem/ProjectListItem';
 import PageTemplate from '../PageTemplate/PageTemplate';
 
-import { projects } from '../../utils/projects';
+import { projects } from '../../consts/projects';
 
 const ProjectPage = () => {
     const nodes = [

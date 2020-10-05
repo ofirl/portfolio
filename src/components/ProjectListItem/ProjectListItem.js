@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProjectListItem = ({ project }) => {
-    let { title, description, technologies } = project;
+    let { title, technologies } = project;
     let breakpoint = useBreakpoint("index");
 
     let [openDetails, setOpenDetails] = useState(false);
@@ -49,7 +49,6 @@ const ProjectListItem = ({ project }) => {
     let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
 
     const toggleOpenDetails = () => {
-        console.log('test')
         setOpenDetails(!openDetails);
     };
 
@@ -70,7 +69,7 @@ const ProjectListItem = ({ project }) => {
                     </Grid>
                 </Cell>
             </Grid>
-            <ProjectDetails open={openDetails} project={project} />
+            <ProjectDetails open={openDetails} project={project} onClose={toggleOpenDetails} />
         </>
     );
 }
