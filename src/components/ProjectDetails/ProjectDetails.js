@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { AppBar, Dialog, IconButton, makeStyles, Paper, Toolbar, Typography } from '@material-ui/core';
 
@@ -22,9 +22,8 @@ const useStyles = makeStyles(theme => ({
         maxWidth: '50em',
         backgroundColor: '#333',
         paddingBottom: '2em',
-        paddingLeft: '0.5em',
-        paddingRight: '0.5em',
         boxShadow: '0px 2px 1px -1px rgba(255, 255, 255, 0.8),0px 1px 1px 0px rgba(0,0,0,0.56),0px 1px 3px 0px rgba(255, 255, 255, 0.48)',
+        color: 'white',
     },
     dialogAppBarRoot: {
         backgroundColor: '#333',
@@ -49,8 +48,16 @@ const useStyles = makeStyles(theme => ({
         zIndex: '1200',
         textAlign: 'right',
     },
+    detailsContentGrid: {
+        paddingLeft: '0.5em',
+        paddingRight: '0.5em',
+    },
     detailHighlight: {
         backgroundColor: ({ highlight }) => highlight,
+        paddingTop: '0.5em',
+        paddingBottom: '0.5em',
+        paddingRight: '1em',
+        paddingLeft: '1em',
     }
 }));
 
@@ -69,7 +76,17 @@ const detailComponents = {
 
         return (
             <Typography variant="body2" className={classes.detailHighlight}>
-                { value}
+                {
+                    typeof (value) === "string" ?
+                        value
+                        :
+                        value.map((v, idx) => (
+                            <React.Fragment key={idx}>
+                                {v}
+                                <br />
+                            </React.Fragment>
+                        ))
+                }
             </Typography >
         );
     },
@@ -161,7 +178,7 @@ const ProjectDetails = ({ open, project, onClose }) => {
     return (
         <Dialog onScroll={(e) => updateStyle(e.target.scrollTop)} fullScreen open={open} onClose={onClose} classes={{ paper: classes.dialogRoot }}>
             <Paper classes={{ root: classes.mainPaper }}>
-                <AppBar position="sticky" classes={{ root: clsx(classes.dialogAppBarRoot, {[classes.disableBoxShadow] : headerStyle.scrollPosition < 200}) }}>
+                <AppBar position="sticky" classes={{ root: clsx(classes.dialogAppBarRoot, { [classes.disableBoxShadow]: headerStyle.scrollPosition < 200 }) }}>
                     <Toolbar classes={{ root: classes.toolbarRoot }}>
                         <IconButton edge="start" color="inherit" onClick={onClose}>
                             <CloseIcon />
@@ -195,7 +212,7 @@ const ProjectDetails = ({ open, project, onClose }) => {
                         }
                     </Spring>
                 </AppBar>
-                <Grid gap="0" columns="1fr" rows={breakpointWidth === 0 ? "18em" : "15em"}>
+                <Grid gap="0" columns="1fr" rows={breakpointWidth === 0 ? "19em" : "16em"} className={classes.detailsContentGrid}>
                     <Cell />
                     {
                         project.description.map(({ type, ...others }, idx) => {
