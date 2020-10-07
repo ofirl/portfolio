@@ -9,7 +9,8 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import Gallery from "react-photo-gallery";
 // import Carousel, { Modal, ModalGateway } from "react-images";
-import ReactBnbGallery from 'react-bnb-gallery';
+// import ReactBnbGallery from 'react-bnb-gallery';
+import { SRLWrapper, useLightbox } from 'simple-react-lightbox'
 
 import { Spring } from 'react-spring/renderprops';
 
@@ -124,16 +125,20 @@ const detailComponents = {
         );
     },
     Gallery: ({ value, size, direction, projectTitle }) => {
-        const [currentImage, setCurrentImage] = useState(0);
+        const { openLightbox } = useLightbox()
+        // const [currentImage, setCurrentImage] = useState(0);
         const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
-        const openLightbox = useCallback((event, { photo, index }) => {
-            setCurrentImage(index);
+        const openViewer = useCallback((event, { photo, index }) => {
+            // setCurrentImage(index);
             setViewerIsOpen(true);
-        }, []);
+            setTimeout(() => {
+                openLightbox();
+            }, 100);
+        }, [openLightbox]);
 
-        const closeLightbox = () => {
-            setCurrentImage(0);
+        const closeViewer = () => {
+            // setCurrentImage(0);
             setViewerIsOpen(false);
         };
 
@@ -142,17 +147,27 @@ const detailComponents = {
             width: 1,
             ...v,
             src: `/assets/images/projects/${projectTitle}/${v.src}`,
-            photo: `/assets/images/projects/${projectTitle}/${v.src}`,
+            // photo: `/assets/images/projects/${projectTitle}/${v.src}`,
+            caption: v.caption || "",
         }));
 
         return (
             <>
-                <Gallery photos={photos} onClick={openLightbox} />
-                <ReactBnbGallery
+                <Gallery photos={photos} onClick={openViewer} />
+                {
+                    viewerIsOpen && <SRLWrapper onLightboxClosed={closeViewer}>
+                        {
+                            photos.map((p, idx) => (
+                                <img src={p.src} alt={p.caption} />
+                            ))
+                        }
+                    </SRLWrapper>
+                }
+                {/* <ReactBnbGallery
                     show={viewerIsOpen}
                     photos={photos}
                     onClose={closeLightbox}
-                />
+                /> */}
                 {/* <ModalGateway>
                     {viewerIsOpen ? (
                         <Modal onClose={closeLightbox}>
