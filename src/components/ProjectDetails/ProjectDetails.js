@@ -155,7 +155,7 @@ const detailComponents = {
             <>
                 <Gallery photos={photos} onClick={openViewer} />
                 {
-                    viewerIsOpen && <SRLWrapper onLightboxClosed={closeViewer}>
+                    viewerIsOpen && <SRLWrapper callbacks={{ onLightboxClosed: closeViewer }}>
                         {
                             photos.map((p, idx) => (
                                 <img src={p.src} alt={p.caption} />

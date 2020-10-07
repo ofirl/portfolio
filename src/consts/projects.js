@@ -134,7 +134,7 @@ export const projects = [
                     {
                         src: 'mobile_selected_minimized.png',
                         height: 2,
-                        caption: 'Mobile SelectedMinimized'
+                        caption: 'Mobile Selected Minimized'
                     },
                 ]
             }
