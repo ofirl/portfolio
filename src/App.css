@@ -49,3 +49,9 @@ a:visited {
 .typographyBody3 {
   font-size: small !important;
 }
+
+.gallery .gallery-control {
+  stroke: black;
+  stroke-width: 1px;
+  stroke-linejoin: round;
+}
