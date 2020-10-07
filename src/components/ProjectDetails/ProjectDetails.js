@@ -8,8 +8,6 @@ import { AppBar, Dialog, IconButton, makeStyles, Paper, Toolbar, Typography } fr
 import CloseIcon from '@material-ui/icons/Close';
 
 import Gallery from "react-photo-gallery";
-// import Carousel, { Modal, ModalGateway } from "react-images";
-// import ReactBnbGallery from 'react-bnb-gallery';
 import { SRLWrapper, useLightbox } from 'simple-react-lightbox'
 
 import { Spring } from 'react-spring/renderprops';
@@ -67,7 +65,14 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: '0.5em',
         paddingRight: '1em',
         paddingLeft: '1em',
-    }
+    },
+    galleryContainer: {
+        '& > div:nth-child(2)': {
+            width: '0px',
+            height: '0px',
+            overflow: 'hidden',
+        },
+    },
 }));
 
 const detailComponents = {
@@ -125,64 +130,34 @@ const detailComponents = {
         );
     },
     Gallery: ({ value, size, direction, projectTitle }) => {
-        const { openLightbox } = useLightbox()
-        // const [currentImage, setCurrentImage] = useState(0);
-        const [viewerIsOpen, setViewerIsOpen] = useState(false);
+        const { openLightbox } = useLightbox();
+
+        let classes = useStyles();
 
         const openViewer = useCallback((event, { photo, index }) => {
-            // setCurrentImage(index);
-            setViewerIsOpen(true);
-            setTimeout(() => {
-                openLightbox();
-            }, 100);
+            openLightbox((index));
         }, [openLightbox]);
 
-        const closeViewer = () => {
-            // setCurrentImage(0);
-            setViewerIsOpen(false);
-        };
 
         const photos = value.map(v => ({
             height: 1,
             width: 1,
             ...v,
             src: `/assets/images/projects/${projectTitle}/${v.src}`,
-            // photo: `/assets/images/projects/${projectTitle}/${v.src}`,
             caption: v.caption || "",
         }));
 
         return (
-            <>
+            <div className={classes.galleryContainer}>
                 <Gallery photos={photos} onClick={openViewer} />
-                {
-                    viewerIsOpen && <SRLWrapper callbacks={{ onLightboxClosed: closeViewer }}>
-                        {
-                            photos.map((p, idx) => (
-                                <img src={p.src} alt={p.caption} />
-                            ))
-                        }
-                    </SRLWrapper>
-                }
-                {/* <ReactBnbGallery
-                    show={viewerIsOpen}
-                    photos={photos}
-                    onClose={closeLightbox}
-                /> */}
-                {/* <ModalGateway>
-                    {viewerIsOpen ? (
-                        <Modal onClose={closeLightbox}>
-                            <Carousel
-                                currentIndex={currentImage}
-                                views={value.map(x => ({
-                                    ...x,
-                                    srcset: x.srcSet,
-                                    caption: x.title
-                                }))}
-                            />
-                        </Modal>
-                    ) : null}
-                </ModalGateway> */}
-            </>
+                <SRLWrapper>
+                    {
+                        photos.map((p, idx) => (
+                            <img src={p.src} alt={p.caption} />
+                        ))
+                    }
+                </SRLWrapper>
+            </div>
         );
     },
 }
