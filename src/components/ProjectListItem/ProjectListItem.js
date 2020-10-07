@@ -56,7 +56,7 @@ const ProjectListItem = ({ project }) => {
         <>
             <Grid rows="1fr 1fr" columns="1fr" className={classes.containerGrid} onClick={toggleOpenDetails}>
                 <Cell className={clsx("horizontal-align", classes.projectImageCell)}>
-                    <img src={`/assets/images/projects/${title}.png`} alt={`${title}-logo`} className={classes.projectLogo} />
+                    <img src={`/assets/images/projects/${title}/logo.png`} alt={`${title}-logo`} className={classes.projectLogo} />
                 </Cell>
                 <Cell className={clsx("horizontal-align", classes.projectTextCell)}>
                     <Grid columns="1fr" rows="auto 1fr" className={classes.projectTextGrid}>

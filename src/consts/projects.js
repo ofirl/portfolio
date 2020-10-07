@@ -76,6 +76,68 @@ export const projects = [
             //         'bullet6',
             //     ]
             // },
+            {
+                type: 'Gallery',
+                direction: 'rows',
+                size: 2,
+                value: [
+                    {
+                        src: 'desktop_contact_form.png',
+                        width: 2,
+                        caption: 'Desktop Cotact Form'
+                    },
+                    {
+                        src: 'desktop_landing.png',
+                        width: 2,
+                        caption: 'Desktop Landing Page'
+                    },
+                    {
+                        src: 'desktop_selected_details.png',
+                        width: 2,
+                        caption: 'Desktop Selected Details'
+                    },
+                    {
+                        src: 'mobile_about.png',
+                        height: 2,
+                        caption: 'Mobile About'
+                    },
+                    {
+                        src: 'mobile_filter.png',
+                        height: 2,
+                        caption: 'Mobile Filter'
+                    },
+                    {
+                        src: 'mobile_landing.png',
+                        height: 2,
+                        caption: 'Mobile Landing Page'
+                    },
+                    {
+                        src: 'mobile_layer_picker.png',
+                        height: 2,
+                        caption: 'Mobile Layer Picker'
+                    },
+                    {
+                        src: 'mobile_menu.png',
+                        height: 2,
+                        caption: 'Mobile Menu'
+                    },
+                    {
+                        src: 'mobile_select.png',
+                        height: 2,
+                        caption: 'Mobile Selcted'
+                    },
+                    {
+                        src: 'mobile_selected_details.png',
+                        height: 2,
+                        caption: 'Mobile Selcted Details'
+                    },
+                    {
+                        src: 'mobile_selected_minimized.png',
+                        height: 2,
+                        caption: 'Mobile SelectedMinimized'
+                    },
+                ]
+            }
         ],
     },
     {

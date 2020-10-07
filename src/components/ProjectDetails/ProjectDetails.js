@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+
+import { Cell, Grid } from 'styled-css-grid';
+import clsx from 'clsx';
 
 import { AppBar, Dialog, IconButton, makeStyles, Paper, Toolbar, Typography } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
 
-import { Cell, Grid } from 'styled-css-grid';
+import Gallery from "react-photo-gallery";
+// import Carousel, { Modal, ModalGateway } from "react-images";
+import ReactBnbGallery from 'react-bnb-gallery';
+
 import { Spring } from 'react-spring/renderprops';
+
 import useBreakpoint from '../../customHooks/useBreakPoint';
-import clsx from 'clsx';
+
+import 'react-bnb-gallery/dist/style.css'
 
 const useStyles = makeStyles(theme => ({
     dialogRoot: {
@@ -114,7 +122,54 @@ const detailComponents = {
                 </ul>
             </div>
         );
-    }
+    },
+    Gallery: ({ value, size, direction, projectTitle }) => {
+        const [currentImage, setCurrentImage] = useState(0);
+        const [viewerIsOpen, setViewerIsOpen] = useState(false);
+
+        const openLightbox = useCallback((event, { photo, index }) => {
+            setCurrentImage(index);
+            setViewerIsOpen(true);
+        }, []);
+
+        const closeLightbox = () => {
+            setCurrentImage(0);
+            setViewerIsOpen(false);
+        };
+
+        const photos = value.map(v => ({
+            height: 1,
+            width: 1,
+            ...v,
+            src: `/assets/images/projects/${projectTitle}/${v.src}`,
+            photo: `/assets/images/projects/${projectTitle}/${v.src}`,
+        }));
+
+        return (
+            <>
+                <Gallery photos={photos} onClick={openLightbox} />
+                <ReactBnbGallery
+                    show={viewerIsOpen}
+                    photos={photos}
+                    onClose={closeLightbox}
+                />
+                {/* <ModalGateway>
+                    {viewerIsOpen ? (
+                        <Modal onClose={closeLightbox}>
+                            <Carousel
+                                currentIndex={currentImage}
+                                views={value.map(x => ({
+                                    ...x,
+                                    srcset: x.srcSet,
+                                    caption: x.title
+                                }))}
+                            />
+                        </Modal>
+                    ) : null}
+                </ModalGateway> */}
+            </>
+        );
+    },
 }
 
 const ProjectDetails = ({ open, project, onClose }) => {
@@ -217,7 +272,7 @@ const ProjectDetails = ({ open, project, onClose }) => {
                     {
                         project.description.map(({ type, ...others }, idx) => {
                             let Comp = detailComponents[type];
-                            return <Comp key={idx} {...others} />;
+                            return <Comp key={idx} projectTitle={project.title} {...others} />;
                         })
                     }
                 </Grid>
