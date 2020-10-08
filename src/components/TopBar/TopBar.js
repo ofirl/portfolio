@@ -38,15 +38,23 @@ const TopBar = () => {
 
     let classes = useStyles({ ...indicatorProps });
 
-    const tabs = useMemo(() => ({
-        [routePaths.technologies]: technologiesCellRef,
-        [routePaths.timeline]: projectsCellRef,
-    }), []);
+    const tabs = useMemo(() => ([
+        {
+            path: routePaths.technologies,
+            ref: technologiesCellRef,
+        },
+        {
+            path: routePaths.timeline,
+            ref: projectsCellRef,
+        }
+    ]), []);
 
     useEffect(() => {
-        let currentTab = tabs[location.pathname];
-        if (!currentTab || !currentTab.current)
+        let currentTab = tabs.find(t => location.pathname.startsWith(t.path));
+        if (!currentTab || !currentTab.ref.current)
             return;
+
+        currentTab = currentTab.ref;
 
         setIndicatorProps({
             indicatorWidth: currentTab.current.offsetWidth,

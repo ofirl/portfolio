@@ -4,6 +4,7 @@ const highlights = {
 
 export const projects = [
     {
+        key: 'shopndine',
         title: 'ShopNDine',
         timeline: 'Personal',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS'],
@@ -141,18 +142,21 @@ export const projects = [
         ],
     },
     {
+        key: 'timefy',
         title: 'Timefy',
         timeline: 'Personal',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS'],
         description: [],
     },
     {
+        key: 'managementportal',
         title: 'Management Portal',
         timeline: 'Navy',
         technologies: ['IIS', 'React'],
         description: [],
     },
     {
+        key: 'gantt',
         title: 'Gantt',
         timeline: 'Navy',
         technologies: ['React'],

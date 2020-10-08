@@ -9,7 +9,31 @@
         <lastmod>2020-10-06</lastmod>
     </url>
     <url>
+        <loc>https://ofirl.com/technologies/react</loc>
+        <lastmod>2020-10-08</lastmod>
+    </url>
+    <url>
+        <loc>https://ofirl.com/technologies/nodejs</loc>
+        <lastmod>2020-10-08</lastmod>
+    </url>
+    <url>
+        <loc>https://ofirl.com/technologies/express</loc>
+        <lastmod>2020-10-08</lastmod>
+    </url>
+    <url>
+        <loc>https://ofirl.com/technologies/mongodb</loc>
+        <lastmod>2020-10-08</lastmod>
+    </url>
+    <url>
         <loc>https://ofirl.com/timeline</loc>
         <lastmod>2020-10-06</lastmod>
+    </url>
+    <url>
+        <loc>https://ofirl.com/timeline/navy</loc>
+        <lastmod>2020-10-08</lastmod>
+    </url>
+    <url>
+        <loc>https://ofirl.com/timeline/personal</loc>
+        <lastmod>2020-10-08</lastmod>
     </url>
 </urlset>

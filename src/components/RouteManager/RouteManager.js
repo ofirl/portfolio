@@ -88,10 +88,12 @@ const RouteManager = () => {
             if (location.pathname === routePaths.landingPage || prevLocation.current === routePaths.landingPage)
                 return { wait: 0, opacity: 0, position: 'absolute', left: '0em', top: '0em' };
 
-            if (prevLocation.current === routePaths.timeline)
-                return { wait: 0, opacity: 1, position: 'absolute', left: '-20em', top: '0em' };
-            if (prevLocation.current === routePaths.technologies)
-                return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em' };
+            if (prevLocation.current) {
+                if (prevLocation.current.startsWith(routePaths.timeline))
+                    return { wait: 0, opacity: 1, position: 'absolute', left: '-20em', top: '0em' };
+                if (prevLocation.current.startsWith(routePaths.technologies))
+                    return { wait: 0, opacity: 1, position: 'absolute', left: '20em', top: '0em' };
+            }
         },
         enter: item => {
             if (location.pathname === routePaths.landingPage || prevLocation.current === routePaths.landingPage)
@@ -103,9 +105,9 @@ const RouteManager = () => {
             if (location.pathname === routePaths.landingPage || prevLocation.current === routePaths.landingPage)
                 return { wait: 0, opacity: 0 };
 
-            if (prevLocation.current === routePaths.timeline)
+            if (prevLocation.current.startsWith(routePaths.timeline))
                 return { wait: 0, opacity: 0, position: 'absolute', left: '20em' };
-            if (prevLocation.current === routePaths.technologies)
+            if (prevLocation.current.startsWith(routePaths.technologies))
                 return { wait: 0, opacity: 0, position: 'absolute', left: '-20em' };
         },
         config: animationSpringConfig,
@@ -221,13 +223,13 @@ const RouteManager = () => {
                         contentTransitions.map(({ item, props, key }) => (
                             <animated.div key={key} className={classes.contentContainer} style={props}>
                                 <Switch location={item}>
-                                    <Route path={routePaths.timeline}>
+                                    <Route path={routePaths.timeline + "/:node?"}>
                                         <ProjectsPage />
                                     </Route>
-                                    <Route path={routePaths.technologies}>
+                                    <Route path={routePaths.technologies + "/:node?"}>
                                         <Technologies />
                                     </Route>
-                                    <Route exact path={routePaths.landingPage}>
+                                    <Route path={routePaths.landingPage}>
                                         <LandingPage />
                                     </Route>
                                 </Switch>

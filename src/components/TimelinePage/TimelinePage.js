@@ -4,10 +4,12 @@ import ProjectListItem from '../ProjectListItem/ProjectListItem';
 import PageTemplate from '../PageTemplate/PageTemplate';
 
 import { projects } from '../../consts/projects';
+import { routePaths } from '../../utils/animationUtils';
 
 const ProjectPage = () => {
     const nodes = [
         {
+            key: 'navy',
             title: 'Navy',
             image: "/assets/images/logos/navy.png",
             description: [
@@ -19,6 +21,7 @@ const ProjectPage = () => {
             ]
         },
         {
+            key: 'personal',
             title: 'Personal',
             image: "/assets/images/logos/personalProjects.png",
             description: [
@@ -29,7 +32,7 @@ const ProjectPage = () => {
     ];
 
     return (
-        <PageTemplate nodes={nodes} swiperItems={projects} swiperFilterKey={'timeline'} swiperItemComponent={ProjectListItem} />
+        <PageTemplate nodes={nodes} swiperItems={projects} swiperFilterKey={'timeline'} swiperItemComponent={ProjectListItem} pagePath={routePaths.timeline} />
     );
 }
 

@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
+import { useParams } from 'react-router';
+
 import { makeStyles, Typography } from '@material-ui/core';
 
 import { Cell, Grid } from 'styled-css-grid';
@@ -71,8 +73,10 @@ const getPageLayout = (breakpoint) => {
         return layouts.medium;
 };
 
-const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent: SwiperItemComponent }) => {
+const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent: SwiperItemComponent, pagePath }) => {
     let breakpoint = useBreakpoint("index");
+
+    let { node: defaultSelectedNode } = useParams();
 
     let { data, setData } = useContext(backgroundDataContext);
 
@@ -82,8 +86,17 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
     let classes = useStyles({ breakpointWidth: breakpoint.width });
 
     useEffect(() => {
-        if (data.currentNodeIdx !== 0)
-            setData({ currentNode: nodes[0], currentNodeIdx: 0 });
+        if (data.currentNodeIdx === 0)
+            return;
+
+        let currentNodeIndex;
+        if (defaultSelectedNode == null)
+            currentNodeIndex = 0;
+        else
+            currentNodeIndex = nodes.findIndex(n => n.key === defaultSelectedNode)
+
+        setData({ currentNode: nodes[currentNodeIndex], currentNodeIdx: currentNodeIndex });
+        setSelectedNode(currentNodeIndex);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -168,11 +181,11 @@ const PageTemplate = ({ nodes, swiperItems, swiperFilterKey, swiperItemComponent
                     </Grid>
                 </Cell>
                 <Cell area="projects" className={classes.projectsCell}>
-                    <SwiperContainer swiperKey={selectedNode} currentSlide={currentSlide} handleSlideChange={handleSlideChange}
+                    <SwiperContainer swiperKey={selectedNode.toString()} currentSlide={currentSlide} handleSlideChange={handleSlideChange}
                         goNext={goNext} goPrev={goPrev}>
                         {
                             swiperItems.filter(s => s[swiperFilterKey].includes(nodes[selectedNode].title)).map((p, idx) => (
-                                <SwiperItemComponent key={idx} project={p} />
+                                <SwiperItemComponent key={idx} project={p} closeRedirect={`${pagePath}/${nodes[selectedNode].key}`} />
                             ))
                         }
                     </SwiperContainer>

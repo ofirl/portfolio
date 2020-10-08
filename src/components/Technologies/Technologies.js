@@ -4,10 +4,12 @@ import ProjectListItem from '../ProjectListItem/ProjectListItem';
 import PageTemplate from '../PageTemplate/PageTemplate';
 
 import { projects } from '../../consts/projects';
+import { routePaths } from '../../utils/animationUtils';
 
 const Technologies = () => {
     const nodes = [
         {
+            key: 'react',
             title: 'React',
             image: "/assets/images/logos/react.png",
             description: [
@@ -17,6 +19,7 @@ const Technologies = () => {
             ]
         },
         {
+            key: 'nodejs',
             title: 'NodeJS',
             image: "/assets/images/logos/nodejs.png",
             description: [
@@ -25,6 +28,7 @@ const Technologies = () => {
             ]
         },
         {
+            key: 'express',
             title: 'Express',
             image: "/assets/images/logos/express.png",
             description: [
@@ -33,6 +37,7 @@ const Technologies = () => {
             ]
         },
         {
+            key: 'mongodb',
             title: 'MongoDB',
             image: "/assets/images/logos/mongo.png",
             description: [
@@ -43,7 +48,7 @@ const Technologies = () => {
     ];
 
     return (
-        <PageTemplate nodes={nodes} swiperItems={projects} swiperFilterKey={"technologies"} swiperItemComponent={ProjectListItem} />
+        <PageTemplate nodes={nodes} swiperItems={projects} swiperFilterKey={"technologies"} swiperItemComponent={ProjectListItem} pagePath={routePaths.technologies} />
     );
 }
 

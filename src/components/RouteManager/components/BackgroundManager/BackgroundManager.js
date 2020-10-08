@@ -81,13 +81,13 @@ const BackgroundManager = ({ prevLocation, location }) => {
             setLandingPageBackground(null);
 
         // technologies
-        if (location.pathname === routePaths.technologies)
+        if (location.pathname.startsWith(routePaths.technologies))
             setTechnologiesBackground(location);
         else
             setTechnologiesBackground(null);
 
         // timeline
-        if (location.pathname === routePaths.timeline)
+        if (location.pathname.startsWith(routePaths.timeline))
             setTimelineBackground(location);
         else
             setTimelineBackground(null);
@@ -139,15 +139,15 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (!prevPath)
                 return { wait: 0, opacity: 0, left: '0em' };
 
-            if (currPath === routePaths.technologies) {
-                if (prevPath === routePaths.timeline)
+            if (currPath.startsWith(routePaths.technologies)) {
+                if (prevPath.startsWith(routePaths.timeline))
                     return { wait: 0, opacity: 0, left: '-20em' };
             }
 
             return { wait: 0, opacity: 0, left: '0em' };
         },
         enter: item => {
-            if (currPath === routePaths.technologies) {
+            if (currPath.startsWith(routePaths.technologies)) {
                 if (prevPath === routePaths.landingPage)
                     return [{ wait: 1 }, { wait: 0, opacity: 1, left: '0em' }];
 
@@ -160,7 +160,7 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (currPath === routePaths.landingPage)
                 return { wait: 0, opacity: 0, left: '0em' };
 
-            if (currPath === routePaths.timeline)
+            if (currPath.startsWith(routePaths.timeline))
                 return { wait: 0, opacity: 0, left: '-20em' };
 
             return { wait: 0, opacity: 0 };
@@ -174,15 +174,15 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (!prevPath)
                 return { wait: 0, opacity: 0, left: '0em' };
 
-            if (currPath === routePaths.timeline) {
-                if (prevPath === routePaths.technologies)
+            if (currPath.startsWith(routePaths.timeline)) {
+                if (prevPath.startsWith(routePaths.technologies))
                     return { wait: 0, opacity: 0, left: '20em' };
             }
 
             return { wait: 0, opacity: 0, left: '0em' };
         },
         enter: item => {
-            if (currPath === routePaths.timeline) {
+            if (currPath.startsWith(routePaths.timeline)) {
                 if (prevPath === routePaths.landingPage)
                     return [{ wait: 1 }, { wait: 0, opacity: 1, left: '0em' }];
 
@@ -195,7 +195,7 @@ const BackgroundManager = ({ prevLocation, location }) => {
             if (currPath === routePaths.landingPage)
                 return { wait: 0, opacity: 0, left: '0em' };
 
-            if (currPath === routePaths.technologies)
+            if (currPath.startsWith(routePaths.technologies))
                 return { wait: 0, opacity: 0, left: '20em' };
 
             return { wait: 0, opacity: 0 };

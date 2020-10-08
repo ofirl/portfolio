@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 
 import { Button, makeStyles } from '@material-ui/core';
+
 import { Cell, Grid } from 'styled-css-grid';
 import clsx from 'clsx';
+
 import useBreakpoint from '../../../../customHooks/useBreakPoint';
 
 const useStyles = makeStyles(theme => ({
@@ -108,7 +110,7 @@ const NodeMenu = ({ nodes, selectedNode, handleNodeClick }) => {
             {
                 nodes.map((n, idx) => (
                     <Cell key={idx}>
-                        <Node selected={selectedNode === idx} title={n.title} image={n.image} onClick={() => handleNodeClick(idx)} />
+                        <Node selected={selectedNode.toString() === idx.toString()} title={n.title} image={n.image} onClick={() => handleNodeClick(idx)} />
                     </Cell>
                 ))
             }

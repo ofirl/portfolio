@@ -15,6 +15,7 @@ import { Spring } from 'react-spring/renderprops';
 import useBreakpoint from '../../customHooks/useBreakPoint';
 
 import 'react-bnb-gallery/dist/style.css'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     dialogRoot: {
@@ -153,7 +154,7 @@ const detailComponents = {
                 <SRLWrapper>
                     {
                         photos.map((p, idx) => (
-                            <img src={p.src} alt={p.caption} />
+                            <img key={idx} src={p.src} alt={p.caption} />
                         ))
                     }
                 </SRLWrapper>
@@ -162,7 +163,7 @@ const detailComponents = {
     },
 }
 
-const ProjectDetails = ({ open, project, onClose }) => {
+const ProjectDetails = ({ open, project, closeRedirect }) => {
     let { width: breakpointWidth } = useBreakpoint("index");
 
     let [headerStyle, setHeaderStyle] = useState({
@@ -221,12 +222,14 @@ const ProjectDetails = ({ open, project, onClose }) => {
     let classes = useStyles();
 
     return (
-        <Dialog onScroll={(e) => updateStyle(e.target.scrollTop)} fullScreen open={open} onClose={onClose} classes={{ paper: classes.dialogRoot }}>
+        <Dialog onScroll={(e) => updateStyle(e.target.scrollTop)} fullScreen open={open} classes={{ paper: classes.dialogRoot }}>
             <Paper classes={{ root: classes.mainPaper }}>
                 <AppBar position="sticky" classes={{ root: clsx(classes.dialogAppBarRoot, { [classes.disableBoxShadow]: headerStyle.scrollPosition < 200 }) }}>
                     <Toolbar classes={{ root: classes.toolbarRoot }}>
-                        <IconButton edge="start" color="inherit" onClick={onClose}>
-                            <CloseIcon />
+                        <IconButton edge="start" color="inherit">
+                            <Link to={closeRedirect}>
+                                <CloseIcon />
+                            </Link>
                         </IconButton>
                     </Toolbar>
                     <Spring to={headerStyle.technologies}>
