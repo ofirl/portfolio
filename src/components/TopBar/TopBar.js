@@ -29,9 +29,24 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const TopBarLink = ({ pathname, to, title }) => {
+    const typographyElement = (
+        <Typography variant="body2">
+            {title}
+        </Typography>
+    );
+
+    return pathname.startsWith(to) ?
+        typographyElement
+        :
+        <Link to={to}>
+            {typographyElement}
+        </Link>
+}
+
 const TopBar = () => {
     let [indicatorProps, setIndicatorProps] = useState({});
-    let location = useLocation();
+    let { pathname } = useLocation();
 
     let technologiesCellRef = useRef();
     let projectsCellRef = useRef();
@@ -50,7 +65,7 @@ const TopBar = () => {
     ]), []);
 
     useEffect(() => {
-        let currentTab = tabs.find(t => location.pathname.startsWith(t.path));
+        let currentTab = tabs.find(t => pathname.startsWith(t.path));
         if (!currentTab || !currentTab.ref.current)
             return;
 
@@ -60,26 +75,16 @@ const TopBar = () => {
             indicatorWidth: currentTab.current.offsetWidth,
             indicatorOffset: currentTab.current.offsetLeft
         });
-    }, [location.pathname, tabs]);
+    }, [pathname, tabs]);
 
     return (
         <Grid gap="1em" rows="1fr" columns="5em auto auto 1fr auto auto auto auto" areas={[". technologies projects . github linkedin mail resume"]} className={classes.topBarGrid}>
-            <div className={classes.pageIndicator}>
-
-            </div>
+            <div className={classes.pageIndicator} />
             <Cell ref={technologiesCellRef} area="technologies" className={clsx('vertical-align', classes.topBarLink)}>
-                <Link to={routePaths.technologies}>
-                    <Typography variant="body2">
-                        Technologies
-                    </Typography>
-                </Link>
+                <TopBarLink pathname={pathname} title="Technologies" to={routePaths.technologies} />
             </Cell>
             <Cell ref={projectsCellRef} area="projects" className={clsx('vertical-align', classes.topBarLink)}>
-                <Link to={routePaths.timeline} className={classes.topBarLink}>
-                    <Typography variant="body2">
-                        Timeline
-                    </Typography>
-                </Link>
+                <TopBarLink pathname={pathname} title="Timeline" to={routePaths.timeline} />
             </Cell>
         </Grid>
     );

@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProjectListItem = ({ project, closeRedirect }) => {
-    let { title, technologies } = project;
+    let { key, title, technologies } = project;
     let breakpoint = useBreakpoint("index");
 
     let classes = useStyles({ breakpointWidth: breakpoint.width, breakpointHeight: breakpoint.height });
@@ -49,7 +49,7 @@ const ProjectListItem = ({ project, closeRedirect }) => {
             <Link to={`${closeRedirect}/project/${project.key}`}>
                 <Grid rows="1fr 1fr" columns="1fr" className={classes.containerGrid}>
                     <Cell className={clsx("horizontal-align", classes.projectImageCell)}>
-                        <img src={`/assets/images/projects/${title}/logo.png`} alt={`${title}-logo`} className={classes.projectLogo} />
+                        <img src={`/assets/images/projects/${key}/logo.png`} alt={`${key}-logo`} className={classes.projectLogo} />
                     </Cell>
                     <Cell className={clsx("horizontal-align", classes.projectTextCell)}>
                         <Grid columns="1fr" rows="auto 1fr" className={classes.projectTextGrid}>
@@ -65,7 +65,7 @@ const ProjectListItem = ({ project, closeRedirect }) => {
             </Link>
             <Router>
                 <Route path={`/:tab?/:node?/project/${project.key}`}>
-                    <ProjectDetails open={true} project={project} closeRedirect={closeRedirect} />
+                    <ProjectDetails project={project} closeRedirect={closeRedirect} />
                 </Route>
             </Router>
         </>

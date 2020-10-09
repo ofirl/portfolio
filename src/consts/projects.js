@@ -5,6 +5,7 @@ const highlights = {
 export const projects = [
     {
         key: 'shopndine',
+        url: 'https://shopndine.ofirl.com',
         title: 'ShopNDine',
         timeline: 'Personal',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS'],

@@ -1,11 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { Link } from 'react-router-dom';
 
 import { Cell, Grid } from 'styled-css-grid';
 import clsx from 'clsx';
 
-import { AppBar, Dialog, IconButton, makeStyles, Paper, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, Dialog, IconButton, makeStyles, Paper, Toolbar, Typography } from '@material-ui/core';
 
-import CloseIcon from '@material-ui/icons/Close';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import Gallery from "react-photo-gallery";
 import { SRLWrapper, useLightbox } from 'simple-react-lightbox'
@@ -15,7 +17,6 @@ import { Spring } from 'react-spring/renderprops';
 import useBreakpoint from '../../customHooks/useBreakPoint';
 
 import 'react-bnb-gallery/dist/style.css'
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     dialogRoot: {
@@ -41,6 +42,12 @@ const useStyles = makeStyles(theme => ({
     },
     toolbarRoot: {
         minHeight: '4em',
+    },
+    toolbarGrid: {
+        width: '100%',
+        '[class*="Grid"]': {
+            height: '100%',
+        },
     },
     projectLogo: {
         position: 'absolute',
@@ -130,10 +137,17 @@ const detailComponents = {
             </div>
         );
     },
-    Gallery: ({ value, size, direction, projectTitle }) => {
-        const { openLightbox } = useLightbox();
+    Gallery: ({ value, projectKey }) => {
+        const { openLightbox, closeLightbox } = useLightbox();
 
         let classes = useStyles();
+
+        useEffect(() => {
+            return () => {
+                if (!window.location.pathname.endsWith(projectKey))
+                    closeLightbox();
+            };
+        }, [closeLightbox, projectKey]);
 
         const openViewer = useCallback((event, { photo, index }) => {
             openLightbox((index));
@@ -144,7 +158,7 @@ const detailComponents = {
             height: 1,
             width: 1,
             ...v,
-            src: `/assets/images/projects/${projectTitle}/${v.src}`,
+            src: `/assets/images/projects/${projectKey}/${v.src}`,
             caption: v.caption || "",
         }));
 
@@ -163,7 +177,7 @@ const detailComponents = {
     },
 }
 
-const ProjectDetails = ({ open, project, closeRedirect }) => {
+const ProjectDetails = ({ project, closeRedirect }) => {
     let { width: breakpointWidth } = useBreakpoint("index");
 
     let [headerStyle, setHeaderStyle] = useState({
@@ -222,15 +236,27 @@ const ProjectDetails = ({ open, project, closeRedirect }) => {
     let classes = useStyles();
 
     return (
-        <Dialog onScroll={(e) => updateStyle(e.target.scrollTop)} fullScreen open={open} classes={{ paper: classes.dialogRoot }}>
+        <Dialog onScroll={(e) => updateStyle(e.target.scrollTop)} fullScreen open={true} classes={{ paper: classes.dialogRoot }}>
             <Paper classes={{ root: classes.mainPaper }}>
                 <AppBar position="sticky" classes={{ root: clsx(classes.dialogAppBarRoot, { [classes.disableBoxShadow]: headerStyle.scrollPosition < 200 }) }}>
                     <Toolbar classes={{ root: classes.toolbarRoot }}>
-                        <IconButton edge="start" color="inherit">
-                            <Link to={closeRedirect}>
-                                <CloseIcon />
-                            </Link>
-                        </IconButton>
+                        <Grid columns="auto 1fr auto" rows="1fr" areas={["back . link"]} className={classes.toolbarGrid}>
+                            <Cell area="back" className="vertical-align">
+                                <IconButton color="inherit">
+                                    <Link to={closeRedirect}>
+                                        <ArrowBackIosIcon />
+                                    </Link>
+                                </IconButton>
+                            </Cell>
+                            {
+                                project.url &&
+                                <Cell area="link" className="vertical-align">
+                                    <Button variant="outlined" color="inherit" href={project.url} target="_blank">
+                                        Visit Site
+                                </Button>
+                                </Cell>
+                            }
+                        </Grid>
                     </Toolbar>
                     <Spring to={headerStyle.technologies}>
                         {
@@ -265,7 +291,7 @@ const ProjectDetails = ({ open, project, closeRedirect }) => {
                     {
                         project.description.map(({ type, ...others }, idx) => {
                             let Comp = detailComponents[type];
-                            return <Comp key={idx} projectTitle={project.title} {...others} />;
+                            return <Comp key={idx} projectKey={project.key} {...others} />;
                         })
                     }
                 </Grid>
