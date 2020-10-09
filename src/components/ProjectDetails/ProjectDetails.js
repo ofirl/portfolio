@@ -282,7 +282,7 @@ const ProjectDetails = ({ project, closeRedirect }) => {
                     <Spring to={headerStyle.logo}>
                         {
                             (logoStyleAnimated) =>
-                                <img src={`/assets/images/projects/${project.title}/logo.png`} alt={`${project.title}-logo`} style={{ ...logoStyleAnimated }} className={classes.projectLogo} />
+                                <img src={`/assets/images/projects/${project.key}/logo.png`} alt={`${project.title}-logo`} style={{ ...logoStyleAnimated }} className={classes.projectLogo} />
                         }
                     </Spring>
                 </AppBar>
