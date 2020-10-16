@@ -251,9 +251,8 @@ export const projects = [
                     `My second challenge was to connect to SAP Logon, the desktop application we were using, through the browser. 
                     I realized that the portal should be opened in chrome since the version of InternetExplorer in our computers was an old version.`,
                     `The solution I came up with was to open a generated link with IE which was done using registry magic, 
-                    meaning links that would start with the prefix that I chose, 
-                    and to run a command that opened those links in IE in order to get a ActiveX support (which chrome doesn’t have) 
-                    and connect to SAP through the ROT (Running Object Table).
+                    meaning links that would start with the prefix that I chose would run a command that opened those links in IE 
+                    in order to get a ActiveX support (which chrome doesn’t have) and connect to SAP through the ROT (Running Object Table).
                     `
                 ]
             }
