@@ -66,6 +66,18 @@ export const projects = [
                     The application checks for an update every time it starts and if there is, the server extracts only the data that was changed since the last update check.`
                 ]
             },
+            {
+                type: 'Text',
+                value: [
+                    `Moreover, I installed Matomo and implemented it across the site. 
+                    With the help of this tool, I was able to monitor the common statistics, such as CTR (Click Through Rate), 
+                    and also to monitor the business related actions the users did. 
+                    The data that is being collected can be filtered by the day, week, location, device type and all the other available metrics. 
+                    Using those statistics led me to interesting insights such as what is the average distance people are searching in, what business is the most popular, 
+                    the call/opened in google maps rate etc. 
+                    `
+                ]
+            },
             // {
             //     type: 'List',
             //     // highlight: highlights.green,
@@ -154,7 +166,84 @@ export const projects = [
         title: 'Management Portal',
         timeline: 'Navy',
         technologies: ['IIS', 'React'],
-        description: [],
+        description: [
+            {
+                type: 'Text',
+                highlight: highlights.green,
+                value: [
+                    `ManagementPortal is an application whose purpose is making repetitive tasks easier for me and for my development team through automation.`,
+                    `There are certain actions that my team and I perform on a daily basis such as adding users to our system. 
+                    Each action does not take a lot of time in itself, but when there is a need to repeat those actions for a large number of times, 
+                    it takes a considerable amount of our time, hence the reason this portal was created.
+                    `
+                ]
+            },
+            {
+                type: 'Text',
+                value: `This application was the first React application I developed.`,
+            },
+            {
+                type: 'Header',
+                value: `My Contribution`,
+            },
+            {
+                type: 'Text',
+                value: [
+                    `I am the one who came up with the idea after spotting the need for an application like this to save time for me and my team. 
+                    I designed the application and provided ideas for all the various scripts that can be found in the portal which later on, I also wrote.
+                    `
+                ],
+            },
+            {
+                type: 'Text',
+                value: [
+                    `At first, I made a quick POC (Proof Of Concept) using static HTML/CSS with Bootstrap and presented it to my team.`,
+                    `Later, I developed it in React and implemented it on our servers and systems.`,
+                ],
+            },
+            {
+                type: 'Header',
+                value: `Interesting Features`
+            },
+            {
+                type: 'Text',
+                value: `I implemented a user system, in order to prevent unauthorized use of this portal.`,
+            },
+            {
+                type: 'Text',
+                value: [
+                    `There is a  history section, in order to see who ran a certain script, at what time the user ran it and what parameters did they use to run the script with. 
+                    This feature helped us tremendously in various situations.
+                    `
+                ]
+            },
+            {
+                type: 'Header',
+                value: `Unique Challenges`
+            },
+            {
+                type: 'Text',
+                value: [
+                    `The first obstacle was that my automation scripts had to interface with SAP due to the fact that my team is in charge of SAP systems.`,
+                    `After researching the subject, I decided to record basic VBS scripts (Visual Basic Script) using SAP built-in tools 
+                    and convert them to JavaScript to be used in the portal.`,
+                    `This method saved me time on writing the scripts since the built-in tools could record everything 
+                    and the conversion between VBS and JavaScript is basically just different syntax so it was easy to convert and start adding whatever I needed.`
+                ]
+            },
+            {
+                type: 'Text',
+                value: [
+                    `My second challenge was to connect to SAP Logon, the desktop application we were using, through the browser. 
+                    I realized that the portal should be opened in chrome since the version of InternetExplorer in our computers was an old version.`,
+                    `The solution I came up with was to open a generated link with IE which was done using registry magic, 
+                    meaning links that would start with the prefix that I chose, 
+                    and to run a command that opened those links in IE in order to get a ActiveX support (which chrome doesn’t have) 
+                    and connect to SAP through the ROT (Running Object Table).
+                    `
+                ]
+            }
+        ],
     },
     {
         key: 'gantt',
