@@ -208,7 +208,7 @@ const ProjectDetails = ({ project, closeRedirect }) => {
         let newCalculatedStyle = {};
 
         const calcStyleLinear = (min, max, units) => `${min + (max - min) * (1 - effectiveScrollPositionY / 200)}${units}`;
-        const calcStyleCubicQuadraticBezier = (min, mid, max, units) => `${mid + Math.pow((effectiveScrollPositionY / 200), 2)*(min - mid) + Math.pow((1 - effectiveScrollPositionY / 200), 2)*(max - mid)}${units}`;
+        const calcStyleCubicQuadraticBezier = (min, mid, max, units) => `${mid + Math.pow((effectiveScrollPositionY / 200), 2) * (min - mid) + Math.pow((1 - effectiveScrollPositionY / 200), 2) * (max - mid)}${units}`;
 
         newCalculatedStyle.scrollPosition = scrollPos;
 
@@ -252,9 +252,9 @@ const ProjectDetails = ({ project, closeRedirect }) => {
                             {
                                 project.url &&
                                 <Cell area="link" className="vertical-align">
-                                    <Button variant="outlined" color="inherit" href={project.url} target="_blank">
-                                        Visit Site
-                                </Button>
+                                    <Button variant="outlined" color="inherit" href={project.url.url} target="_blank">
+                                        Visit {project.url.type}
+                                    </Button>
                                 </Cell>
                             }
                         </Grid>

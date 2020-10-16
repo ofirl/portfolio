@@ -5,7 +5,10 @@ const highlights = {
 export const projects = [
     {
         key: 'shopndine',
-        url: 'https://shopndine.ofirl.com',
+        url: {
+            type: 'Site',
+            url: 'https://shopndine.ofirl.com',
+        },
         title: 'ShopNDine',
         timeline: 'Personal',
         technologies: ['MongoDB', 'Express', 'React', 'NodeJS'],
@@ -163,6 +166,10 @@ export const projects = [
     },
     {
         key: 'managementportal',
+        url: {
+            type: 'Demo',
+            url: 'https://managementportal.ofirl.com',
+        },
         title: 'Management Portal',
         timeline: 'Navy',
         technologies: ['IIS', 'React'],
