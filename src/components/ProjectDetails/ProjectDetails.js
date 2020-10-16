@@ -207,27 +207,28 @@ const ProjectDetails = ({ project, closeRedirect }) => {
 
         let newCalculatedStyle = {};
 
-        const calcStyle = (min, max, units) => `${min + (max - min) * (1 - effectiveScrollPositionY / 200)}${units}`
+        const calcStyleLinear = (min, max, units) => `${min + (max - min) * (1 - effectiveScrollPositionY / 200)}${units}`;
+        const calcStyleCubicQuadraticBezier = (min, mid, max, units) => `${mid + Math.pow((effectiveScrollPositionY / 200), 2)*(min - mid) + Math.pow((1 - effectiveScrollPositionY / 200), 2)*(max - mid)}${units}`;
 
         newCalculatedStyle.scrollPosition = scrollPos;
 
         newCalculatedStyle.logo = {
-            top: calcStyle(0.5, 4, "em"),
-            left: calcStyle(0, 50, "%"),
-            transform: `translateX(${calcStyle(125, -50, "%")})`,
-            height: calcStyle(3, 10, "em"),
-            width: calcStyle(3, 10, "em"),
+            top: calcStyleLinear(0.5, 4, "em"),
+            left: calcStyleCubicQuadraticBezier(0, -10, 50, "%"),
+            transform: `translateX(${calcStyleLinear(125, -50, "%")})`,
+            height: calcStyleLinear(3, 10, "em"),
+            width: calcStyleLinear(3, 10, "em"),
         };
 
         newCalculatedStyle.title = {
-            top: calcStyle(1.25, 4.5, "em"),
-            left: calcStyle(7.5, 0.5, "em"),
-            fontSize: calcStyle(1, 3, "rem"),
+            top: calcStyleCubicQuadraticBezier(1.25, 5, 4.5, "em"),
+            left: calcStyleLinear(7.5, 0.5, "em"),
+            fontSize: calcStyleLinear(1, 3, "rem"),
         };
 
         newCalculatedStyle.technologies = {
-            top: calcStyle(1.25, breakpointWidth === 0 ? 18 : 16, "em"),
-            opacity: calcStyle(-1, 1, "")
+            top: calcStyleLinear(1.25, breakpointWidth === 0 ? 18 : 16, "em"),
+            opacity: calcStyleLinear(-1, 1, "")
         };
 
         setHeaderStyle(newCalculatedStyle);

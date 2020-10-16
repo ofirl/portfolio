@@ -172,6 +172,12 @@ export const projects = [
                 highlight: highlights.green,
                 value: [
                     `ManagementPortal is an application whose purpose is making repetitive tasks easier for me and for my development team through automation.`,
+                ]
+            },
+            {
+                type: 'Text',
+                highlight: highlights.green,
+                value: [
                     `There are certain actions that my team and I perform on a daily basis such as adding users to our system. 
                     Each action does not take a lot of time in itself, but when there is a need to repeat those actions for a large number of times, 
                     it takes a considerable amount of our time, hence the reason this portal was created.
@@ -180,6 +186,7 @@ export const projects = [
             },
             {
                 type: 'Text',
+                highlight: highlights.green,
                 value: `This application was the first React application I developed.`,
             },
             {
