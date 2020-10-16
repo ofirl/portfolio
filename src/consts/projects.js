@@ -168,7 +168,7 @@ export const projects = [
         key: 'managementportal',
         url: {
             type: 'Demo',
-            url: 'https://managementportal.ofirl.com',
+            url: 'https://management-portal.ofirl.com',
         },
         title: 'Management Portal',
         timeline: 'Navy',
