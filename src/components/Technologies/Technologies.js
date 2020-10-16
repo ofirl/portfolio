@@ -24,7 +24,7 @@ const Technologies = () => {
             title: 'NodeJS',
             image: "/assets/images/logos/nodejs.png",
             description: [
-                'I am very experienced with NodeJS as i have used it as the backend for the majority of my projects.',
+                'I am very experienced with NodeJS as i have used it for the backend in the majority of my projects.',
             ]
         },
         {

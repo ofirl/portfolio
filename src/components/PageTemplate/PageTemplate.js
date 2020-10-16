@@ -33,7 +33,6 @@ const useStyles = makeStyles(theme => ({
         color: 'white',
     },
     nodeDescriptionTitle: {
-        paddingBottom: '0.5em',
         fontWeight: ({ breakpointWidth }) => breakpointWidth > 1 ? '400' : null,
     },
     nodeDescriptionTextCell: {
