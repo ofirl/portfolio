@@ -62,6 +62,7 @@ const useStyles = makeStyles(theme => ({
         right: '1em',
         zIndex: '1200',
         textAlign: 'right',
+        pointerEvents: 'none',
     },
     detailsContentGrid: {
         paddingLeft: '0.5em',
