@@ -255,6 +255,73 @@ export const projects = [
                     in order to get a ActiveX support (which chrome doesn’t have) and connect to SAP through the ROT (Running Object Table).
                     `
                 ]
+            },
+            {
+                type: 'Gallery',
+                direction: 'rows',
+                size: 2,
+                value: [
+                    {
+                        src: 'login.png',
+                        width: 2,
+                        caption: 'Login'
+                    },
+                    {
+                        src: 'homepage.png',
+                        width: 2,
+                        caption: 'Homepage'
+                    },
+                    {
+                        src: 'script-input.png',
+                        width: 2,
+                        caption: 'Script Input'
+                    },
+                    {
+                        src: 'script-input-advanced-filter.png',
+                        width: 2,
+                        caption: 'Script Input Advanced Filter'
+                    },
+                    {
+                        src: 'profile-menu.png',
+                        width: 2,
+                        caption: 'Profile Menu'
+                    },
+                    {
+                        src: 'profile-page.png',
+                        width: 2,
+                        caption: 'Profile Page'
+                    },
+                    {
+                        src: 'edit-profile-1.png',
+                        width: 2,
+                        caption: 'Edit Profile 1'
+                    },
+                    {
+                        src: 'edit-profile-2.png',
+                        width: 2,
+                        caption: 'Edit Profile 2'
+                    },
+                    {
+                        src: 'history.png',
+                        width: 2,
+                        caption: 'History Page'
+                    },
+                    {
+                        src: 'history-advanced-filter.png',
+                        width: 2,
+                        caption: 'History Page Advanced Filter'
+                    },
+                    {
+                        src: 'history-item.png',
+                        width: 2,
+                        caption: 'History Item'
+                    },
+                    {
+                        src: 'history-item-advanced-filter.png',
+                        width: 2,
+                        caption: 'History Item Advanced Filter'
+                    },
+                ]
             }
         ],
     },
