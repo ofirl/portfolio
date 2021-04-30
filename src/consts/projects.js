@@ -332,4 +332,92 @@ export const projects = [
         technologies: ['React'],
         description: [],
     },
+    {
+        key: 'vikinger',
+        title: 'Vikinger',
+        timeline: 'Personal',
+        url: {
+            type: 'Site',
+            url: 'https://badger.ofirl.com',
+        },
+        technologies: ['MongoDB', 'Express', 'React', 'NodeJS'],
+        description: [
+            {
+                type: 'Text',
+                highlight: highlights.green,
+                value: [
+                    `Vikinger started out as a TypeScript project and escalated quickly to a full social network with groups, accounts badges, events and much more`,
+                ]
+            },
+            {
+                type: 'Text',
+                highlight: highlights.green,
+                value: `This application is built entirely in TypeScript, front-end and back-end.`,
+            },
+            {
+                type: 'Header',
+                value: `My Contribution`,
+            },
+            {
+                type: 'Text',
+                value: [
+                    `The application is built by me from scratch, the design is heavily inspired from things i saw and liked on Dribbble.
+                    `
+                ],
+            },
+            {
+                type: 'Header',
+                value: 'Interesting Features'
+            },
+            {
+                type: 'Text',
+                value: [
+                    `I implemented an account system so that anyone can write something about themselves if they want.
+                    This comes with a profile page and with a little bit of customization (cover image, etc.) for your own style.
+                    `
+                ],
+            },
+            {
+                type: 'Text',
+                value: [
+                    `I implemented a management system so that admins will have full control over everything and maintainers will have less control,
+                    allowing the admins to get help in managing the site and supervising it.
+                    `
+                ],
+            },
+            {
+                type: 'Text',
+                value: [
+                    `Each account can get badges based on things they do (post a certain amount of stuff,  gets reaction on their posts, etc.),
+                    admins and maintainers can manage the badges on any account.
+                    `
+                ],
+            },
+            {
+                type: 'Text',
+                value: [
+                    `Groups can be public or private and open to everyone or by invitation only, groups can also have group admins and group maintainers.
+                    Groups have their own discussion page.
+                    `
+                ],
+            },
+            // {
+            //     type: 'Gallery',
+            //     direction: 'rows',
+            //     size: 2,
+            //     value: [
+            //         // {
+            //         //     src: 'desktop_contact_form.png',
+            //         //     width: 2,
+            //         //     caption: 'Desktop Cotact Form'
+            //         // },
+            //         // {
+            //         //     src: 'mobile_selected_minimized.png',
+            //         //     height: 2,
+            //         //     caption: 'Mobile Selected Minimized'
+            //         // },
+            //     ]
+            // }
+        ],
+    },
 ];

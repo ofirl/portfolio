@@ -99,7 +99,7 @@ const LandingPage = () => {
                     <Typography variant="body2">
                         Hi,
                         <br />
-                        I am Ofir Levi, A Software Developer with 4+ years of software development experience on various platforms, passionate to build polished, innovative and well-detailed apps with fluid animations to complement the design.
+                        I am Ofir Levi, A Software Developer with 6+ years of software development experience on various platforms, passionate to build polished, innovative and well-detailed apps with fluid animations to complement the design.
                         <br /><br />
                         Checkout my
                         <Link to={routePaths.technologies} className={classes.landingTextLinksContainer}>
