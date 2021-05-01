@@ -346,7 +346,7 @@ export const projects = [
                 type: 'Text',
                 highlight: highlights.green,
                 value: [
-                    `Vikinger started out as a TypeScript project and escalated quickly to a full social network with groups, accounts badges, events and much more`,
+                    `Vikinger started out as a TypeScript project and quickly escalated to a full social network with groups, accounts badges, events and much more`,
                 ]
             },
             {
@@ -401,23 +401,158 @@ export const projects = [
                     `
                 ],
             },
-            // {
-            //     type: 'Gallery',
-            //     direction: 'rows',
-            //     size: 2,
-            //     value: [
-            //         // {
-            //         //     src: 'desktop_contact_form.png',
-            //         //     width: 2,
-            //         //     caption: 'Desktop Cotact Form'
-            //         // },
-            //         // {
-            //         //     src: 'mobile_selected_minimized.png',
-            //         //     height: 2,
-            //         //     caption: 'Mobile Selected Minimized'
-            //         // },
-            //     ]
-            // }
+            {
+                type: 'Gallery',
+                direction: 'rows',
+                size: 2,
+                value: [
+                    {
+                        src: 'login.png',
+                        width: 2,
+                        caption: 'Login',
+                    },
+                    {
+                        src: 'accountHubGroupInvitations.png',
+                        width: 2,
+                        caption: 'Group Invitations',
+                    },
+                    {
+                        src: 'badgesSmallScreen.png',
+                        height: 2,
+                        caption: 'Badges',
+                    },
+                    {
+                        src: 'accountHubManageGroups.png',
+                        width: 2,
+                        caption: 'Manage Groups',
+                    },
+                    {
+                        src: 'accountProfileSmallScreen.png',
+                        height: 2,
+                        caption: 'Account Profile',
+                    },
+                    {
+                        src: 'accountHubNotifications.png',
+                        width: 2,
+                        caption: 'Account Hub Notifications',
+                    },
+                    {
+                        src: 'accountSmallScreen.png',
+                        height: 2,
+                        caption: 'Accounts',
+                    },
+                    {
+                        src: 'accounts.png',
+                        width: 2,
+                        caption: 'Account',
+                    },
+                    {
+                        src: 'searchBarSmallScreen.png',
+                        height: 2,
+                        caption: 'Search Bar',
+                    },
+                    {
+                        src: 'accoutnHubProfileInfo.png',
+                        width: 2,
+                        caption: 'Account Hub Profile',
+                    },
+                    {
+                        src: 'newsfeedSmallScreen.png',
+                        height: 2,
+                        caption: 'Newsfeed',
+                    },
+                    {
+                        src: 'accoutnHubProfileInfo2.png',
+                        width: 2,
+                        caption: 'Account Hub Profile 2',
+                    },
+                    {
+                        src: 'menuSmallScreen.png',
+                        height: 2,
+                        caption: 'Menu',
+                    },
+                    {
+                        src: 'badges.png',
+                        width: 2,
+                        caption: 'Badges',
+                    },
+                    {
+                        src: 'groupDiscussion.png',
+                        width: 2,
+                        caption: 'Group Discussion',
+                    },
+                    {
+                        src: 'groupMembers.png',
+                        width: 2,
+                        caption: 'Group Members',
+                    },
+                    {
+                        src: 'groupProfile.png',
+                        width: 2,
+                        caption: 'Group Profile',
+                    },
+                    {
+                        src: 'groups.png',
+                        width: 2,
+                        caption: 'Groups',
+                    },
+                    {
+                        src: 'manageGroupInfo.png',
+                        width: 2,
+                        caption: 'Manage Group info',
+                    },
+                    {
+                        src: 'manageGroupMembers.png',
+                        width: 2,
+                        caption: 'Manage Groupo Members',
+                    },
+                    {
+                        src: 'manageGroupSettings.png',
+                        width: 2,
+                        caption: 'Manage Group Settings',
+                    },
+                    {
+                        src: 'newsfeed.png',
+                        width: 2,
+                        caption: 'Newsfeed',
+                    },
+                    {
+                        src: 'notificationsWindow.png',
+                        width: 2,
+                        caption: 'Notifications Window',
+                    },
+                    {
+                        src: 'profileAbout.png',
+                        width: 2,
+                        caption: 'Account Profile About',
+                    },
+                    {
+                        src: 'profileBadges.png',
+                        width: 2,
+                        caption: 'Account Profile Badges',
+                    },
+                    {
+                        src: 'profileBadgesManage.png',
+                        width: 2,
+                        caption: 'Account Badge Management',
+                    },
+                    {
+                        src: 'quests.png',
+                        width: 2,
+                        caption: 'Quests',
+                    },
+                    {
+                        src: 'searchBar.png',
+                        width: 2,
+                        caption: 'Search Bar',
+                    },
+                    {
+                        src: 'settingsMenu.png',
+                        width: 2,
+                        caption: 'Settings Menu',
+                    },
+                ]
+            }
         ],
     },
 ];
