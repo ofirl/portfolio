@@ -158,13 +158,6 @@ export const projects = [
         ],
     },
     {
-        key: 'timefy',
-        title: 'Timefy',
-        timeline: 'Personal',
-        technologies: ['MongoDB', 'Express', 'React', 'NodeJS'],
-        description: [],
-    },
-    {
         key: 'managementportal',
         url: {
             type: 'Demo',
